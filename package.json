@@ -1,0 +1,12 @@
+{
+  "name": "harryjamescoburn-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 tools/build.py",
+    "check": "node tools/check.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  }
+}
