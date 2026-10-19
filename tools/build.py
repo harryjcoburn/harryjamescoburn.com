@@ -118,7 +118,9 @@ def head(title, desc, path, extra=""):
 <meta name="description" content="{escape(desc)}">
 <link rel="canonical" href="{url}">
 <meta name="theme-color" content="{THEME}">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="48x48">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{escape(title)}">
@@ -324,6 +326,8 @@ def write_static():
     (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
     shutil.copy(ROOT / "assets" / "brand" / "hjc-tile.svg", DIST / "favicon.svg")
+    for src, dst in [("favicon.ico", "favicon.ico"), ("apple-touch-icon.png", "apple-touch-icon.png"), ("icon-192.png", "icon-192.png")]:
+        shutil.copy(ROOT / "assets" / "brand" / src, DIST / dst)
     (DIST / "404.html").write_text(simple_page(
         "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', "404.html"))
     (DIST / ".nojekyll").write_text("")
