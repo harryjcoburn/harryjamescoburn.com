@@ -10,6 +10,8 @@
 <link rel="icon" href="favicon.ico?v=2" sizes="48x48">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e4b96f89-c3cd-4f41-be42-e9db07deec39" data-domains="harryjamescoburn.com"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('a[href*="cal.com"]').forEach(function(a){a.setAttribute('data-umami-event','Book a call')});document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){if(!a.hasAttribute('data-umami-event'))a.setAttribute('data-umami-event','Email')});document.querySelectorAll('a[href$="scorecard.html"]').forEach(function(a){a.setAttribute('data-umami-event','Open scorecard')});});</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://harryjamescoburn.com/scorecard.html">
 <meta property="og:title" content="Sales engine scorecard | Harry James Coburn">
@@ -64,7 +66,7 @@
   <div class="moves" id="r-moves"></div>
   <div class="also res-cta">
     <p id="r-rec"></p>
-    <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#">Email my results to Harry</a></div>
+    <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
   </div>
   <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
 </section>
@@ -137,6 +139,7 @@
     document.getElementById('r-rec').innerHTML=rec+(extra[sit]||'');
     var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+val('stage')+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
     document.getElementById('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
+    try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
     form.hidden=true;res.hidden=false;res.scrollIntoView({behavior:'smooth',block:'start'});
   });
   document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
