@@ -20,11 +20,17 @@ node tools/check.mjs        # add CHROME=/path/to/chrome if Playwright has no br
 
 ## Privacy by design
 
-No cookies, no analytics, no third-party requests. Fonts are self-hosted (Google Fonts embeds are a known GDPR issue in Germany). The privacy page says exactly this; update it if anything is added (analytics, a booking widget, a form).
+No cookies and no cross-site tracking. Fonts are self-hosted (Google Fonts embeds are a known GDPR issue in Germany). The only third parties are Umami Cloud (cookieless page and click statistics, added 19 Oct 2026), Cal.com behind the "Book a call" links and the Substack newsletter sign-up. The privacy page describes each one; update it whenever anything is added or removed.
 
-## Going live on GitHub Pages
+This repo is public. CVs, cover letters and job applications live in the private `job-engine` repo, and `cv/` is ignored here so they can't be committed by accident.
 
-1. Push `dist/` to the `gh-pages` branch (or the repo root) of a public GitHub repo, and turn on Pages with the custom domain `harryjamescoburn.com` and "Enforce HTTPS".
+## Deploying
+
+The site is live at https://harryjamescoburn.com, served by GitHub Pages from the `gh-pages` branch, which holds the contents of `dist/`. To publish a change: run `python3 tools/build.py`, commit to `main`, then push the new `dist/` to `gh-pages`.
+
+## How the domain was set up (done)
+
+1. GitHub Pages is on, with the custom domain `harryjamescoburn.com` and "Enforce HTTPS".
 2. In iwantmyname DNS for harryjamescoburn.com:
    - Remove the four Squarespace A records, the `www` CNAME to `ext-cust.squarespace.com` and the Squarespace verification CNAME.
    - Add A records for `@`: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153.
@@ -33,6 +39,6 @@ No cookies, no analytics, no third-party requests. Fonts are self-hosted (Google
    - Leave every MX and TXT record alone (email, SPF, DKIM, Google verification).
 3. Done (10 Oct 2026): harrycoburn.com, hcoburn.com and their www versions forward to https://harryjamescoburn.com (iwantmyname URL Forward, 301, path not kept). hcoburn.com keeps its Google Workspace MX, SPF, DKIM and DMARC (p=none) records.
 
-## Before go-live
+## Open items
 
-`python3 tools/build.py` prints the open items. At the time of writing: postal address for the Impressum, booking link, prices (or keep "Price on request") and permission for the second testimonial.
+`python3 tools/build.py` prints anything still open, including `<!-- CHECK: ... -->` wording markers. As of 19 Oct 2026 it reports none.

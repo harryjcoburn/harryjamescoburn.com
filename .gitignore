@@ -1,1 +1,5 @@
 node_modules/
+__pycache__/
+*.pyc
+# CVs and job applications live in the private job-engine repo, never here
+cv/
