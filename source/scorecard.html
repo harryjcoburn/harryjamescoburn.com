@@ -1,0 +1,117 @@
+{{HEAD}}
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<header class="wrap">{{NAV}}</header>
+<main id="top" class="wrap">
+
+<div class="page-head">
+  <div class="label mono">Free · 3 minutes · 10 questions</div>
+  <h1>Score your <em>sales engine.</em></h1>
+  <p>A three-minute version of the Engine Score: eight of the areas I score in a paid Diagnostic. Pick the statement closest to the truth today. You get a score, your three weakest areas and a first move for each.</p>
+  <p class="small-note">Nothing you enter leaves your browser unless you choose to send it to me.</p>
+</div>
+
+<form id="sc" class="sc" novalidate>
+  <fieldset class="q ctx">
+    <legend><span class="mono">About you</span>What stage are you at?</legend>
+    <div class="opts row">
+      <label><input type="radio" name="stage" value="Seed" required><span>Pre-seed or Seed</span></label>
+      <label><input type="radio" name="stage" value="Series A"><span>Series A</span></label>
+      <label><input type="radio" name="stage" value="Series B"><span>Series B</span></label>
+      <label><input type="radio" name="stage" value="Series C+"><span>Series C or later</span></label>
+    </div>
+  </fieldset>
+  <fieldset class="q ctx">
+    <legend><span class="mono">About you</span>What's on your mind most?</legend>
+    <div class="opts row">
+      <label><input type="radio" name="sit" value="launch" required><span>Launching a new market or product</span></label>
+      <label><input type="radio" name="sit" value="stall"><span>Growth has stalled since the raise</span></label>
+      <label><input type="radio" name="sit" value="founder"><span>Sales still runs through the founder</span></label>
+      <label><input type="radio" name="sit" value="ai"><span>Making AI actually work in sales</span></label>
+    </div>
+  </fieldset>
+  <div id="areas"></div>
+  <div class="sc-actions"><button class="btn" type="submit">See my score <span class="arr">→</span></button><span id="sc-msg" class="small-note" role="status"></span></div>
+</form>
+
+<section id="result" class="result" hidden aria-live="polite">
+  <div class="res-head">
+    <div><span class="mono">Your score</span><b id="r-score">0.0</b><span class="of">out of 5</span></div>
+    <div><span class="mono" id="r-band-label">Where you are</span><h2 id="r-band"></h2><p id="r-band-text"></p></div>
+  </div>
+  <div class="bars" id="r-bars"></div>
+  <h3 class="res-sub">Your three first moves</h3>
+  <div class="moves" id="r-moves"></div>
+  <div class="also res-cta">
+    <p id="r-rec"></p>
+    <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#">Email my results to Harry</a></div>
+  </div>
+  <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
+</section>
+
+</main>
+{{CLOSE}}
+{{FOOTER}}
+<script>
+(function(){
+  var EMAIL='{{EMAIL}}';
+  var A=[
+    {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',o:['Nobody can say in one sentence who we\'re for and why it matters. Every rep pitches differently.','Our best people tell the story well. Others drift, and the site, deck and demo don\'t quite match.','One pitch built on the customer\'s problem, used by everyone. Site, deck and demo all match.'],
+     m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
+    {k:'icp',n:'Ideal customer and targeting',lever:'Deals created, win rate',o:['"Anyone who\'ll buy." The pipeline is full of poor-fit deals.','We have an ICP on paper, but we don\'t use it to route, score or say no.','A written ICP backed by win and loss data, used to route inbound, build outbound and say no.'],
+     m:'Pull your last 20 wins and losses. Write down what the best fits have in common, and start saying no to the rest.'},
+    {k:'price',n:'Pricing',lever:'Deal size, win rate',o:['Price is made up deal by deal. Heavy discounts, nobody approves them.','We have a price list, but discounting is common and loosely controlled.','A few packages, priced on value, with discount rules and approvals.'],
+     m:'Cut to three packages, price them on the value your customer gets, and set discount rules with approval levels.'},
+    {k:'funnel',n:'Funnel and process',lever:'Time to close, win rate',o:['Stages aren\'t defined. Deals stall after the demo and nobody knows why.','Stages exist, but exit criteria are loose and conversion is known only in places.','Every stage has exit criteria, conversion is tracked, and leaks are fixed every week.'],
+     m:'Write exit criteria for every stage and find the one stage where most deals stall. Fix that first.'},
+    {k:'team',n:'Team and roles',lever:'Deals created, win rate',o:['Everyone does a bit of everything, and the founder is still the best closer.','Roles exist, but handovers leak and onboarding is "shadow someone".','Clear roles and handovers, headcount planned from the target, weekly coaching on real deals.'],
+     m:'Map every handover from first touch to onboarding, and give new hires a written 30-60-90.'},
+    {k:'comp',n:'Targets and compensation',lever:'Deals created, deal size',o:['No real targets, or a board number with no maths behind it.','Targets and a comp plan exist, but they reward the wrong things or are too complex.','Targets built bottom-up, a simple comp plan that pays for good-fit revenue, and most reps hit target.'],
+     m:'Rebuild targets from capacity and conversion, and pay for good-fit revenue and price held, not just volume.'},
+    {k:'data',n:'Systems and data',lever:'Time to close, and every other lever',o:['Nobody trusts the CRM. The forecast is a gut feel.','The CRM is used but cluttered, and people argue about the reports.','A clean CRM, automatic enrichment and routing, one trusted dashboard and an accurate forecast.'],
+     m:'Make only the fields that matter mandatory, and build one dashboard for the five levers everyone trusts.'},
+    {k:'ai',n:'AI and automation',lever:'Deals created, time to close',o:['Little or none, or people using ChatGPT on their own. Inbound waits hours or days.','Some tools in place, not joined up or reviewed. Use varies by person.','Inbound answered in minutes, agents trained on our data and checked against a quality bar.'],
+     m:'Reply to every inbound lead within five minutes, with an agent trained on your past leads and checked against your standard.'}
+  ];
+  var vals=[1,3,5];
+  var host=document.getElementById('areas');
+  A.forEach(function(a,i){
+    var fs=document.createElement('fieldset');fs.className='q';
+    var h='<legend><span class="mono">'+(i+1)+' of 8 · '+a.n+'</span>Which is closest to the truth today?</legend><div class="opts">';
+    a.o.forEach(function(t,j){h+='<label><input type="radio" name="'+a.k+'" value="'+vals[j]+'" required><span>'+t+'</span></label>';});
+    h+='<label class="unsure"><input type="radio" name="'+a.k+'" value="2"><span>Not sure</span></label></div>';
+    fs.innerHTML=h;host.appendChild(fs);
+  });
+  var form=document.getElementById('sc'),res=document.getElementById('result'),msg=document.getElementById('sc-msg');
+  function val(n){var e=form.querySelector('input[name="'+n+'"]:checked');return e?e.value:null;}
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var missing=['stage','sit'].concat(A.map(function(a){return a.k;})).filter(function(n){return !val(n);});
+    if(missing.length){msg.textContent='Answer all '+(A.length+2)+' questions to see your score. '+missing.length+' to go.';var f=form.querySelector('input[name="'+missing[0]+'"]');if(f)f.closest('fieldset').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    msg.textContent='';
+    var scores=A.map(function(a){return {a:a,s:+val(a.k)};});
+    var avg=scores.reduce(function(t,x){return t+x.s;},0)/scores.length;
+    document.getElementById('r-score').textContent=avg.toFixed(1);
+    var band,text;
+    if(avg<2.2){band='Running on heroics';text='Revenue depends on a few people working very hard. The good news: the first fixes are usually fast and visible.';}
+    else if(avg<3.7){band='Works, but depends on people';text='The engine runs, but it leaks and it won\'t scale on its own. This is where the biggest gains usually are.';}
+    else{band='Ready to scale';text='The basics are in place. The question now is how far AI and new markets can take it.';}
+    document.getElementById('r-band').textContent=band;document.getElementById('r-band-text').textContent=text;
+    var sorted=scores.slice().sort(function(x,y){return x.s-y.s;});
+    document.getElementById('r-bars').innerHTML=scores.map(function(x){return '<div class="bar"><span class="bn">'+x.a.n+'</span><span class="bt"><span class="fill s'+x.s+'" style="width:'+(x.s/5*100)+'%"></span></span><span class="bv">'+(x.s===2?'?':x.s)+'</span></div>';}).join('');
+    document.getElementById('r-moves').innerHTML=sorted.slice(0,3).map(function(x){return '<div class="move"><span class="mono">'+x.a.lever+'</span><h4>'+x.a.n+'</h4><p>'+x.a.m+'</p></div>';}).join('');
+    var sit=val('sit'),rec;
+    if(avg<2.6){rec='<b>Where I\'d start:</b> a GTM Diagnostic. We\'d stop the bleeding in your weakest areas within 30 days, then plan the engine.';}
+    else if(avg<3.7){rec='<b>Where I\'d start:</b> a GTM Diagnostic, then a Commercial Systems Build for the areas holding you back.';}
+    else{rec='<b>Where I\'d start:</b> a GTM Teardown to find the next level, or an advisory role while you scale.';}
+    var extra={launch:' For a new market or product, we\'d prove the formula small before scaling it.',stall:' After a raise, the fastest wins are usually in targeting and the funnel.',founder:' Getting sales out of the founder\'s head starts with the pitch and the handovers.',ai:' AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
+    document.getElementById('r-rec').innerHTML=rec+(extra[sit]||'');
+    var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+val('stage')+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
+    document.getElementById('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
+    form.hidden=true;res.hidden=false;res.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 
 const BASE = process.env.BASE || 'http://localhost:8765/';
 const OUT = process.env.OUT || '/tmp';
-const pages = ['', 'impressum.html', 'privacy.html', '404.html'];
+const pages = ['', 'services.html', 'scorecard.html', 'work.html', 'engine.html', 'ideas.html', 'about.html', 'faq.html', 'speaking.html', 'impressum.html', 'privacy.html', '404.html'];
 const viewports = [
   { name: 'desktop', width: 1440, height: 900 },
   { name: 'phone', width: 390, height: 844 },
@@ -38,7 +38,7 @@ for (const vp of viewports) {
     for (const i of imgs) {
       if (!i.alt) fail(`${label}: image without alt ${i.src}`);
     }
-    if (p === '') {
+    if (!['impressum.html','privacy.html','404.html'].includes(p)) {
       // Lazy images: scroll through so they load, then check.
       await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); } });
       await page.waitForTimeout(400);
@@ -47,11 +47,11 @@ for (const vp of viewports) {
       const anchors = await page.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')).filter((h) => h.length > 1 && !document.querySelector(h)));
       if (anchors.length) fail(`${label}: links to missing sections: ${anchors.join(', ')}`);
       const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family} ${f.style}`));
-      if (!fonts.some((f) => f.includes('Newsreader'))) fail(`${label}: Newsreader did not load`);
+      if (!fonts.some((f) => f.includes('Schibsted'))) fail(`${label}: Schibsted Grotesk did not load`);
       const small = await page.evaluate(() => [...document.querySelectorAll('a')].filter((a) => { const r = a.getBoundingClientRect(); return r.height > 0 && r.height < 24 && getComputedStyle(a).display !== 'inline'; }).map((a) => a.textContent.trim()).slice(0, 5));
       if (small.length) console.log(`note ${label}: small link targets: ${small.join(' | ')}`);
       await page.evaluate(() => window.scrollTo(0, 0));
-      await page.screenshot({ path: `${OUT}/home-${vp.name}.png`, fullPage: true });
+      await page.screenshot({ path: `${OUT}/${(p || "home").replace(".html", "")}-${vp.name}.png`, fullPage: true });
       console.log(`ok ${label}: fonts ${[...new Set(fonts)].join(', ')}`);
     } else {
       await page.screenshot({ path: `${OUT}/${(p || 'home').replace('.html', '')}-${vp.name}.png`, fullPage: true });

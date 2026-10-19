@@ -1,146 +1,114 @@
 #!/usr/bin/env python3
-"""Build harryjamescoburn.com from the canvas design.
+"""Build harryjamescoburn.com.
 
-Reads source/Website.dc.html (exported from the design canvas) and site.json,
-and writes a static site to dist/. Re-run after every canvas change:
+Pages are hand-written HTML in source/ (index, work, about) with a shared stylesheet,
+source/site.css. This script fills in the shared parts (head, nav, closing band, footer),
+the booking link and prices from site.json, adds structured data for search and AI
+assistants, and writes the finished site to dist/.
 
     python3 tools/build.py
 
-Prints a checklist of anything still missing before go-live.
+Prints a checklist of anything still open before go-live.
 """
 import json
 import re
 import shutil
 import sys
 from datetime import date
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 
+from brand import mark as brand_mark
+
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "source" / "Website.dc.html"
+SRC = ROOT / "source"
 DIST = ROOT / "dist"
 CFG = json.loads((ROOT / "site.json").read_text())
+BASE = f"https://{CFG['domain']}/"
+THEME = "#10372A"
 
-HERO_BLOB = "/_blob/e5ccdea59ff59b2acb793043fbb8b990"
-ABOUT_BLOB = "/_blob/5dd1109b79b9cddc19643ec53afc895b"
+UNUSED_ASSETS = ("tsb.svg", "british-army.svg", "wheely.svg", "adventure-peak.jpg", "adventure-hike.jpg", "SOURCES.md", "*.txt")
+
+PAGES = {
+    "index.html": ("Harry James Coburn: an AI sales engine you can trust",
+                   "Harry James Coburn helps CEOs of VC-backed companies build AI into their sales engine without "
+                   "losing trust: the right customer, price and pitch, AI trained and tested to their standard, "
+                   "then scaled. Berlin and London, working across the UK, Europe and the US."),
+    "work.html": ("Case studies: UXCam, Arbonics, Wheely and Pronto | Harry James Coburn",
+                  "How Harry James Coburn rebuilt and scaled sales at UXCam, Arbonics, Wheely and Pronto: "
+                  "before, what he did, and the results."),
+    "services.html": ("Services: how I can help | Harry James Coburn",
+                      "One problem, solved well: a sales engine that still runs through the founder, or stalls after the "
+                      "raise. Teardown, Diagnostic, Build, fractional Head of Sales and advisory for VC-backed CEOs."),
+    "scorecard.html": ("Sales engine scorecard | Harry James Coburn",
+                       "A free 3-minute scorecard across eight of the 28 focus areas of the Coburn Commercial Engine, "
+                       "with your three first moves."),
+    "ideas.html": ("Ideas: find the formula, then scale it | Harry James Coburn",
+                   "Harry James Coburn on commercial strategy, his selling principles and the state of AI in "
+                   "go-to-market."),
+    "engine.html": ("The Coburn Commercial Engine: revenue is momentum | Harry James Coburn",
+                    "The Coburn Commercial Engine: how Harry James Coburn diagnoses, fixes and scales how a company "
+                    "wins customers and keeps them. Five levers, seven layers, one standard."),
+    "faq.html": ("FAQ: go-to-market, sales and AI | Harry James Coburn",
+                 "Answers on how Harry James Coburn works, who he works with, what a GTM Teardown and Diagnostic are, "
+                 "what it costs and how AI is changing B2B sales."),
+    "speaking.html": ("Speaking, podcasts and portfolio workshops | Harry James Coburn",
+                      "Invite Harry James Coburn to speak, join a podcast or run a portfolio workshop on commercial "
+                      "strategy and go-to-market in the age of AI agents."),
+    "about.html": ("About Harry James Coburn",
+                   "Harry James Coburn: from IBM, Credit Suisse and Lloyds Banking Group to building sales "
+                   "engines at start-ups. Based in Berlin."),
+}
+
+OFFERS = ["GTM Teardown", "GTM Diagnostic", "Commercial Systems Build", "Fractional Head of Sales", "Advisor"]
 
 warnings = []
 
 
-def between(s, a, b):
-    i = s.index(a) + len(a)
-    return s[i:s.index(b, i)]
+def booking():
+    b = CFG["booking_url"].strip()
+    if not b:
+        warnings.append("No booking link yet: buttons open an email instead.")
+        return f"mailto:{CFG['email']}?subject=Intro%20call"
+    return b
 
 
-def load_design():
-    raw = SRC.read_text()
-    helmet = between(raw, "<helmet>", "</helmet>")
-    markup = between(raw, "</helmet>", "</x-dc>").strip()
-    script = raw[raw.index('data-dc-script'):]
-    palettes = json.loads(between(script, "const P = ", ";\nconst c"))
-    style = between(helmet, "<style>", "</style>")
-    return markup, palettes, style
+def nav(current):
+    def link(href, label):
+        cur = ' aria-current="page"' if href == current else ""
+        return f'<a href="{href}"{cur}>{label}</a>'
+    home = "" if current == "index.html" else "./"
+    return (f'<nav class="nav" aria-label="Main"><a class="name" href="./">{MARK}<span>Harry James Coburn</span></a>'
+            f'<span class="links">{link("services.html", "Services")}{link("work.html", "Work")}{link("engine.html", "The Engine")}'
+            f'{link("ideas.html", "Ideas")}{link("about.html", "About")}'
+            f'<a class="btn" href="{{{{BOOK}}}}">Book a call</a></span></nav>')
 
 
-def apply_palette(markup, c):
-    def sub(m):
-        key = m.group(1)
-        if key not in c:
-            sys.exit(f"Unknown palette key: {key}")
-        return c[key]
-    markup = re.sub(r"\{\{c\.([A-Za-z]+)\}\}", sub, markup)
-    markup = markup.replace("{{flairDisplay}}", "block" if CFG["flair"] else "none")
-    markup = markup.replace("{{tagline}}", escape(CFG["tagline"]))
-    left = re.findall(r"\{\{[^}]+\}\}", markup)
-    if left:
-        sys.exit(f"Unresolved template holes: {left}")
-    return markup
+CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inner">
+  <div class="mono">Think clearly. Move fast.</div>
+  <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
+  <p>A short intro call. You leave with at least one thing to fix this month, whether we work together or not.</p>
+  <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><span class="mail">{{EMAIL}}</span></div>
+  <div class="alt"><a href="mailto:{{EMAIL}}?subject=Hello%20Harry">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
+</div></section>"""
+
+NEWSLETTER = """<section class="sec news" id="newsletter" aria-labelledby="h-news">
+  <div class="news-copy">
+    <div class="label mono">Newsletter · Free</div>
+    <h2 id="h-news">The AI Go-to-Market <em>Formula.</em></h2>
+    <p>One lever or one AI workflow per issue, what I'd change this month, and what happened when real companies did it. Short, practical, no hype.</p>
+  </div>
+  <div class="news-box"><iframe src="https://harryjamescoburn.substack.com/embed" title="Subscribe to The AI Go-to-Market Formula" width="480" height="200" loading="lazy" frameborder="0" scrolling="no"></iframe><a class="small-note" href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Read it on Substack</a></div>
+</section>"""
+
+FOOTER = """<footer><div class="wrap">
+  <span class="sign">{mark}<span>© {year} Harry James Coburn · Berlin · London</span></span>
+  <nav aria-label="Footer"><a href="./#offers">Offers</a><a href="faq.html">FAQ</a><a href="speaking.html">Speaking</a><a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Newsletter</a><a href="{linkedin}" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:{email}">Email</a><a href="impressum.html">Impressum</a><a href="privacy.html">Privacy</a></nav>
+</div></footer>"""
 
 
-def fix_images(markup):
-    markup = markup.replace(
-        f'<img src="{HERO_BLOB}"',
-        '<img src="assets/hero-harry.webp" width="960" height="1200" fetchpriority="high"')
-    markup = markup.replace(
-        f'<img src="{ABOUT_BLOB}"',
-        '<img src="assets/about-harry.webp" width="960" height="1200" loading="lazy" decoding="async"')
-    if "/_blob/" in markup:
-        sys.exit("An image still points at a canvas upload; add it to fix_images().")
-    return markup
-
-
-def fix_links(markup):
-    booking = CFG["booking_url"].strip()
-    if booking:
-        markup = markup.replace('href="#book"', f'href="{escape(booking)}" target="_blank" rel="noopener"')
-    else:
-        warnings.append("No booking link yet: 'Book an intro call' opens an email instead.")
-        mail = f'mailto:{CFG["email"]}?subject=Intro%20call'
-        markup = markup.replace('href="#book"', f'href="{mail}"')
-    markup = markup.replace('href="#imprint"', 'href="impressum.html"')
-    markup = markup.replace('href="#privacy"', 'href="privacy.html"')
-    return markup
-
-
-def fix_prices(markup):
-    for title, price in CFG["prices"].items():
-        i = markup.find(f">{title}</h3>")
-        if i < 0:
-            sys.exit(f"Offer not found in design: {title}")
-        j = markup.find("[PRICE]", i)
-        text = escape(price) if price.strip() else "Price on request"
-        markup = markup[:j] + text + markup[j + len("[PRICE]"):]
-    if "[PRICE]" in markup:
-        sys.exit("A [PRICE] placeholder has no matching offer in site.json.")
-    if not any(p.strip() for p in CFG["prices"].values()):
-        warnings.append("Prices are hidden: each offer shows 'Price on request'.")
-    return markup
-
-
-def drop_unconfirmed_quotes(markup):
-    if CFG["show_unconfirmed_quotes"]:
-        return markup
-    out, n = re.subn(r'<figure[^>]*>(?:(?!</figure>).)*\[PERMISSION TO CONFIRM\](?:(?!</figure>).)*</figure>\s*',
-                     "", markup, flags=re.S)
-    if n:
-        warnings.append(f"{n} testimonial(s) hidden until permission is confirmed.")
-    return out
-
-
-def check_placeholders(markup):
-    left = re.findall(r"\[[A-Z][A-Z :'’-]{3,}\]", markup)
-    if left:
-        sys.exit(f"Placeholders still in the page: {sorted(set(left))}")
-
-
-FONT_CSS = """
-@font-face{font-family:'Newsreader';src:url(assets/fonts/newsreader-latin-opsz-normal.woff2) format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
-@font-face{font-family:'Newsreader';src:url(assets/fonts/newsreader-latin-opsz-italic.woff2) format('woff2');font-weight:200 800;font-style:italic;font-display:swap}
-@font-face{font-family:'Public Sans';src:url(assets/fonts/public-sans-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'Public Sans';src:url(assets/fonts/public-sans-latin-wght-italic.woff2) format('woff2');font-weight:100 900;font-style:italic;font-display:swap}
-@font-face{font-family:'Roboto Mono';src:url(assets/fonts/roboto-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Roboto Mono';src:url(assets/fonts/roboto-mono-latin-500-normal.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
-"""
-
-BASE_CSS = """
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
-*,*::before,*::after{box-sizing:border-box}
-img{max-width:100%%;height:auto}
-section[id]{scroll-margin-top:16px}
-a:focus-visible{outline:3px solid %(sun)s;outline-offset:3px}
-.skip{position:absolute;left:-9999px;top:8px;background:#fff;color:%(deep)s;padding:10px 14px;z-index:10}
-.skip:focus{left:8px}
-footer a{display:inline-block;padding:12px 0}
-footer > div{align-items:center !important}
-"""
-
-DESCRIPTION = ("Commercial adviser to funded B2B founders. Harry James Coburn turns founder-led, "
-               "stalled or messy sales into a revenue engine that runs without the founder.")
-
-
-def head(title, c, desc=DESCRIPTION, path="", extra=""):
-    url = f"https://{CFG['domain']}/{path}"
+def head(title, desc, path, extra=""):
+    url = BASE + ("" if path == "index.html" else path)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -149,62 +117,133 @@ def head(title, c, desc=DESCRIPTION, path="", extra=""):
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
 <link rel="canonical" href="{url}">
-<meta name="theme-color" content="{c['green']}">
+<meta name="theme-color" content="{THEME}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{escape(title)}">
 <meta property="og:description" content="{escape(desc)}">
-<meta property="og:image" content="https://{CFG['domain']}/assets/og-image.jpg">
+<meta property="og:image" content="{BASE}assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="assets/fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-{extra}<style>{FONT_CSS}{BASE_CSS % c}</style>
-"""
+<link rel="preload" href="assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+{extra}</head>"""
 
 
-def person_jsonld():
-    data = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Harry James Coburn",
-        "jobTitle": "Commercial adviser to B2B founders",
-        "url": f"https://{CFG['domain']}/",
-        "email": f"mailto:{CFG['email']}",
-        "image": f"https://{CFG['domain']}/assets/hero-harry.jpg",
-        "sameAs": [CFG["linkedin"]],
+def clean(t):
+    return unescape(re.sub(r"<[^>]+>", "", re.sub(r"<!--.*?-->", "", t, flags=re.S))).strip()
+
+
+def faq_ld(html):
+    return {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+                           for q, a in faq_entries(html)]}
+
+
+def faq_entries(html):
+    items = re.findall(r'<details class="faq-item"[^>]*>\s*<summary>(.*?)</summary>\s*<div class="faq-a">(.*?)</div>\s*</details>',
+                       html, flags=re.S)
+    if not items or len(items) != html.count('class="faq-item"'):
+        sys.exit("FAQ items could not all be read for the structured data; check their markup.")
+    return [(clean(q), clean(a)) for q, a in items]
+
+
+def jsonld(html):
+    person = {
+        "@type": "Person", "@id": BASE + "#person", "name": "Harry James Coburn",
+        "jobTitle": "Commercial strategy and go-to-market adviser",
+        "description": ("Berlin-based commercial strategy and go-to-market adviser for growing tech companies. "
+                        "Has led sales at UXCam, Arbonics, Wheely and Pronto, and trained at IBM, Credit Suisse "
+                        "and Lloyds Banking Group."),
+        "url": BASE, "email": f"mailto:{CFG['email']}", "image": BASE + "assets/photos/hero.jpg",
+        "sameAs": [CFG["linkedin"]], "nationality": "British",
+        "homeLocation": {"@type": "Place", "name": "Berlin, Germany"},
         "address": {"@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE"},
+        "alumniOf": [{"@type": "CollegeOrUniversity", "name": "University of Manchester"},
+                     {"@type": "CollegeOrUniversity", "name": "University of Melbourne"}],
+        "worksFor": {"@id": BASE + "#service"},
+        "knowsAbout": ["Go-to-market strategy", "Commercial strategy", "B2B sales", "Sales leadership",
+                       "Fractional Head of Sales", "Pricing strategy", "Ideal customer profile (ICP)",
+                       "Outbound sales", "Inbound lead conversion", "AI agents in sales", "Sales forecasting",
+                       "CRM", "New market and product launches"],
     }
-    return f'<script type="application/ld+json">{json.dumps(data)}</script>\n'
+    service = {
+        "@type": "ProfessionalService", "@id": BASE + "#service", "name": "Harry James Coburn",
+        "description": PAGES["index.html"][1], "url": BASE, "email": CFG["email"],
+        "image": BASE + "assets/og-image.jpg", "founder": {"@id": BASE + "#person"},
+        "address": {"@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE"},
+        "areaServed": [{"@type": "Country", "name": "United Kingdom"}, {"@type": "Place", "name": "Europe"},
+                       {"@type": "Country", "name": "United States"}],
+        "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Ways to work together",
+                            "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": o}}
+                                                for o in OFFERS]},
+    }
+    faq = {"@type": "FAQPage", "@id": BASE + "#faq",
+           "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+                          for q, a in faq_entries(html)]}
+    data = {"@context": "https://schema.org", "@graph": [person, service]}
+    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>\n'
 
 
-def build_home(markup, style, c):
-    style = style.replace("#1F4D36", c["green"]).replace("#A8431F", c["emberText"])
-    page = head("Harry James Coburn: commercial adviser to B2B founders", c,
-                extra='<link rel="preload" href="assets/hero-harry.webp" as="image" fetchpriority="high">\n' + person_jsonld())
-    page += f"<style>{style}</style>\n</head>\n<body>\n"
-    page += '<a class="skip" href="#top">Skip to content</a>\n<main>\n'
-    page += markup + "\n</main>\n</body>\n</html>\n"
-    return page
+# The HJC mark, inline so it takes the text colour; the station dot is coloured in CSS.
+MARK = ('<svg class="mark" viewBox="0 0 70 32" width="42" height="19" aria-hidden="true" focusable="false">'
+        + brand_mark("currentColor", "none").replace('fill="none"/>', 'class="stn"/>') + "</svg>")
 
 
-def simple_page(title, body_html, c, path):
-    return head(f"{title} | Harry James Coburn", c, desc=f"{title} for harryjamescoburn.com", path=path) + f"""<meta name="robots" content="noindex">
-<style>
-body{{margin:0;background:{c['paper']};color:{c['body']};font-family:'Public Sans','Segoe UI',system-ui,sans-serif;font-size:17px;line-height:1.6}}
-a{{color:{c['green']}}}a:hover{{color:{c['emberText']}}}
-.wrap{{max-width:760px;margin:0 auto;padding:48px 24px 96px}}
-h1{{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:44px;line-height:1.1;color:{c['deep']};margin:24px 0 24px}}
-h2{{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:24px;color:{c['deep']};margin:36px 0 8px}}
-.home{{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:22px;color:{c['deep']};text-decoration:none}}
-</style>
-</head>
+def adventure():
+    """Small 'beyond work' photo strip, only if the photos are in assets/photos/."""
+    shots = [("adventure-marathon", "Midnight marathon, Arctic Circle, 2022"),
+             ("adventure-hac", "Army Reserve: HAC gun salute, London"), ("adventure-kayak", "Kayaking, Antarctica, 2014")]
+    have = [(n, c) for n, c in shots if (ROOT / "assets" / "photos" / f"{n}.jpg").exists()]
+    if not have:
+        return ""
+    figs = "".join(f'<figure><img src="assets/photos/{n}.jpg" width="800" height="600" alt="{escape(c)}" loading="lazy">'
+                   f'<figcaption>{escape(c)}</figcaption></figure>' for n, c in have)
+    return f'<div class="strip">{figs}</div>'
+
+
+def prices(html):
+    def sub(m):
+        p = CFG["prices"].get(m.group(1))
+        if p is None:
+            sys.exit(f"No price entry in site.json for {m.group(1)!r}")
+        return escape(p) if p.strip() else "Price on request"
+    return re.sub(r"\{\{PRICE:([^}]+)\}\}", sub, html)
+
+
+def fill(name, html):
+    title, desc = PAGES[name]
+    extra = ""
+    if name == "index.html":
+        extra = '<link rel="preload" href="assets/photos/hero.webp" as="image" fetchpriority="high">\n' + jsonld(html)
+    if name == "faq.html":
+        extra = f'<script type="application/ld+json">{json.dumps(faq_ld(html), ensure_ascii=False)}</script>\n'
+    html = html.replace("{{HEAD}}", head(title, desc, name, extra))
+    html = html.replace("{{NAV}}", nav(name)).replace("{{CLOSE}}", CLOSE)
+    html = html.replace("{{FOOTER}}", FOOTER.format(mark=MARK, year=date.today().year, linkedin=escape(CFG["linkedin"]),
+                                                    email=CFG["email"]))
+    html = html.replace("{{NEWSLETTER}}", NEWSLETTER).replace("{{ADVENTURE}}", adventure())
+    html = prices(html)
+    book = booking()
+    attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
+    html = html.replace('href="{{BOOK}}"', f'href="{attrs}"').replace("{{EMAIL}}", CFG["email"])
+    left = re.findall(r"\{\{[^}]+\}\}", html)
+    if left:
+        sys.exit(f"{name}: unfilled template holes {sorted(set(left))}")
+    checks = re.findall(r"<!-- CHECK: ([^>]+?) -->", html)
+    if checks:
+        warnings.append(f"{name}: wording still to confirm: {', '.join(checks)}")
+    return html
+
+
+def simple_page(title, body_html, path):
+    book = booking()
+    page = head(f"{title} | Harry James Coburn", f"{title} for harryjamescoburn.com", path,
+                '<meta name="robots" content="noindex">\n')
+    return page + f"""
 <body>
-<div class="wrap">
-<a class="home" href="./">Harry James Coburn</a>
-<h1>{title}</h1>
-{body_html}
-</div>
+<header class="wrap">{nav(path).replace('{{BOOK}}', escape(book))}</header>
+<main class="wrap"><div class="page-head"><h1>{title}</h1></div><div class="prose" style="padding-bottom:96px">{body_html}</div></main>
 </body>
 </html>
 """
@@ -212,23 +251,15 @@ h2{{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:24px;color:
 
 def impressum_html():
     i = CFG["impressum"]
-    missing = [k for k in ("street", "city") if not i[k].strip()]
-    if missing:
-        warnings.append("Impressum is missing your postal address (street, postcode and city). "
-                        "German law requires it before the site goes live.")
-    addr = "<br>".join(escape(x) for x in [i["name"], i["street"] or "[STREET AND NUMBER]",
-                                             i["city"] or "[POSTCODE AND CITY]", i["country"]])
+    if not (i["street"].strip() and i["city"].strip()):
+        warnings.append("Impressum is missing the postal address. German law requires it before go-live.")
+    addr = "<br>".join(escape(x) for x in [i["name"], i["street"], i["city"], i["country"]] if x)
     phone = f"<br>Phone: {escape(i['phone'])}" if i["phone"].strip() else ""
-    vat = (f"<h2>VAT ID</h2><p>{escape(i['vat_id'])}</p>" if i["vat_id"].strip() else "")
+    vat = f"<h2>VAT ID</h2><p>{escape(i['vat_id'])}</p>" if i["vat_id"].strip() else ""
     return f"""<p>Information under § 5 DDG (Digitale-Dienste-Gesetz).</p>
-<h2>Provider</h2>
-<p>{addr}</p>
-<h2>Contact</h2>
-<p>Email: <a href="mailto:{CFG['email']}">{CFG['email']}</a>{phone}</p>
-{vat}
-<h2>Responsible for content</h2>
-<p>{escape(i['name'])}, address as above.</p>
-"""
+<h2>Provider</h2><p>{addr}</p>
+<h2>Contact</h2><p>Email: <a href="mailto:{CFG['email']}">{CFG['email']}</a>{phone}</p>
+{vat}<h2>Responsible for content</h2><p>{escape(i['name'])}, address as above.</p>"""
 
 
 def privacy_html():
@@ -241,51 +272,78 @@ def privacy_html():
 <h2>Hosting and server logs</h2>
 <p>The site is hosted on GitHub Pages (GitHub, Inc., USA). When you visit, GitHub processes technical data such as your IP address, browser and the time of the request, to deliver the site and keep it secure. The legal basis is our legitimate interest in operating a secure website (Art. 6(1)(f) GDPR). See GitHub's privacy statement for details.</p>
 <h2>Booking a call</h2>
-<p>The “Book an intro call” button takes you to my booking page on Google Calendar (Google Ireland Ltd). If you book, Google processes the name and email address you enter and adds the meeting to my calendar. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Google's privacy policy applies on that page.</p>
+<p>The “Book a call” buttons take you to my booking page on Cal.com (Cal.com, Inc.). If you book, Cal.com processes the name, email address and answers you enter, adds the meeting to my Google Calendar (Google Ireland Ltd) and creates a Google Meet link. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Cal.com's and Google's privacy policies apply to that processing.</p>
+<p>The newsletter sign-up box is provided by Substack, Inc. It loads from Substack only on pages that show it. If you subscribe, Substack processes your email address to send you the newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe from any issue. Substack's privacy policy applies.</p>
 <h2>When you email me</h2>
 <p>If you contact me by email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>
 <h2>Your rights</h2>
-<p>You can ask for access to, correction or deletion of your data, restriction of or objection to its processing, and data portability (Art. 15 to 21 GDPR). You can also complain to a data protection authority, such as the Berlin Commissioner for Data Protection and Freedom of Information.</p>
+<p>You can ask for access to, correction or deletion of your data, restriction of or objection to its processing, and data portability (Art. 15 to 21 GDPR). You can also complain to a data protection authority, such as the Berlin Commissioner for Data Protection and Freedom of Information.</p>"""
+
+
+LLMS = """# Harry James Coburn
+
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it.
+
+## Track record
+- UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
+- Arbonics (forest carbon, Plural-backed), Head of Sales & New Markets, 2024-25: quarterly sales up 37x in nine months, from about EUR 0.1M to EUR 5.4M in estimated contract value; about EUR 10M won in 12 months; sales cycle from 75 to 16 days.
+- Wheely (premium chauffeurs, Concentric-backed), Global Head of B2B Sales & Customer Success, 2019-21: B2B recovered 912% from the Covid low.
+- Pronto (food delivery, Playfair and Seedcamp-backed), Head of B2B Sales & Partnerships, 2015-16: B2B built from zero to 60% of company revenue.
+- Earlier: IBM, Credit Suisse, Lloyds Banking Group (helped create TSB Bank).
+
+## Services
+- GTM Teardown: 90-minute session on site, pricing, pitch and funnel; at least three fixes or no fee.
+- GTM Diagnostic: 2-3 week review of the whole sales engine; fee credited against a Build within 30 days.
+- Commercial Systems Build: 8-12 weeks; ICP, messaging, pricing, AI-assisted inbound and outbound, CRM, forecasting, hiring.
+- Fractional Head of Sales and Advisor roles.
+- Speaking, podcasts and portfolio workshops.
+
+## Pages
+- [Home]({base})
+- [Case studies]({base}work.html)
+- [Services]({base}services.html)
+- [Sales engine scorecard]({base}scorecard.html)
+- [The Coburn Commercial Engine]({base}engine.html)
+- [Ideas and the state of AI in GTM]({base}ideas.html)
+- [About]({base}about.html)
+- [Speaking and podcasts]({base}speaking.html)
+- [FAQ]({base}faq.html)
+
+## Contact
+- Email: {email}
+- LinkedIn: {linkedin}
+- Newsletter: The AI Go-to-Market Formula, https://harryjamescoburn.substack.com
 """
 
 
-def write_static(c):
+def write_static():
     (DIST / "CNAME").write_text(CFG["domain"] + "\n")
-    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: https://{CFG['domain']}/sitemap.xml\n")
-    (DIST / "sitemap.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f'<url><loc>https://{CFG["domain"]}/</loc><lastmod>{date.today()}</lastmod></url>\n</urlset>\n')
-    (DIST / "favicon.svg").write_text(
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="{c["green"]}"/>'
-        f'<text x="32" y="44" text-anchor="middle" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#fff">HC</text>'
-        f'<rect x="14" y="50" width="36" height="4" rx="2" fill="{c["sun"]}"/></svg>\n')
+    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
+    urls = "".join(f"<url><loc>{BASE}{'' if p == 'index.html' else p}</loc><lastmod>{date.today()}</lastmod></url>\n"
+                   for p in PAGES)
+    (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+                                      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
+    shutil.copy(ROOT / "assets" / "brand" / "hjc-tile.svg", DIST / "favicon.svg")
     (DIST / "404.html").write_text(simple_page(
-        "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', c, "404.html"))
+        "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', "404.html"))
     (DIST / ".nojekyll").write_text("")
+    (DIST / "llms.txt").write_text(LLMS.format(base=BASE, email=CFG["email"], linkedin=CFG["linkedin"]))
 
 
 def main():
-    markup, palettes, style = load_design()
-    if CFG["palette"] not in palettes:
-        sys.exit(f"Unknown palette {CFG['palette']!r}; options: {list(palettes)}")
-    c = palettes[CFG["palette"]]
-    markup = apply_palette(markup, c)
-    markup = fix_images(markup)
-    markup = fix_links(markup)
-    markup = fix_prices(markup)
-    markup = drop_unconfirmed_quotes(markup)
-    check_placeholders(markup)
-
     if DIST.exists():
         shutil.rmtree(DIST)
-    (DIST / "assets").mkdir(parents=True)
-    shutil.copytree(ROOT / "assets", DIST / "assets", dirs_exist_ok=True)
-    (DIST / "index.html").write_text(build_home(markup, style, c))
-    (DIST / "impressum.html").write_text(simple_page("Impressum", impressum_html(), c, "impressum.html"))
-    (DIST / "privacy.html").write_text(simple_page("Privacy policy", privacy_html(), c, "privacy.html"))
-    write_static(c)
-
-    print(f"Built {DIST} with palette {CFG['palette']!r}.")
+    DIST.mkdir()
+    shutil.copytree(ROOT / "assets", DIST / "assets", ignore=shutil.ignore_patterns(*UNUSED_ASSETS))
+    shutil.copy(SRC / "site.css", DIST / "assets" / "site.css")
+    for name in PAGES:
+        (DIST / name).write_text(fill(name, (SRC / name).read_text()))
+    (DIST / "impressum.html").write_text(simple_page("Impressum", impressum_html(), "impressum.html"))
+    (DIST / "privacy.html").write_text(simple_page("Privacy policy", privacy_html(), "privacy.html"))
+    write_static()
+    if not any(p.strip() for p in CFG["prices"].values()):
+        warnings.append("Prices are hidden: each offer shows 'Price on request'.")
+    print(f"Built {DIST}: {', '.join(PAGES)}, impressum.html, privacy.html")
     if warnings:
         print("\nBefore go-live:")
         for w in warnings:

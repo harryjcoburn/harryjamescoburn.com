@@ -4,10 +4,13 @@ Static website for Harry James Coburn, built from the design canvas.
 
 ## How it works
 
-- `source/Website.dc.html`: the home page design, exported from the canvas. Change the design on the canvas, then copy the new file here.
-- `site.json`: the settings that are not design (colour scheme, catchline, booking link, prices, Impressum details).
-- `tools/build.py`: turns the two into the finished site in `dist/`, and lists anything still missing before go-live.
-- `tools/check.mjs`: opens the built site in a browser at desktop and phone width and checks for sideways scrolling, broken links, images, fonts and requests to other sites.
+- `source/index.html`, `source/work.html`, `source/about.html`: the pages, written by hand. `{{...}}` marks parts the build fills in (head, nav, closing band, footer, booking link, prices).
+- `source/site.css`: the shared stylesheet (direction D "Ember": Schibsted Grotesk, Roboto Mono labels, Newsreader italic for Harry's own voice).
+- `assets/photos/`: hero, about and avatar crops from Drive `Headshots_2025-09/Frame and edited`. Add `adventure-marathon.jpg`, `adventure-kayak.jpg` or `adventure-snow.jpg` (800x600) and the build shows a "beyond work" strip.
+- `site.json`: booking link, prices, Impressum details.
+- `tools/build.py`: builds `dist/`, adds Person, ProfessionalService and FAQPage structured data, and lists anything still open (including `<!-- CHECK: ... -->` wording markers).
+- `tools/check.mjs`: opens every page at desktop and phone width and checks sideways scrolling, broken links and images, fonts and requests to other sites.
+- `source/legacy/Website.dc.html`: the old canvas design, kept for reference only.
 
 ```
 python3 tools/build.py
@@ -28,7 +31,7 @@ No cookies, no analytics, no third-party requests. Fonts are self-hosted (Google
    - Add AAAA records for `@`: 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153, 2606:50c0:8003::153.
    - Add a CNAME for `www` pointing to `<github-username>.github.io`.
    - Leave every MX and TXT record alone (email, SPF, DKIM, Google verification).
-3. Optional: forward harrycoburn.com and hcoburn.com (website only) to https://harryjamescoburn.com.
+3. Done (10 Oct 2026): harrycoburn.com, hcoburn.com and their www versions forward to https://harryjamescoburn.com (iwantmyname URL Forward, 301, path not kept). hcoburn.com keeps its Google Workspace MX, SPF, DKIM and DMARC (p=none) records.
 
 ## Before go-live
 

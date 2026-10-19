@@ -2,15 +2,16 @@
   "domain": "harryjamescoburn.com",
   "palette": "Bright Hajaco",
   "flair": true,
-  "tagline": "Discipline meets momentum",
+  "tagline": "Think clearly. Move fast.",
   "email": "harry@harryjamescoburn.com",
   "linkedin": "https://www.linkedin.com/in/hcoburn/",
-  "booking_url": "https://calendar.app.google/CwSR8xnNMetRDKc7A",
+  "booking_url": "https://cal.com/harryjamescoburn/intro",
   "prices": {
-    "GTM Teardown": "",
+    "GTM Teardown": "€2,500",
     "GTM Diagnostic": "",
     "Commercial Systems Build": "",
-    "Fractional Head of Sales": ""
+    "Fractional Head of Sales": "",
+    "Advisor": ""
   },
   "show_unconfirmed_quotes": false,
   "impressum": {
