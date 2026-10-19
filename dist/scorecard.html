@@ -96,7 +96,7 @@
 </div></footer>
 <script>
 (function(){
-  var EMAIL='harry@harryjamescoburn.com',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_HOST='api-eu1.hsforms.com';
+  var EMAIL='harry@harryjamescoburn.com',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_HOST='api-eu1.hsforms.com',HS_SUB='3921244406';
   var A=[
     {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',o:['Nobody can say in one sentence who we\'re for and why it matters. Every rep pitches differently.','Our best people tell the story well. Others drift, and the site, deck and demo don\'t quite match.','One pitch built on the customer\'s problem, used by everyone. Site, deck and demo all match.'],
      m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
@@ -173,7 +173,7 @@
     fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
         context:{pageUri:location.href,pageName:document.title},
-        legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to receive the report and an occasional follow-up from Harry James Coburn.'}}})})
+        legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to send the report.',communications:[{value:true,subscriptionTypeId:+HS_SUB,text:'Send me the report and an occasional follow-up from Harry. Unsubscribe any time.'}]}}})})
     .then(function(r){if(!r.ok)throw new Error(r.status);
       rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
       try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}})

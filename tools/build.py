@@ -239,7 +239,8 @@ def fill(name, html):
     html = html.replace("{{NEWSLETTER}}", NEWSLETTER).replace("{{ADVENTURE}}", adventure())
     hs = CFG.get("hubspot", {})
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
-        "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com")
+        "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
+        "{{HS_SUB}}", escape(str(hs.get("subscription", ""))))
     if name == "scorecard.html" and not (hs.get("portal") and hs.get("form")):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = prices(html)
