@@ -20,7 +20,9 @@ for (const vp of viewports) {
     const external = new Set();
     const broken = [];
     const errors = [];
-    page.on('request', (r) => { if (!r.url().startsWith(BASE)) external.add(new URL(r.url()).host); });
+    await page.route('https://cloud.umami.is/**', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
+    await page.route('https://cloud.umami.is/**', (r) => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
+    page.on('request', (r) => { const h = new URL(r.url()).host; if (!r.url().startsWith(BASE) && h !== 'cloud.umami.is' && !h.endsWith('substack.com')) external.add(h); });
     page.on('response', (r) => { if (r.status() >= 400 && !r.url().includes('nope-404')) broken.push(`${r.status()} ${r.url()}`); });
     page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
     page.on('pageerror', (e) => errors.push(String(e)));

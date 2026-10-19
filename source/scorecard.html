@@ -44,7 +44,7 @@
   <div class="moves" id="r-moves"></div>
   <div class="also res-cta">
     <p id="r-rec"></p>
-    <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#">Email my results to Harry</a></div>
+    <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
   </div>
   <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
 </section>
@@ -108,6 +108,7 @@
     document.getElementById('r-rec').innerHTML=rec+(extra[sit]||'');
     var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+val('stage')+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
     document.getElementById('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
+    try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
     form.hidden=true;res.hidden=false;res.scrollIntoView({behavior:'smooth',block:'start'});
   });
   document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
