@@ -42,7 +42,7 @@ PAGES = {
                       "One problem, solved well: a sales engine that still runs through the founder, or stalls after the "
                       "raise. Teardown, Diagnostic, Build, fractional Head of Sales and advisory for VC-backed CEOs."),
     "scorecard.html": ("Sales engine scorecard | Harry James Coburn",
-                       "A free 3-minute scorecard across eight of the 28 focus areas of the Coburn Commercial Engine, "
+                       "A free 2-minute scorecard across eight of the 28 focus areas of the Coburn Commercial Engine, "
                        "with your three first moves."),
     "ideas.html": ("Ideas: find the formula, then scale it | Harry James Coburn",
                    "Harry James Coburn on commercial strategy, his selling principles and the state of AI in "
