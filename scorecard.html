@@ -12,6 +12,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="e4b96f89-c3cd-4f41-be42-e9db07deec39" data-domains="harryjamescoburn.com"></script>
 <script>document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('a[href*="cal.com"]').forEach(function(a){a.setAttribute('data-umami-event','Book a call')});document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){if(!a.hasAttribute('data-umami-event'))a.setAttribute('data-umami-event','Email')});document.querySelectorAll('a[href$="scorecard.html"]').forEach(function(a){a.setAttribute('data-umami-event','Open scorecard')});});</script>
+<script>try{var q=new URLSearchParams(location.search),u={};['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){if(q.get(k))u[k]=q.get(k)});if(Object.keys(u).length)sessionStorage.setItem('hjc_utm',JSON.stringify(u));else if(!sessionStorage.getItem('hjc_utm')&&document.referrer&&document.referrer.indexOf(location.host)<0)sessionStorage.setItem('hjc_utm',JSON.stringify({ref:new URL(document.referrer).hostname}))}catch(e){}</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://harryjamescoburn.com/scorecard.html">
 <meta property="og:title" content="Sales engine scorecard | Harry James Coburn">
@@ -30,7 +31,7 @@
   <div class="label mono">Free · 3 minutes · 10 questions</div>
   <h1>Score your <em>sales engine.</em></h1>
   <p>A three-minute version of the Engine Score: eight of the areas I score in a paid Diagnostic. Pick the statement closest to the truth today. You get a score, your three weakest areas and a first move for each.</p>
-  <p class="small-note">Nothing you enter leaves your browser unless you choose to send it to me.</p>
+  <p class="small-note">Nothing you enter leaves your browser unless you ask for the report by email.</p>
 </div>
 
 <form id="sc" class="sc" novalidate>
@@ -64,6 +65,16 @@
   <div class="bars" id="r-bars"></div>
   <h3 class="res-sub">Your three first moves</h3>
   <div class="moves" id="r-moves"></div>
+  <form id="rep" class="rep" novalidate hidden>
+    <div class="rep-copy"><span class="mono">Free report by email</span><h3>Get your full report.</h3><p>Your score, all eight areas and your three first moves in one email, with what I'd do first. I'll read your answers myself.</p></div>
+    <div class="rep-fields">
+      <label><span>First name</span><input name="firstname" autocomplete="given-name" required></label>
+      <label><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
+      <label><span>Company</span><input name="company" autocomplete="organization"></label>
+      <label class="rep-ok"><input type="checkbox" name="consent" required><span>Send me the report and an occasional follow-up from Harry. Unsubscribe any time. <a href="privacy.html">Privacy</a></span></label>
+      <div class="sc-actions"><button class="btn" type="submit">Email me the report <span class="arr">→</span></button><span id="rep-msg" class="small-note" role="status"></span></div>
+    </div>
+  </form>
   <div class="also res-cta">
     <p id="r-rec"></p>
     <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
@@ -85,7 +96,7 @@
 </div></footer>
 <script>
 (function(){
-  var EMAIL='harry@harryjamescoburn.com';
+  var EMAIL='harry@harryjamescoburn.com',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_HOST='api-eu1.hsforms.com';
   var A=[
     {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',o:['Nobody can say in one sentence who we\'re for and why it matters. Every rep pitches differently.','Our best people tell the story well. Others drift, and the site, deck and demo don\'t quite match.','One pitch built on the customer\'s problem, used by everyone. Site, deck and demo all match.'],
      m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
@@ -139,10 +150,36 @@
     document.getElementById('r-rec').innerHTML=rec+(extra[sit]||'');
     var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+val('stage')+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
     document.getElementById('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
+    last={score:avg.toFixed(1),band:band,stage:val('stage'),focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Sales still runs through the founder',ai:'Making AI actually work in sales'}[sit]||'',
+      areas:scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s+'/5');}).join('\n'),
+      moves:sorted.slice(0,3).map(function(x,i){return (i+1)+'. '+x.a.n+': '+x.a.m;}).join('\n'),
+      rec:document.getElementById('r-rec').textContent};
+    if(HS_PORTAL&&HS_FORM){rep.hidden=false;}
     try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
     form.hidden=true;res.hidden=false;res.scrollIntoView({behavior:'smooth',block:'start'});
   });
-  document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
+  var rep=document.getElementById('rep'),repMsg=document.getElementById('rep-msg'),last=null;
+  function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
+  rep.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var f=new FormData(rep),em=(f.get('email')||'').trim();
+    if(!f.get('firstname')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){repMsg.textContent='Add your first name and a work email.';return;}
+    if(!f.get('consent')){repMsg.textContent='Tick the box so I can send the report.';return;}
+    var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
+    var fields=[['firstname',f.get('firstname')],['email',em],['company',f.get('company')||''],
+      ['scorecard_score',last.score],['scorecard_band',last.band],['scorecard_stage',last.stage],['scorecard_focus',last.focus],
+      ['scorecard_report','YOUR THREE FIRST MOVES\n'+last.moves+'\n\nALL EIGHT AREAS\n'+last.areas+'\n\n'+last.rec],['scorecard_source',src]];
+    var btn=rep.querySelector('button');btn.disabled=true;repMsg.textContent='Sending...';
+    fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+        context:{pageUri:location.href,pageName:document.title},
+        legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to receive the report and an occasional follow-up from Harry James Coburn.'}}})})
+    .then(function(r){if(!r.ok)throw new Error(r.status);
+      rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
+      try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}})
+    .catch(function(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'">email me</a>.';});
+  });
+  document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;rep.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
 })();
 </script>
 </body>
