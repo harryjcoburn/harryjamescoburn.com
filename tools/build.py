@@ -240,7 +240,7 @@ def fill(name, html):
     hs = CFG.get("hubspot", {})
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
         "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
-        "{{HS_SUB}}", escape(str(hs.get("subscription", ""))))
+        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", "")))
     if name == "scorecard.html" and not (hs.get("portal") and hs.get("form")):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = prices(html)
@@ -335,10 +335,11 @@ def hubspot_privacy():
         return ""
     return ("<h2>Scorecard report by email</h2>"
             "<p>If you ask for your scorecard report by email, the form sends your first name, email address, company and "
-            "scorecard answers to my CRM, HubSpot (HubSpot, Inc., with data held in the EU), which emails you the report. "
+            "scorecard answers to a small script in my Google Workspace account (Google Ireland Ltd), which emails you the report "
+            "from my own mailbox and records your details in my CRM, HubSpot (HubSpot, Inc., with data held in the EU). "
             "I use these details to send the report and an occasional follow-up, based on your consent (Art. 6(1)(a) GDPR), "
             "and to discuss working together if you want to. You can withdraw consent or ask me to delete your details at any "
-            "time by emailing me. HubSpot's privacy policy applies.</p>"
+            "time by emailing me. Google's and HubSpot's privacy policies apply.</p>"
             "<p>If you arrived from a tracked link, the form also notes where you came from (for example LinkedIn), "
             "kept only for the length of your visit in your browser's session storage.</p>")
 

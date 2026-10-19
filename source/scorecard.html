@@ -48,6 +48,7 @@
       <label><span>First name</span><input name="firstname" autocomplete="given-name" required></label>
       <label><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
       <label><span>Company</span><input name="company" autocomplete="organization"></label>
+      <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
       <label class="rep-ok"><input type="checkbox" name="consent" required><span>Send me the report and an occasional follow-up from Harry. Unsubscribe any time. <a href="privacy.html">Privacy</a></span></label>
       <div class="sc-actions"><button class="btn" type="submit">Email me the report <span class="arr">→</span></button><span id="rep-msg" class="small-note" role="status"></span></div>
     </div>
@@ -64,7 +65,7 @@
 {{FOOTER}}
 <script>
 (function(){
-  var EMAIL='{{EMAIL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',HS_SUB='{{HS_SUB}}';
+  var EMAIL='{{EMAIL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',HS_SUB='{{HS_SUB}}',REPORT_URL='{{REPORT_URL}}';
   var A=[
     {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',o:['Nobody can say in one sentence who we\'re for and why it matters. Every rep pitches differently.','Our best people tell the story well. Others drift, and the site, deck and demo don\'t quite match.','One pitch built on the customer\'s problem, used by everyone. Site, deck and demo all match.'],
      m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
@@ -121,7 +122,7 @@
     last={score:avg.toFixed(1),band:band,stage:val('stage'),focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Sales still runs through the founder',ai:'Making AI actually work in sales'}[sit]||'',
       areas:scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s+'/5');}).join('\n'),
       moves:sorted.slice(0,3).map(function(x,i){return (i+1)+'. '+x.a.n+': '+x.a.m;}).join('\n'),
-      rec:document.getElementById('r-rec').textContent};
+      rec:document.getElementById('r-rec').textContent,stageRaw:val('stage'),sit:sit,answers:A.reduce(function(o,a){o[a.k]=+val(a.k);return o;},{})};
     if(HS_PORTAL&&HS_FORM){rep.hidden=false;}
     try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
     form.hidden=true;res.hidden=false;res.scrollIntoView({behavior:'smooth',block:'start'});
@@ -138,14 +139,25 @@
       ['scorecard_score',last.score],['scorecard_band',last.band],['scorecard_stage',last.stage],['scorecard_focus',last.focus],
       ['scorecard_report','YOUR THREE FIRST MOVES\n'+last.moves+'\n\nALL EIGHT AREAS\n'+last.areas+'\n\n'+last.rec],['scorecard_source',src]];
     var btn=rep.querySelector('button');btn.disabled=true;repMsg.textContent='Sending...';
-    fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
-        context:{pageUri:location.href,pageName:document.title},
-        legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to send the report.',communications:[{value:true,subscriptionTypeId:+HS_SUB,text:'Send me the report and an occasional follow-up from Harry. Unsubscribe any time.'}]}}})})
-    .then(function(r){if(!r.ok)throw new Error(r.status);
+    function done(){
       rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
-      try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}})
-    .catch(function(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'">email me</a>.';});
+      try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}}
+    function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'">email me</a>.';}
+    function viaHubSpot(){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+          context:{pageUri:location.href,pageName:document.title},
+          legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to send the report.',communications:[{value:true,subscriptionTypeId:+HS_SUB,text:'Send me the report and an occasional follow-up from Harry. Unsubscribe any time.'}]}}})})
+      .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    if(!REPORT_URL){viaHubSpot().then(done).catch(fail);return;}
+    // The report script emails the report from Harry's own mailbox and records the lead in HubSpot.
+    // text/plain keeps it a simple request (no preflight). If the script can't be reached, the lead still goes to HubSpot.
+    fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({firstname:f.get('firstname'),email:em,company:f.get('company')||'',stage:last.stageRaw,sit:last.sit,
+        answers:last.answers,consent:true,source:src,page:location.href,website:f.get('website')||''})})
+    .then(function(r){return r.json();})
+    .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;repMsg.textContent='Check your name and email.';return;}throw new Error(j.error);})
+    .catch(function(){viaHubSpot().then(done).catch(fail);});
   });
   document.getElementById('again').addEventListener('click',function(){form.reset();res.hidden=true;rep.hidden=true;form.hidden=false;form.scrollIntoView({behavior:'smooth'});});
 })();
