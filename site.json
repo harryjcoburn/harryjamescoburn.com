@@ -21,5 +21,13 @@
     "country": "Germany",
     "phone": "",
     "vat_id": ""
-  }
+  },
+  "hubspot": {
+    "portal": "149589438",
+    "form": "e6a11b52-1579-41a2-a7f8-4ce15ad47af6",
+    "region": "eu1"
+  },
+  "hold_pages": [
+    "ai.html"
+  ]
 }

@@ -1,0 +1,35 @@
+# Daily: fetch the Substack feed, rebuild the site and publish it to GitHub Pages (gh-pages branch).
+name: Refresh newsletter and publish
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch Substack feed
+        run: |
+          curl -fsSL --retry 3 -A "Mozilla/5.0 (harryjamescoburn.com site build)" https://harryjamescoburn.substack.com/feed -o data/substack.new || exit 0
+          python3 -c "import xml.etree.ElementTree as E; E.parse('data/substack.new')" && mv data/substack.new data/substack.xml || rm -f data/substack.new
+      - name: Commit feed if it changed
+        run: |
+          git config user.name "site-bot"
+          git config user.email "site-bot@users.noreply.github.com"
+          git add data/substack.xml
+          git diff --cached --quiet && echo "FEED_CHANGED=0" >> "$GITHUB_ENV" || { git commit -m "Refresh Substack feed"; git push; echo "FEED_CHANGED=1" >> "$GITHUB_ENV"; }
+      - name: Build and publish
+        if: env.FEED_CHANGED == '1' || github.event_name == 'workflow_dispatch'
+        run: |
+          python3 tools/build.py
+          git worktree add /tmp/pages gh-pages
+          cd /tmp/pages
+          git rm -rq . || true
+          cp -a "$GITHUB_WORKSPACE/dist/." .
+          git add -A
+          git diff --cached --quiet || { git commit -m "Publish: newsletter refresh"; git push origin gh-pages; }

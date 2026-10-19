@@ -19,6 +19,7 @@ from html import escape, unescape
 from pathlib import Path
 
 from brand import mark as brand_mark
+from substack import posts as substack_posts
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "source"
@@ -55,10 +56,18 @@ PAGES = {
     "speaking.html": ("Speaking, podcasts and portfolio workshops | Harry James Coburn",
                       "Invite Harry James Coburn to speak, join a podcast or run a portfolio workshop on commercial "
                       "strategy and go-to-market in the age of AI agents."),
+    "ai.html": ("AI in sales: what I'm building and the prompts I use | Harry James Coburn",
+                "AI agents for each layer of a sales engine: the inbound and outbound agents Harry James Coburn has built, "
+                "and a free prompt library for strategy, winning, growing, team, motivation, rhythm and systems."),
     "about.html": ("About Harry James Coburn",
                    "Harry James Coburn: from IBM, Credit Suisse and Lloyds Banking Group to building sales "
                    "engines at start-ups. Based in Berlin."),
 }
+
+POSTS = substack_posts()
+import os
+# Pages kept off the live site until approved (site.json "hold_pages"); PREVIEW=1 builds them anyway.
+HOLD = set() if os.environ.get("PREVIEW") else set(CFG.get("hold_pages", []))
 
 OFFERS = ["GTM Teardown", "GTM Diagnostic", "Commercial Systems Build", "Fractional Head of Sales", "Advisor"]
 
@@ -80,7 +89,7 @@ def nav(current):
     home = "" if current == "index.html" else "./"
     return (f'<nav class="nav" aria-label="Main"><a class="name" href="./">{MARK}<span>Harry James Coburn</span></a>'
             f'<span class="links">{link("services.html", "Services")}{link("work.html", "Work")}{link("engine.html", "The Engine")}'
-            f'{link("ideas.html", "Ideas")}{link("about.html", "About")}'
+            f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if POSTS else ""}{link("about.html", "About")}'
             f'<a class="btn" href="{{{{BOOK}}}}">Book a call</a></span></nav>')
 
 
@@ -123,6 +132,7 @@ def head(title, desc, path, extra=""):
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="e4b96f89-c3cd-4f41-be42-e9db07deec39" data-domains="harryjamescoburn.com"></script>
 <script>document.addEventListener('DOMContentLoaded',function(){{document.querySelectorAll('a[href*="cal.com"]').forEach(function(a){{a.setAttribute('data-umami-event','Book a call')}});document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){{if(!a.hasAttribute('data-umami-event'))a.setAttribute('data-umami-event','Email')}});document.querySelectorAll('a[href$="scorecard.html"]').forEach(function(a){{a.setAttribute('data-umami-event','Open scorecard')}});}});</script>
+<script>try{{var q=new URLSearchParams(location.search),u={{}};['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){{if(q.get(k))u[k]=q.get(k)}});if(Object.keys(u).length)sessionStorage.setItem('hjc_utm',JSON.stringify(u));else if(!sessionStorage.getItem('hjc_utm')&&document.referrer&&document.referrer.indexOf(location.host)<0)sessionStorage.setItem('hjc_utm',JSON.stringify({{ref:new URL(document.referrer).hostname}}))}}catch(e){{}}</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{escape(title)}">
@@ -227,6 +237,11 @@ def fill(name, html):
     html = html.replace("{{FOOTER}}", FOOTER.format(mark=MARK, year=date.today().year, linkedin=escape(CFG["linkedin"]),
                                                     email=CFG["email"]))
     html = html.replace("{{NEWSLETTER}}", NEWSLETTER).replace("{{ADVENTURE}}", adventure())
+    hs = CFG.get("hubspot", {})
+    html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
+        "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com")
+    if name == "scorecard.html" and not (hs.get("portal") and hs.get("form")):
+        warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = prices(html)
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
@@ -238,6 +253,34 @@ def fill(name, html):
     if checks:
         warnings.append(f"{name}: wording still to confirm: {', '.join(checks)}")
     return html
+
+
+def writing_html():
+    """The Writing page: newsletter issues from the Substack feed, newest first."""
+    cards = []
+    for p in POSTS:
+        d = f'<span class="mono">{p["date"]:%d %b %Y}</span>' if p["date"] else ""
+        img = (f'<img src="{escape(p["img"])}" alt="" loading="lazy" width="640" height="360">' if p["img"] else "")
+        cards.append(f'<article class="post"><a href="{escape(p["link"])}" target="_blank" rel="noopener">{img}{d}'
+                     f'<h2>{escape(p["title"])}</h2><p>{escape(p["desc"])}</p><span class="ghost">Read on Substack</span></a></article>')
+    return f"""{{{{HEAD}}}}
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<header class="wrap">{{{{NAV}}}}</header>
+<main id="top" class="wrap">
+<div class="page-head">
+  <div class="label mono">Writing</div>
+  <h1>The AI Go-to-Market <em>Formula.</em></h1>
+  <p>My newsletter: one lever or one AI workflow per issue, what I'd change this month, and what happened when real companies did it.</p>
+</div>
+<section class="sec posts" aria-label="Issues">{''.join(cards)}</section>
+{{{{NEWSLETTER}}}}
+</main>
+{{{{CLOSE}}}}
+{{{{FOOTER}}}}
+</body>
+</html>
+"""
 
 
 def simple_page(title, body_html, path):
@@ -279,10 +322,24 @@ def privacy_html():
 <h2>Booking a call</h2>
 <p>The “Book a call” buttons take you to my booking page on Cal.com (Cal.com, Inc.). If you book, Cal.com processes the name, email address and answers you enter, adds the meeting to my Google Calendar (Google Ireland Ltd) and creates a Google Meet link. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Cal.com's and Google's privacy policies apply to that processing.</p>
 <p>The newsletter sign-up box is provided by Substack, Inc. It loads from Substack only on pages that show it. If you subscribe, Substack processes your email address to send you the newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe from any issue. Substack's privacy policy applies.</p>
-<h2>When you email me</h2>
+{hubspot_privacy()}<h2>When you email me</h2>
 <p>If you contact me by email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>
 <h2>Your rights</h2>
 <p>You can ask for access to, correction or deletion of your data, restriction of or objection to its processing, and data portability (Art. 15 to 21 GDPR). You can also complain to a data protection authority, such as the Berlin Commissioner for Data Protection and Freedom of Information.</p>"""
+
+
+def hubspot_privacy():
+    hs = CFG.get("hubspot", {})
+    if not (hs.get("portal") and hs.get("form")):
+        return ""
+    return ("<h2>Scorecard report by email</h2>"
+            "<p>If you ask for your scorecard report by email, the form sends your first name, email address, company and "
+            "scorecard answers to my CRM, HubSpot (HubSpot, Inc., with data held in the EU), which emails you the report. "
+            "I use these details to send the report and an occasional follow-up, based on your consent (Art. 6(1)(a) GDPR), "
+            "and to discuss working together if you want to. You can withdraw consent or ask me to delete your details at any "
+            "time by emailing me. HubSpot's privacy policy applies.</p>"
+            "<p>If you arrived from a tracked link, the form also notes where you came from (for example LinkedIn), "
+            "kept only for the length of your visit in your browser's session storage.</p>")
 
 
 LLMS = """# Harry James Coburn
@@ -310,6 +367,7 @@ LLMS = """# Harry James Coburn
 - [Sales engine scorecard]({base}scorecard.html)
 - [The Coburn Commercial Engine]({base}engine.html)
 - [Ideas and the state of AI in GTM]({base}ideas.html)
+- [AI in sales: what I'm building and a prompt library for sales agents]({base}ai.html)
 - [About]({base}about.html)
 - [Speaking and podcasts]({base}speaking.html)
 - [FAQ]({base}faq.html)
@@ -334,7 +392,12 @@ def write_static():
     (DIST / "404.html").write_text(simple_page(
         "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', "404.html"))
     (DIST / ".nojekyll").write_text("")
-    (DIST / "llms.txt").write_text(LLMS.format(base=BASE, email=CFG["email"], linkedin=CFG["linkedin"]))
+    llms = LLMS.format(base=BASE, email=CFG["email"], linkedin=CFG["linkedin"])
+    if "ai.html" in HOLD:
+        llms = "\n".join(l for l in llms.split("\n") if "ai.html" not in l)
+    if POSTS:
+        llms += "\n## Latest newsletter issues\n" + "".join(f"- [{p['title']}]({p['link']})\n" for p in POSTS[:10])
+    (DIST / "llms.txt").write_text(llms)
 
 
 def main():
@@ -343,8 +406,15 @@ def main():
     DIST.mkdir()
     shutil.copytree(ROOT / "assets", DIST / "assets", ignore=shutil.ignore_patterns(*UNUSED_ASSETS))
     shutil.copy(SRC / "site.css", DIST / "assets" / "site.css")
+    if POSTS:
+        PAGES["writing.html"] = ("Writing: The AI Go-to-Market Formula | Harry James Coburn",
+                                 "Harry James Coburn's newsletter on go-to-market and AI in sales: one lever or one AI "
+                                 "workflow per issue, with what happened when real companies did it.")
+    for h in HOLD:
+        PAGES.pop(h, None)
     for name in PAGES:
-        (DIST / name).write_text(fill(name, (SRC / name).read_text()))
+        src = writing_html() if name == "writing.html" else (SRC / name).read_text()
+        (DIST / name).write_text(fill(name, src))
     (DIST / "impressum.html").write_text(simple_page("Impressum", impressum_html(), "impressum.html"))
     (DIST / "privacy.html").write_text(simple_page("Privacy policy", privacy_html(), "privacy.html"))
     write_static()

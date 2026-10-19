@@ -1,0 +1,157 @@
+{{HEAD}}
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<header class="wrap">{{NAV}}</header>
+<main id="top" class="wrap">
+
+<div class="page-head">
+  <div class="label mono">AI</div>
+  <h1>AI in sales, built to <em>a standard.</em></h1>
+  <p>What I'm building with AI right now, and the prompts I use to build agents for each part of a sales engine. Free to copy. Train them on your own data, and check them against the 95% rule before you trust them.</p>
+  <nav class="jump" aria-label="On this page"><a href="#building">What I'm building</a><a href="#prompts">The prompt library</a><a href="ideas.html#rule">The 95% rule →</a></nav>
+</div>
+
+<section class="sec" id="building" aria-labelledby="h-building">
+  <div class="sec-head"><div class="label mono">What I'm building</div><h2 id="h-building">Agents that do the track. <em>People own the stations.</em></h2></div>
+  <div class="builds">
+    <article class="build">
+      <span class="mono">Live · UXCam, 2026</span>
+      <h3>An inbound agent that replies in five minutes</h3>
+      <p>Built with HubSpot, Clay and Claude Code. Every form fill is researched, enriched, profiled and qualified within minutes, a reply is drafted and a call set up, and the best leads trigger an alert for an SDR to call straight away.</p>
+      <p class="proof-line">First reply went from about a day to 5 minutes.</p>
+    </article>
+    <article class="build">
+      <span class="mono">Live · UXCam, 2026</span>
+      <h3>An outbound engine built on public data</h3>
+      <p>App store data, Clay and AI find companies where the product can make a big difference. In the first month, the first run reached about 500 accounts and 4,000 contacts, then the message was tested by person, company and timing.</p>
+    </article>
+    <article class="build">
+      <span class="mono">Building now</span>
+      <h3>A content engine that sounds like me</h3>
+      <p>A daily scan of funding news and the best go-to-market writing, an idea list with my take, and drafts written from a profile of how I speak and write. I approve every word before it goes out.</p>
+    </article>
+  </div>
+</section>
+
+<section class="sec" id="prompts" aria-labelledby="h-prompts">
+  <div class="sec-head"><div class="label mono">The prompt library</div><h2 id="h-prompts">One agent for each layer <em>of the engine.</em></h2><p>Each prompt is a starting point for an agent in one layer of the <a href="engine.html">Coburn Commercial Engine</a>. Swap the parts in [brackets] for your own, give it your real examples, and score its output against what your best person would do.</p></div>
+
+  <div class="prompts">
+    <details class="prompt" open>
+      <summary><span class="n mono">01 · Strategy</span><b>Find your real ICP from wins and losses</b></summary>
+      <pre><code>You are a go-to-market analyst. Below are our last [20] closed-won and [20] closed-lost deals, with company size, industry, country, deal size, sales cycle in days, who we spoke to and why they bought or didn't.
+
+1. Find what the best-fit wins have in common: the deals that closed fastest, at the highest value, with the least discount.
+2. Write our ideal customer profile in five lines: who they are, the problem they have, the trigger that makes them buy now, who signs, and who we should say no to.
+3. List the three signals we could find in public data to spot more companies like the best fits.
+Only use what is in the data. Where the data is thin, say so.
+
+[paste deals]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> read ten of the deals yourself. If its profile wouldn't have picked your three best customers, it's wrong.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">02 · Win</span><b>Qualify and reply to every inbound lead</b></summary>
+      <pre><code>You qualify inbound leads for [company], which sells [product] to [ICP].
+
+For each new lead:
+1. Research the company: size, funding, what they sell, any recent trigger such as a raise, a launch or a hire.
+2. Score fit from 1 to 5 against our ICP below, and say why in one line.
+3. Draft a first reply in our voice: one line on why they reached out, one useful point about their situation, and one clear next step. Under 90 words. No "I hope you're well".
+4. If fit is 4 or 5, flag it for a person to call today.
+
+Our ICP: [paste]
+Five replies our best rep actually sent: [paste]
+Lead: [form fields]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> run it on your last 100 leads first, and have your best seller mark each draft "would send" or not. Go live at 95%.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">03 · Grow</span><b>Spot renewal risk before the customer does</b></summary>
+      <pre><code>You review accounts [90] days before renewal for [company].
+
+For each account, using the usage data, support tickets and call notes below:
+1. Say whether the customer has reached the first impact they bought for, in their words, with the evidence.
+2. Rate renewal risk as low, medium or high, and give the two strongest reasons.
+3. Suggest one action for the account owner this week, and one expansion opportunity if risk is low.
+Never invent usage numbers. If data is missing, list what to ask the customer.
+
+[paste account data]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> compare its ratings with last year's renewals. It should have flagged the customers who left.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">04 · Team</span><b>Turn your best rep's habits into a 30-60-90</b></summary>
+      <pre><code>You are a sales enablement lead. Below are transcripts of [five] calls and the deal notes from our best-performing [AE / SDR], plus our sales stages and exit criteria.
+
+1. Name the five things this person does on calls that others don't, with a short quote for each.
+2. Turn them into a 30-60-90 day plan for a new hire: what to learn, what to practise, and what "good" looks like at each stage.
+3. Write three role-play scenarios based on real objections in the transcripts.
+
+[paste transcripts and stages]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> ask the rep it's based on. If they don't recognise themselves, start again.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">05 · Motivation</span><b>Test a comp plan against the behaviour you want</b></summary>
+      <pre><code>You review sales compensation plans. Below is our draft plan, our targets, and the behaviour we want: [for example, good-fit customers, price held, multi-year deals].
+
+1. Show how a rep would maximise their pay under this plan, step by step.
+2. Point out where that behaviour differs from what we want, and what it would cost us.
+3. Suggest the simplest change to each part of the plan that fixes it, keeping the plan easy to explain in one minute.
+
+[paste plan and targets]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> run last quarter's real deals through the plan and see who would have earned most. It should be the people you'd want more of.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">06 · Rhythm</span><b>Prepare the weekly pipeline review</b></summary>
+      <pre><code>You prepare our weekly pipeline review. Below is this week's pipeline export and last week's.
+
+1. List deals that moved stage, slipped a close date, or have had no activity for [14] days.
+2. For each stalled deal, name the missing exit criterion for its stage, and suggest the one question the owner should answer in the meeting.
+3. Compare the forecast with the weighted pipeline and say, in one line, whether the number looks safe.
+Keep it to one page. Facts from the data only.
+
+Stages and exit criteria: [paste]
+This week: [paste]
+Last week: [paste]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> for four weeks, compare its "safe or not" call with what actually closed.</p>
+    </details>
+
+    <details class="prompt">
+      <summary><span class="n mono">07 · Systems</span><b>Clean up the CRM, one rule at a time</b></summary>
+      <pre><code>You audit our CRM data. Below is an export of [deals / contacts] and the fields we say are mandatory.
+
+1. Find records with missing mandatory fields, duplicates, deals with close dates in the past that are still open, and contacts with no company.
+2. Group the problems by cause, not by record, and estimate how many records each cause affects.
+3. Suggest one automation or validation rule per cause that would stop it happening again.
+Don't change any data. Return a list for a person to review.
+
+[paste export]</code></pre>
+      <p class="check"><b>Check before you trust it:</b> spot-check 20 of the records it flags. Every one should be a real problem.</p>
+    </details>
+  </div>
+</section>
+
+<section class="sec" aria-label="Get help">
+  <div class="panel">
+    <div class="col"><span class="mono">Want these built into your engine?</span><h2>Trained on your data, checked to your standard.</h2><p>In a Commercial Systems Build I set up agents like these on your own deals, calls and CRM, and only switch them on once they send what your best people would send.</p></div>
+    <div class="col"><div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" href="scorecard.html">Take the scorecard</a></div></div>
+  </div>
+</section>
+
+{{NEWSLETTER}}
+</main>
+{{CLOSE}}
+{{FOOTER}}
+<script>
+document.querySelectorAll('.prompt pre').forEach(function(pre){
+  var b=document.createElement('button');b.type='button';b.className='copy';b.textContent='Copy';
+  b.setAttribute('data-umami-event','Copy prompt');
+  b.addEventListener('click',function(){var t=pre.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}).catch(function(){b.textContent='Select and copy'});});
+  pre.parentNode.insertBefore(b,pre);
+});
+</script>
+</body>
+</html>
