@@ -247,7 +247,7 @@ def fill(name, html):
     hs = CFG.get("hubspot", {})
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
         "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
-        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", ""))).replace("{{LINKEDIN}}", escape(CFG["linkedin"]))
+        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", ""))).replace("{{LINKEDIN}}", escape(CFG["linkedin"])).replace("{{AGENT_ID}}", escape(CFG.get("voice_agent", "")))
     wa = re.sub(r"\D", "", CFG.get("whatsapp", ""))
     html = re.sub(r"<!-- WA -->(.*?)<!-- /WA -->", (lambda m: m.group(1).replace("{{WA}}", wa)) if wa else "", html, flags=re.S)
     if "{{PACKS_JSON}}" in html:
@@ -338,7 +338,7 @@ def privacy_html():
 <h2>Booking a call</h2>
 <p>The “Book a call” buttons take you to my booking page on Cal.com (Cal.com, Inc.). If you book, Cal.com processes the name, email address and answers you enter, adds the meeting to my Google Calendar (Google Ireland Ltd) and creates a Google Meet link. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Cal.com's and Google's privacy policies apply to that processing.</p>
 <p>The newsletter sign-up box is provided by Substack, Inc. It loads from Substack only on pages that show it. If you subscribe, Substack processes your email address to send you the newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe from any issue. Substack's privacy policy applies.</p>
-{hubspot_privacy()}<h2>WhatsApp</h2>
+{hubspot_privacy()}<h2>Talking to my AI assistant</h2>\n<p>The AI page has a voice and text assistant provided by ElevenLabs (Eleven Labs Inc.). It only loads when you click to start it. If you use it, ElevenLabs processes your voice or text and records the conversation so I can read it and reply. If you choose to give your name, email and company and agree that I may follow up, they are also saved in HubSpot. The legal basis is your consent (Art. 6(1)(a) GDPR). Please don't share sensitive information. ElevenLabs' privacy policy applies.</p>\n<h2>WhatsApp</h2>
 <p>The WhatsApp links only open a chat with my business number. Nothing is sent until you send a message yourself. If you do, WhatsApp (WhatsApp Ireland Ltd, part of Meta) processes it under its own privacy policy, and I use your number and message only to reply (Art. 6(1)(b) and (f) GDPR).</p>
 <h2>When you message or email me</h2>
 <p>If you use the message form, it sends your name, email, company and message to the same script in my Google Workspace account, which emails it to me and records it in HubSpot. If you contact me by message or email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>

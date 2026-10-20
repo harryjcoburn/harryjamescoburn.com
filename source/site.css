@@ -966,3 +966,17 @@ main.wrap .sec{background-size:100% 1px}
 @media (max-width:900px){.contact{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.nav{gap:10px}.nav .links{gap:6px}.nav .name span{white-space:normal;max-width:6.8em;line-height:1.1;font-size:15px}.nav .links .btn{padding:10px 13px;font-size:14.5px}}
 @media (max-width:600px){.nav .name span{display:none}.nav .name .mark{width:46px;height:auto}}
+/* voice agent demo */
+.talk{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:clamp(18px,3vw,40px);align-items:center;background:var(--deep);color:#fff;border-radius:22px;padding:clamp(22px,4vw,44px)}
+.talk-copy{display:grid;gap:14px;justify-items:start}
+.talk-copy h2{font-size:clamp(30px,3.8vw,52px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.talk-copy h2 em{font-style:normal;color:var(--sun)}
+.talk-copy p{color:var(--onDeep);max-width:38em}
+.talk .btn{border:0;cursor:pointer;font:inherit;font-weight:600;background:var(--sun);color:var(--ink)}
+.talk .btn:hover{background:#fff}
+.talk-note{color:var(--onDeep)}
+.talk .cta{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.talk-how{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.talk-how li{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px;color:var(--onDeep)}
+.talk-how b{color:#fff}
+@media (max-width:820px){.talk{grid-template-columns:minmax(0,1fr)}}

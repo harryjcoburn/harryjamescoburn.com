@@ -60,6 +60,7 @@ function doPost(e) {
   if (d.website) return json_({ok: true});              // honeypot: bots fill hidden fields
   if (d.type === 'resource') return resource_(d);
   if (d.type === 'message') return message_(d);
+  if (d.type === 'agent') return agent_(d, (e.parameter || {}).k);
   var lead = clean_(d);
   if (lead.error) return json_({ok: false, error: lead.error});
 
@@ -332,4 +333,47 @@ function message_(d) {
   var sent = false;
   try { GmailApp.sendEmail(CFG.NOTIFY, 'Website message from ' + first + (company ? ', ' + company : ''), body, {name: 'harryjamescoburn.com', replyTo: email}); sent = true; } catch (x) {}
   return json_({ok: sent || hs.ok, hubspot: hs.ok});
+}
+
+/* ---------- Website voice agent (ElevenLabs webhook tool) ---------- */
+// The key is a shared secret: the ElevenLabs tool sends it as ?k=..., so only Harry's agent can post here.
+var AGENT_KEY = 'SET_IN_EDITOR';  // the real key lives only in the Apps Script editor
+
+function agent_(d, key) {
+  if (key !== AGENT_KEY) return json_({ok: false, error: 'forbidden'});
+  function line(v, max) { return String(v || '').replace(/[\r\n\t<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max); }
+  var name = line(d.visitor_name, 60), company = line(d.company, 80), next = line(d.next_step, 200);
+  var email = String(d.visitor_email || '').trim().toLowerCase();
+  if (!/^[^@\s<>]+@[^@\s<>]+\.[a-z]{2,}$/i.test(email) || email.length > 120) email = '';
+  var summary = String(d.summary || '').replace(/\r/g, '').trim().slice(0, 3000);
+  if (!summary) return json_({ok: false, error: 'summary'});
+  var consent = d.consent_to_contact === true || d.consent_to_contact === 'true';
+
+  var props = PropertiesService.getScriptProperties();
+  var day = Utilities.formatDate(new Date(), 'Europe/Berlin', 'yyyy-MM-dd');
+  var count = props.getProperty('day') === day ? +props.getProperty('count') : 0;
+  if (count >= CFG.DAILY_MAX) return json_({ok: false, error: 'busy'});
+  props.setProperties({day: day, count: String(count + 1)});
+
+  var hs = {ok: false, code: 0};
+  if (email && consent) {
+    try {
+      var r = UrlFetchApp.fetch(CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+        payload: JSON.stringify({
+          fields: [['firstname', name.split(' ')[0] || ''], ['email', email], ['company', company], ['message', 'Website voice agent: ' + summary.slice(0, 1500)]]
+            .map(function (f) { return {objectTypeId: '0-1', name: f[0], value: f[1]}; }),
+          context: {pageUri: CFG.SITE + '/ai.html', pageName: 'Voice agent'},
+          legalConsentOptions: {consent: {consentToProcess: true, text: 'Agreed in the voice conversation that Harry James Coburn may store these details to follow up.', communications: []}}})});
+      hs = {ok: r.getResponseCode() < 300, code: r.getResponseCode()};
+    } catch (x) {}
+  }
+  var body = 'Conversation with your website voice agent\n\n' +
+    'Visitor: ' + (name || 'not given') + (company ? ' (' + company + ')' : '') + '\n' +
+    'Email: ' + (email || 'not given') + (email ? (consent ? ' (agreed to follow-up)' : ' (no consent to follow up)') : '') + '\n' +
+    'HubSpot: ' + (email && consent ? (hs.ok ? 'saved' : 'NOT saved (' + hs.code + ')') : 'not saved') + '\n' +
+    'Suggested next step: ' + (next || 'none') + '\n\n' + summary + '\n\nFull transcript: ElevenLabs > Agents > Ask Harry\'s AI > Conversations.';
+  var opts = {name: 'harryjamescoburn.com'};
+  if (email && consent) opts.replyTo = email;
+  try { GmailApp.sendEmail(CFG.NOTIFY, 'Voice agent: ' + (name || 'website visitor') + (company ? ', ' + company : ''), body, opts); } catch (x) {}
+  return json_({ok: true});
 }

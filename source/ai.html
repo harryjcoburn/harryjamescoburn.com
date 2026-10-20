@@ -8,8 +8,24 @@
   <div class="label mono">AI</div>
   <h1>AI in sales, built to <em>a standard.</em></h1>
   <p>How I design sales agents, what I've built, what I'm testing now, and the prompts, workflows and skills I use. Take what's useful. Then hold it to the 95% rule before you trust it.</p>
-  <nav class="jump" aria-label="On this page"><a href="#beliefs">What I believe</a><a href="#arch">The architecture</a><a href="#builds">Builds</a><a href="#path">The path to 95%</a><a href="#lab">The lab</a><a href="#prompts">Prompts</a><a href="#packs">Free packs</a></nav>
+  <nav class="jump" aria-label="On this page"><a href="#talk">Talk to my AI</a><a href="#beliefs">What I believe</a><a href="#arch">The architecture</a><a href="#builds">Builds</a><a href="#path">The path to 95%</a><a href="#lab">The lab</a><a href="#prompts">Prompts</a><a href="#packs">Free packs</a></nav>
 </div>
+
+<section class="sec" id="talk" aria-labelledby="h-talk">
+  <div class="talk">
+    <div class="talk-copy">
+      <span class="chip live">Live demo</span>
+      <h2 id="h-talk">Talk to my AI, <em>in my own voice.</em></h2>
+      <p>I cloned my voice with ElevenLabs and built an assistant trained on this website. Ask it about your sales engine, how I work or what I've built. It tells you straight away it's an AI, and I read every conversation myself.</p>
+      <div class="cta"><button type="button" class="btn" id="talkBtn">Start a conversation <span class="arr">→</span></button><span class="small-note talk-note" id="talkNote">Voice or text. Nothing loads from ElevenLabs until you click.</span></div>
+    </div>
+    <ul class="talk-how">
+      <li><b>Knows</b> my site, case studies and approach, and nothing else</li>
+      <li><b>Won't</b> invent results or prices</li>
+      <li><b>Hands over</b> to me: a call, the scorecard or a message</li>
+    </ul>
+  </div>
+</section>
 
 <section class="sec" id="beliefs" aria-labelledby="h-beliefs">
   <div class="sec-head"><div class="label mono">What I believe</div><h2 id="h-beliefs">Agents do the track. <em>People own the stations.</em></h2></div>
@@ -106,6 +122,12 @@
       <p class="proof-line">The full build is in the free Workflows pack below.</p>
     </article>
     <article class="b2">
+      <div class="b2-top"><span class="chip live">Live · this site, 2026</span></div>
+      <h3>A voice agent that speaks in my voice</h3>
+      <p>ElevenLabs for the cloned voice and the conversation, trained on this website, with a clear AI notice up front. After each conversation it sends me a summary, and the visitor goes into HubSpot only if they agree.</p>
+      <button type="button" class="ghost linkbtn" data-talk>Try it now</button>
+    </article>
+    <article class="b2">
       <div class="b2-top"><span class="chip build">Building now</span></div>
       <h3>A content engine that sounds like me</h3>
       <p>A daily scan of funding news and the best go-to-market writing, an idea list with my take, and drafts written from a profile of how I speak and write. I approve every word before it goes out.</p>
@@ -194,6 +216,22 @@
 (function(){
   var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',HS_SUB='{{HS_SUB}}';
   var PACKS={{PACKS_JSON}};
+  /* ---------- voice agent: load only on click ---------- */
+  var AGENT='{{AGENT_ID}}',talkLoaded=false;
+  function talk(){
+    var note=document.getElementById('talkNote');
+    if(!AGENT){return;}
+    if(!talkLoaded){
+      talkLoaded=true;
+      var w=document.createElement('elevenlabs-convai');w.setAttribute('agent-id',AGENT);document.body.appendChild(w);
+      var sc=document.createElement('script');sc.src='https://unpkg.com/@elevenlabs/convai-widget-embed';sc.async=true;document.body.appendChild(sc);
+      try{if(window.umami)umami.track('Open voice agent')}catch(e){}
+    }
+    if(note)note.textContent='It\'s opening in the bottom-right corner. Press "Talk to my AI" there to start.';
+    document.getElementById('talk').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  document.getElementById('talkBtn').addEventListener('click',talk);
+  document.querySelectorAll('[data-talk]').forEach(function(b){b.addEventListener('click',talk);});
   /* ---------- architecture ---------- */
   var N={
     form:{l:'Signals',t:'Form fill',w:'A lead fills in a form. That is the trigger for the inbound flow, and the clock starts.',h:'A HubSpot workflow passes the contact and their answers to the orchestrator the moment the form is submitted.',x:'Waiting for a batch job. Speed is the point: the first reply should land while they still remember asking.'},
