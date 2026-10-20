@@ -28,9 +28,7 @@
     "region": "eu1",
     "subscription": "3921244406"
   },
-  "hold_pages": [
-    "ai.html"
-  ],
+  "hold_pages": [],
   "report_endpoint": "https://script.google.com/macros/s/AKfycbxX6JbUwwLp0VuHaJaQ97TAWxpq8hh86QeIDhaLHsKWwiexuMZaCnVT0o_7xQvDyFf5/exec",
   "whatsapp": "+4915229261438"
 }
