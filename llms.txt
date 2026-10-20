@@ -23,6 +23,7 @@
 - [Sales engine scorecard](https://harryjamescoburn.com/scorecard.html)
 - [The Coburn Commercial Engine](https://harryjamescoburn.com/engine.html)
 - [Ideas and the state of AI in GTM](https://harryjamescoburn.com/ideas.html)
+- [AI in sales: what I'm building and a prompt library for sales agents](https://harryjamescoburn.com/ai.html)
 - [About](https://harryjamescoburn.com/about.html)
 - [Speaking and podcasts](https://harryjamescoburn.com/speaking.html)
 - [FAQ](https://harryjamescoburn.com/faq.html)
