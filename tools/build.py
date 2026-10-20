@@ -20,6 +20,7 @@ from pathlib import Path
 
 from brand import mark as brand_mark
 from substack import posts as substack_posts
+import packs as packs_mod
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "source"
@@ -241,12 +242,18 @@ def fill(name, html):
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
         "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
         "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", "")))
+    if "{{PACKS_JSON}}" in html:
+        pj = {k: {"title": v["title"], "file": v["file"]} for k, v in packs_mod.PACKS.items()}
+        pr = [{k: p[k] for k in ("n", "layer", "title", "use", "prompt", "check")} for p in packs_mod.PROMPTS]
+        js = lambda o: json.dumps(o, ensure_ascii=False).replace("</", "<\\/")
+        html = html.replace("{{PACKS_JSON}}", js(pj)).replace("{{PROMPTS_JSON}}", js(pr))
     if name == "scorecard.html" and not (hs.get("portal") and hs.get("form")):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = prices(html)
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
     html = html.replace('href="{{BOOK}}"', f'href="{attrs}"').replace("{{EMAIL}}", CFG["email"])
+    html = new_tab(html)
     left = re.findall(r"\{\{[^}]+\}\}", html)
     if left:
         sys.exit(f"{name}: unfilled template holes {sorted(set(left))}")
@@ -391,8 +398,8 @@ def write_static():
     shutil.copy(ROOT / "assets" / "brand" / "hjc-tile.svg", DIST / "favicon.svg")
     for src, dst in [("favicon.ico", "favicon.ico"), ("apple-touch-icon.png", "apple-touch-icon.png"), ("icon-192.png", "icon-192.png")]:
         shutil.copy(ROOT / "assets" / "brand" / src, DIST / dst)
-    (DIST / "404.html").write_text(simple_page(
-        "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', "404.html"))
+    (DIST / "404.html").write_text(new_tab(simple_page(
+        "Page not found", '<p>That page doesn\'t exist. <a href="./">Back to the home page</a>.</p>', "404.html")))
     (DIST / ".nojekyll").write_text("")
     llms = LLMS.format(base=BASE, email=CFG["email"], linkedin=CFG["linkedin"])
     if "ai.html" in HOLD:
@@ -400,6 +407,21 @@ def write_static():
     if POSTS:
         llms += "\n## Latest newsletter issues\n" + "".join(f"- [{p['title']}]({p['link']})\n" for p in POSTS[:10])
     (DIST / "llms.txt").write_text(llms)
+
+
+
+def new_tab(html):
+    """Open every external, email, phone and PDF link in a new tab."""
+    def fix(m):
+        tag = m.group(0)
+        href = re.search(r'href="([^"]*)"', tag)
+        if not href or "target=" in tag:
+            return tag
+        h = href.group(1)
+        if re.match(r"(https?:|mailto:|tel:)", h) or h.split("#")[0].split("?")[0].endswith(".pdf"):
+            return tag[:-1] + ' target="_blank" rel="noopener">'
+        return tag
+    return re.sub(r"<a\b[^>]*>", fix, html)
 
 
 def main():
@@ -417,8 +439,8 @@ def main():
     for name in PAGES:
         src = writing_html() if name == "writing.html" else (SRC / name).read_text()
         (DIST / name).write_text(fill(name, src))
-    (DIST / "impressum.html").write_text(simple_page("Impressum", impressum_html(), "impressum.html"))
-    (DIST / "privacy.html").write_text(simple_page("Privacy policy", privacy_html(), "privacy.html"))
+    (DIST / "impressum.html").write_text(new_tab(simple_page("Impressum", impressum_html(), "impressum.html")))
+    (DIST / "privacy.html").write_text(new_tab(simple_page("Privacy policy", privacy_html(), "privacy.html")))
     write_static()
     if not any(p.strip() for p in CFG["prices"].values()):
         warnings.append("Prices are hidden: each offer shows 'Price on request'.")
@@ -431,3 +453,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

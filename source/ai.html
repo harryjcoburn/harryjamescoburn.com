@@ -7,131 +7,176 @@
 <div class="page-head">
   <div class="label mono">AI</div>
   <h1>AI in sales, built to <em>a standard.</em></h1>
-  <p>What I'm building with AI right now, and the prompts I use to build agents for each part of a sales engine. Free to copy. Train them on your own data, and check them against the 95% rule before you trust them.</p>
-  <nav class="jump" aria-label="On this page"><a href="#building">What I'm building</a><a href="#prompts">The prompt library</a><a href="ideas.html#rule">The 95% rule →</a></nav>
+  <p>How I design sales agents, what I've built, what I'm testing now, and the prompts, workflows and skills I use. Take what's useful. Then hold it to the 95% rule before you trust it.</p>
+  <nav class="jump" aria-label="On this page"><a href="#beliefs">What I believe</a><a href="#arch">The architecture</a><a href="#builds">Builds</a><a href="#path">The path to 95%</a><a href="#lab">The lab</a><a href="#prompts">Prompts</a><a href="#packs">Free packs</a></nav>
 </div>
 
-<section class="sec" id="building" aria-labelledby="h-building">
-  <div class="sec-head"><div class="label mono">What I'm building</div><h2 id="h-building">Agents that do the track. <em>People own the stations.</em></h2></div>
-  <div class="builds">
-    <article class="build">
-      <span class="mono">Live · UXCam, 2026</span>
+<section class="sec" id="beliefs" aria-labelledby="h-beliefs">
+  <div class="sec-head"><div class="label mono">What I believe</div><h2 id="h-beliefs">Agents do the track. <em>People own the stations.</em></h2></div>
+  <div class="beliefs">
+    <article><span class="mono">01</span><h3>You can't automate everything</h3><p>AI can do a lot of the work. It can't replace the people at the top who understand the market, the culture, the customer and the nuance in a message. Strategy stays human. The agents carry it out.</p></article>
+    <article><span class="mono">02</span><h3>Teach it like a new hire</h3><p>Nobody expects a new rep to be great on day one. Agents are the same: give them your best examples, correct them, talk to them, and they get better. Skip that, and you'll never get the output you need.</p></article>
+    <article><span class="mono">03</span><h3>Test, learn, repeat</h3><p>Treat AI like a lean startup. Small tests, real data, quick changes, and nothing scaled until it works. It's a constant learning process, not a one-off install.</p></article>
+  </div>
+</section>
+
+<section class="sec" id="arch" aria-labelledby="h-arch">
+  <div class="sec-head"><div class="label mono">The architecture</div><h2 id="h-arch">How I build a sales agent <em>you can trust.</em></h2><p>Not one big bot. A set of small specialist agents, each easy to test, with people approving until the work earns the right to run alone. Tap any part to see how it works.</p></div>
+  <div class="arch" id="archApp">
+    <div class="arch-flows" role="tablist" aria-label="Show a flow">
+      <button type="button" role="tab" aria-selected="true" data-flow="all">The whole system</button>
+      <button type="button" role="tab" aria-selected="false" data-flow="inbound">Inbound agent</button>
+      <button type="button" role="tab" aria-selected="false" data-flow="outbound">Outbound engine</button>
+    </div>
+    <div class="arch-body">
+      <div class="arch-map" aria-label="Architecture diagram">
+        <div class="lane" data-lane="Signals">
+          <button type="button" class="node" data-n="form" data-f="inbound">Form fill</button>
+          <button type="button" class="node" data-n="public" data-f="outbound">Public data</button>
+          <button type="button" class="node" data-n="crm" data-f="inbound outbound">CRM history</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="Context">
+          <button type="button" class="node" data-n="enrich" data-f="inbound outbound">Enrichment</button>
+          <button type="button" class="node" data-n="examples" data-f="inbound outbound">Your best examples</button>
+          <button type="button" class="node" data-n="rules" data-f="inbound outbound">ICP and rules</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="Orchestrate">
+          <button type="button" class="node wide" data-n="orch" data-f="inbound outbound">Orchestrator</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="Agents">
+          <button type="button" class="node agent" data-n="research" data-f="inbound outbound">Research</button>
+          <button type="button" class="node agent" data-n="score" data-f="inbound outbound">Score</button>
+          <button type="button" class="node agent" data-n="write" data-f="inbound outbound">Write</button>
+          <button type="button" class="node agent" data-n="check" data-f="inbound outbound">Check</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="People">
+          <button type="button" class="node human wide" data-n="approve" data-f="inbound outbound">Approve, edit or reject</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="Act">
+          <button type="button" class="node" data-n="send" data-f="inbound outbound">Send</button>
+          <button type="button" class="node" data-n="alert" data-f="inbound">Alert a rep</button>
+          <button type="button" class="node" data-n="log" data-f="inbound outbound">Log in CRM</button>
+        </div>
+        <div class="wire"></div>
+        <div class="lane" data-lane="Learn">
+          <button type="button" class="node gold" data-n="eval" data-f="inbound outbound">Measure: the 95% rule</button>
+          <button type="button" class="node gold" data-n="learn" data-f="inbound outbound">Edits become examples</button>
+        </div>
+        <div class="loop" aria-hidden="true"><span>Every edit makes the next draft better</span></div>
+      </div>
+      <aside class="arch-panel" aria-live="polite">
+        <span class="mono" id="apLane">Orchestrate</span>
+        <h3 id="apTitle">Orchestrator</h3>
+        <p id="apWhat"></p>
+        <dl>
+          <dt>How I build it</dt><dd id="apHow"></dd>
+          <dt>What goes wrong</dt><dd id="apWrong"></dd>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="builds" aria-labelledby="h-builds">
+  <div class="sec-head"><div class="label mono">Builds</div><h2 id="h-builds">What I've built, <em>and what's running now.</em></h2></div>
+  <div class="builds2">
+    <article class="b2">
+      <div class="b2-top"><span class="chip live">Live · UXCam, 2026</span></div>
       <h3>An inbound agent that replies in five minutes</h3>
-      <p>Built with HubSpot, Clay and Claude Code. Every form fill is researched, enriched, profiled and qualified within minutes, a reply is drafted and a call set up, and the best leads trigger an alert for an SDR to call straight away.</p>
+      <p>Built with HubSpot and Claude Code. Several agents in one flow: one enriching every lead, one scoring fit from the profile, one writing the message. Every message came to Slack, where SDRs approved or rejected it, so we could track quality and only automate once it was good enough.</p>
       <p class="proof-line">First reply went from about a day to 5 minutes.</p>
+      <button type="button" class="ghost linkbtn" data-show="inbound">See it in the architecture</button>
     </article>
-    <article class="build">
-      <span class="mono">Live · UXCam, 2026</span>
+    <article class="b2">
+      <div class="b2-top"><span class="chip live">Live · UXCam, 2026</span></div>
       <h3>An outbound engine built on public data</h3>
-      <p>App store data, Clay and AI find companies where the product can make a big difference. In the first month, the first run reached about 500 accounts and 4,000 contacts, then the message was tested by person, company and timing.</p>
+      <p>Clay and Claude Code, using app store data to find companies where the product could make a big difference, with Lemlist warming up the sending addresses. Then a lot of testing on the message by person, company and timing.</p>
+      <p class="proof-line">The first run reached about 500 accounts and 4,000 contacts in the first month.</p>
+      <button type="button" class="ghost linkbtn" data-show="outbound">See it in the architecture</button>
     </article>
-    <article class="build">
-      <span class="mono">Building now</span>
+    <article class="b2">
+      <div class="b2-top"><span class="chip live">Live · this site, 2026</span></div>
+      <h3>A lead engine on free tools</h3>
+      <p>The <a href="scorecard.html">scorecard</a> on this site sends a report from my own inbox through a small Google Apps Script, records the lead in HubSpot and offers a call through Cal.com, which logs the meeting too. It cost nothing to run, and the report lands in the inbox, not spam.</p>
+      <p class="proof-line">The full build is in the free Workflows pack below.</p>
+    </article>
+    <article class="b2">
+      <div class="b2-top"><span class="chip build">Building now</span></div>
       <h3>A content engine that sounds like me</h3>
       <p>A daily scan of funding news and the best go-to-market writing, an idea list with my take, and drafts written from a profile of how I speak and write. I approve every word before it goes out.</p>
     </article>
   </div>
 </section>
 
-<section class="sec" id="prompts" aria-labelledby="h-prompts">
-  <div class="sec-head"><div class="label mono">The prompt library</div><h2 id="h-prompts">One agent for each layer <em>of the engine.</em></h2><p>Each prompt is a starting point for an agent in one layer of the <a href="engine.html">Coburn Commercial Engine</a>. Swap the parts in [brackets] for your own, give it your real examples, and score its output against what your best person would do.</p></div>
-
-  <div class="prompts">
-    <details class="prompt" open>
-      <summary><span class="n mono">01 · Strategy</span><b>Find your real ICP from wins and losses</b></summary>
-      <pre><code>You are a go-to-market analyst. Below are our last [20] closed-won and [20] closed-lost deals, with company size, industry, country, deal size, sales cycle in days, who we spoke to and why they bought or didn't.
-
-1. Find what the best-fit wins have in common: the deals that closed fastest, at the highest value, with the least discount.
-2. Write our ideal customer profile in five lines: who they are, the problem they have, the trigger that makes them buy now, who signs, and who we should say no to.
-3. List the three signals we could find in public data to spot more companies like the best fits.
-Only use what is in the data. Where the data is thin, say so.
-
-[paste deals]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> read ten of the deals yourself. If its profile wouldn't have picked your three best customers, it's wrong.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">02 · Win</span><b>Qualify and reply to every inbound lead</b></summary>
-      <pre><code>You qualify inbound leads for [company], which sells [product] to [ICP].
-
-For each new lead:
-1. Research the company: size, funding, what they sell, any recent trigger such as a raise, a launch or a hire.
-2. Score fit from 1 to 5 against our ICP below, and say why in one line.
-3. Draft a first reply in our voice: one line on why they reached out, one useful point about their situation, and one clear next step. Under 90 words. No "I hope you're well".
-4. If fit is 4 or 5, flag it for a person to call today.
-
-Our ICP: [paste]
-Five replies our best rep actually sent: [paste]
-Lead: [form fields]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> run it on your last 100 leads first, and have your best seller mark each draft "would send" or not. Go live at 95%.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">03 · Grow</span><b>Spot renewal risk before the customer does</b></summary>
-      <pre><code>You review accounts [90] days before renewal for [company].
-
-For each account, using the usage data, support tickets and call notes below:
-1. Say whether the customer has reached the first impact they bought for, in their words, with the evidence.
-2. Rate renewal risk as low, medium or high, and give the two strongest reasons.
-3. Suggest one action for the account owner this week, and one expansion opportunity if risk is low.
-Never invent usage numbers. If data is missing, list what to ask the customer.
-
-[paste account data]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> compare its ratings with last year's renewals. It should have flagged the customers who left.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">04 · Team</span><b>Turn your best rep's habits into a 30-60-90</b></summary>
-      <pre><code>You are a sales enablement lead. Below are transcripts of [five] calls and the deal notes from our best-performing [AE / SDR], plus our sales stages and exit criteria.
-
-1. Name the five things this person does on calls that others don't, with a short quote for each.
-2. Turn them into a 30-60-90 day plan for a new hire: what to learn, what to practise, and what "good" looks like at each stage.
-3. Write three role-play scenarios based on real objections in the transcripts.
-
-[paste transcripts and stages]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> ask the rep it's based on. If they don't recognise themselves, start again.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">05 · Motivation</span><b>Test a comp plan against the behaviour you want</b></summary>
-      <pre><code>You review sales compensation plans. Below is our draft plan, our targets, and the behaviour we want: [for example, good-fit customers, price held, multi-year deals].
-
-1. Show how a rep would maximise their pay under this plan, step by step.
-2. Point out where that behaviour differs from what we want, and what it would cost us.
-3. Suggest the simplest change to each part of the plan that fixes it, keeping the plan easy to explain in one minute.
-
-[paste plan and targets]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> run last quarter's real deals through the plan and see who would have earned most. It should be the people you'd want more of.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">06 · Rhythm</span><b>Prepare the weekly pipeline review</b></summary>
-      <pre><code>You prepare our weekly pipeline review. Below is this week's pipeline export and last week's.
-
-1. List deals that moved stage, slipped a close date, or have had no activity for [14] days.
-2. For each stalled deal, name the missing exit criterion for its stage, and suggest the one question the owner should answer in the meeting.
-3. Compare the forecast with the weighted pipeline and say, in one line, whether the number looks safe.
-Keep it to one page. Facts from the data only.
-
-Stages and exit criteria: [paste]
-This week: [paste]
-Last week: [paste]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> for four weeks, compare its "safe or not" call with what actually closed.</p>
-    </details>
-
-    <details class="prompt">
-      <summary><span class="n mono">07 · Systems</span><b>Clean up the CRM, one rule at a time</b></summary>
-      <pre><code>You audit our CRM data. Below is an export of [deals / contacts] and the fields we say are mandatory.
-
-1. Find records with missing mandatory fields, duplicates, deals with close dates in the past that are still open, and contacts with no company.
-2. Group the problems by cause, not by record, and estimate how many records each cause affects.
-3. Suggest one automation or validation rule per cause that would stop it happening again.
-Don't change any data. Return a list for a person to review.
-
-[paste export]</code></pre>
-      <p class="check"><b>Check before you trust it:</b> spot-check 20 of the records it flags. Every one should be a real problem.</p>
-    </details>
+<section class="sec" id="path" aria-labelledby="h-path">
+  <div class="sec-head"><div class="label mono">The path to 95%</div><h2 id="h-path">Earn the right <em>to run alone.</em></h2><p>The test is simple: would your best person send this, as it is? Only when the answer is yes 95% of the time does an agent stop needing a person to press approve.</p></div>
+  <div class="path">
+    <div class="path-meter" aria-hidden="true"><span id="pmFill"></span><b id="pmVal">0%</b></div>
+    <ol class="path-steps">
+      <li><button type="button" data-p="20" class="on"><span class="mono">Step 1</span><b>Shadow</b><span>The agent drafts for every lead. Nobody sees it. Compare it with what your team actually sent.</span></button></li>
+      <li><button type="button" data-p="60"><span class="mono">Step 2</span><b>Approve</b><span>Every draft goes to a person: approve, edit or reject, with a reason. Track "approved without edits".</span></button></li>
+      <li><button type="button" data-p="95"><span class="mono">Step 3</span><b>Automate</b><span>A segment sends on its own once 95% are approved without edits, over enough volume to trust it.</span></button></li>
+      <li><button type="button" data-p="100"><span class="mono">Step 4</span><b>Audit</b><span>Keep checking a sample. If quality slips, that segment goes back to approval.</span></button></li>
+    </ol>
   </div>
+</section>
+
+<section class="sec" id="lab" aria-labelledby="h-lab">
+  <div class="sec-head"><div class="label mono">The lab</div><h2 id="h-lab">What I'm testing <em>right now.</em></h2><p>I'm learning in public. Each of these gets written up in the newsletter: what worked, what didn't, and what I'd do next.</p></div>
+  <div class="lab">
+    <article><span class="chip build">Building</span><h3>A research agent that reads for me</h3><p>Scans X, a set of Substacks and funding news every day, and gives me the highlights worth acting on. The best ideas become builds, and the builds become posts.</p></article>
+    <article><span class="chip test">Exploring</span><h3>Voice agents</h3><p>Testing ElevenLabs for voice: where a voice agent helps a sales team, and where a person on the phone is still the point.</p></article>
+    <article><span class="chip test">Exploring</span><h3>Video with an AI avatar</h3><p>Testing HeyGen for short videos alongside clips I film myself, to see what's worth automating and what isn't.</p></article>
+    <article><span class="chip test">Exploring</span><h3>Small apps with Codex</h3><p>Building little apps and systems, not all about sales, to keep my hands on the tools and find better ways to work.</p></article>
+  </div>
+</section>
+
+<section class="sec" id="prompts" aria-labelledby="h-prompts">
+  <div class="sec-head"><div class="label mono">The prompt library</div><h2 id="h-prompts">One agent for each layer <em>of the engine.</em></h2><p>Each prompt is built for production: a role, real context, clear steps, rules, and output another agent can read. The first is here in full. Get all seven, with what to feed each one, how to check it and where it goes wrong, in the free <a href="#packs">Prompt Pack</a>.</p></div>
+  <div class="layers-pick" role="tablist" aria-label="Engine layer">
+    <button type="button" class="on" data-l="0">01 Strategy</button><button type="button" data-l="1">02 Win</button><button type="button" data-l="2">03 Grow</button><button type="button" data-l="3">04 Team</button><button type="button" data-l="4">05 Motivation</button><button type="button" data-l="5">06 Rhythm</button><button type="button" data-l="6">07 Systems</button>
+  </div>
+  <div class="prompt-view" id="pv">
+    <div class="pv-head"><span class="mono" id="pvLayer"></span><h3 id="pvTitle"></h3><p id="pvUse"></p></div>
+    <div class="pv-code"><button type="button" class="copy" id="pvCopy" data-umami-event="Copy prompt">Copy</button><pre><code id="pvCode"></code></pre><div class="pv-fade" id="pvFade"><p><b>The full prompt, checks and failure modes</b> are in the free Prompt Pack.</p><button type="button" class="btn" data-pack="prompts">Get the Prompt Pack <span class="arr">→</span></button></div></div>
+    <p class="check" id="pvCheck"></p>
+  </div>
+</section>
+
+<section class="sec" id="packs" aria-labelledby="h-packs">
+  <div class="sec-head"><div class="label mono">Free packs</div><h2 id="h-packs">Take the playbook <em>with you.</em></h2><p>Three PDFs, mapped to the layers of the <a href="engine.html">Coburn Commercial Engine</a>. Free. I'll email you the link, and you can open it straight away.</p></div>
+  <div class="packs">
+    <article class="pack" data-id="prompts">
+      <span class="mono">10 pages · All seven layers</span><h3>The Sales Agent Prompt Pack</h3>
+      <p>Seven production prompts, one for each layer of the engine, with what to feed each one, how to check it and where it usually goes wrong.</p>
+      <button type="button" class="btn" data-pack="prompts">Get the PDF <span class="arr">→</span></button>
+    </article>
+    <article class="pack" data-id="workflows">
+      <span class="mono">8 pages · Win and Systems</span><h3>Sales Agent Workflows</h3>
+      <p>Three builds step by step: the inbound agent, the outbound signal engine and a lead engine on free tools. Every agent, every check, how to roll it out and what to measure.</p>
+      <button type="button" class="btn" data-pack="workflows">Get the PDF <span class="arr">→</span></button>
+    </article>
+    <article class="pack" data-id="skills">
+      <span class="mono">8 pages · Win, Rhythm and Systems</span><h3>Claude Skills for Sales</h3>
+      <p>Five skills that teach Claude to do sales jobs your way: account research, call prep, follow-ups in your voice, pipeline review and ICP fit, with the full SKILL.md files.</p>
+      <button type="button" class="btn" data-pack="skills">Get the PDF <span class="arr">→</span></button>
+    </article>
+  </div>
+  <form class="rep pack-form" id="packForm" novalidate hidden>
+    <div class="rep-copy"><span class="mono">Free PDF</span><h3 id="pfTitle">Get the pack.</h3><p>I'll email you the link, and you can open it straight away.</p></div>
+    <div class="rep-fields">
+      <label><span>First name</span><input name="firstname" autocomplete="given-name" required></label>
+      <label><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
+      <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="rep-ok"><input type="checkbox" name="consent" required><span>Send me the PDF and an occasional follow-up from Harry. Unsubscribe any time. <a href="privacy.html">Privacy</a></span></label>
+      <div class="sc-actions"><button class="btn" type="submit">Send me the PDF <span class="arr">→</span></button><span id="pfMsg" class="small-note" role="status"></span></div>
+    </div>
+  </form>
 </section>
 
 <section class="sec" aria-label="Get help">
@@ -146,12 +191,90 @@ Don't change any data. Return a list for a person to review.
 {{CLOSE}}
 {{FOOTER}}
 <script>
-document.querySelectorAll('.prompt pre').forEach(function(pre){
-  var b=document.createElement('button');b.type='button';b.className='copy';b.textContent='Copy';
-  b.setAttribute('data-umami-event','Copy prompt');
-  b.addEventListener('click',function(){var t=pre.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}).catch(function(){b.textContent='Select and copy'});});
-  pre.parentNode.insertBefore(b,pre);
-});
+(function(){
+  var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',HS_SUB='{{HS_SUB}}';
+  var PACKS={{PACKS_JSON}};
+  /* ---------- architecture ---------- */
+  var N={
+    form:{l:'Signals',t:'Form fill',w:'A lead fills in a form. That is the trigger for the inbound flow, and the clock starts.',h:'A HubSpot workflow passes the contact and their answers to the orchestrator the moment the form is submitted.',x:'Waiting for a batch job. Speed is the point: the first reply should land while they still remember asking.'},
+    public:{l:'Signals',t:'Public data',w:'The signals that say a company is likely to need you, found in data anyone can see.',h:'Pick two or three signals from your best customers. At UXCam that was app store data: companies with apps where the product could make a big difference.',x:'Choosing signals because they are easy to find, not because they predict fit.'},
+    crm:{l:'Signals',t:'CRM history',w:'Everything you already know: past deals, emails, calls, who said what.',h:'Pull the account and contact history so the agent never asks a question you already have the answer to.',x:'A messy CRM. Agents built on bad data make confident mistakes. Clean the data first.'},
+    enrich:{l:'Context',t:'Enrichment',w:'The facts about the company and the person: size, funding, what they sell, hiring, news.',h:'Our own enrichment on inbound, Clay on outbound. Every fact keeps its source, so the writer can only use what was found.',x:'Facts with no source. That is where invented details start.'},
+    examples:{l:'Context',t:'Your best examples',w:'Real messages your best rep sent, each with the lead it was for. The single biggest lever on quality.',h:'Start with five. Add the best human edits every week, so the examples keep getting better.',x:'Generic examples, or too many that look the same. The agent copies whatever you show it.'},
+    rules:{l:'Context',t:'ICP and rules',w:'Who you sell to, who you say no to, and the lines the agent must never cross.',h:'Written down in plain words: the ICP, banned phrases, no pricing, no claims without a source, and when to hand over to a person.',x:'Rules that live in someone\'s head. If it isn\'t written, the agent can\'t follow it.'},
+    orch:{l:'Orchestrate',t:'Orchestrator',w:'The conductor. It runs the steps in order, passes each agent only what it needs, and decides when to stop and ask a person.',h:'Built with Claude Code. Each step is small and returns structured output, so the next step can read it and you can test each one alone.',x:'One giant prompt doing everything. When it goes wrong, you can\'t tell which part failed.'},
+    research:{l:'Agents',t:'Research agent',w:'Reads the context and writes a short "why now": what is happening at this company that makes the message relevant.',h:'Grounded only in the enrichment and CRM history, with a source for every point.',x:'Filling gaps with general knowledge about the industry.'},
+    score:{l:'Agents',t:'Scoring agent',w:'Scores fit from 1 to 5 against your ICP, with a one-line reason and the facts behind it.',h:'At UXCam, one agent scored every lead from its profile. Low scores get a helpful resource instead of a meeting.',x:'Scores with no reason. If you can\'t see why, you can\'t correct it.'},
+    write:{l:'Agents',t:'Writing agent',w:'Drafts the message in your best rep\'s voice: short, specific, one clear next step.',h:'Trained on your real examples and returns JSON: subject, body, the facts it used and how confident it is.',x:'Opening with a compliment that isn\'t in the data, or the same email for everyone.'},
+    check:{l:'Agents',t:'Check agent',w:'A separate check before any person sees it: are the facts real, the rules kept, the tone right?',h:'A different prompt from the writer, with a checklist. Failures go back to the writer once, then to a person.',x:'Letting the writer mark its own homework.'},
+    approve:{l:'People',t:'Approve, edit or reject',w:'A person sees the lead, the score and the draft, and decides. This is where the agent learns.',h:'At UXCam this happened in Slack: SDRs approved or rejected every message, so we could track quality. Every edit and rejection keeps its reason.',x:'Skipping this step. The approval data is what tells you when an agent is ready to run alone.'},
+    send:{l:'Act',t:'Send',w:'The approved message goes out from a real person\'s mailbox, or a warmed-up sending domain for outbound.',h:'Inbound replies from the rep. Outbound from separate domains, warmed up first with Lemlist, at low volumes per inbox.',x:'Sending outbound from your main domain, and burning it.'},
+    alert:{l:'Act',t:'Alert a rep',w:'The best leads don\'t wait for an email. A rep gets an alert to call now, with the brief.',h:'Fit 4 or 5 triggers an alert with the research and the draft, so the call starts informed.',x:'Alerting on every lead. If everything is urgent, nothing is.'},
+    log:{l:'Act',t:'Log in CRM',w:'Everything goes on the record: score, reason, draft, decision, what was sent.',h:'Written back to HubSpot automatically, so reporting and the next agent both see the full history.',x:'Agents working outside the CRM. Then nobody can see what happened.'},
+    eval:{l:'Learn',t:'Measure: the 95% rule',w:'The one number that matters: how often would your best person send it as it is?',h:'Track "approved without edits" by segment. A segment runs alone at 95%, and a sample is still checked after that.',x:'Measuring opens or volume instead of quality.'},
+    learn:{l:'Learn',t:'Edits become examples',w:'Every correction is a lesson. The best edits become new examples, and the rules get sharper.',h:'A weekly review of edits and rejections. Teach it like a new hire: correct it, explain why, and it improves.',x:'Treating it as a one-off install. Agents that aren\'t taught don\'t get better.'}
+  };
+  var app=document.getElementById('archApp');
+  function show(k){var d=N[k];if(!d)return;
+    document.getElementById('apLane').textContent=d.l;document.getElementById('apTitle').textContent=d.t;
+    document.getElementById('apWhat').textContent=d.w;document.getElementById('apHow').textContent=d.h;document.getElementById('apWrong').textContent=d.x;
+    app.querySelectorAll('.node').forEach(function(n){n.classList.toggle('sel',n.getAttribute('data-n')===k);n.setAttribute('aria-pressed',n.getAttribute('data-n')===k);});}
+  app.addEventListener('click',function(e){var n=e.target.closest('.node');if(n){show(n.getAttribute('data-n'));if(window.matchMedia('(max-width:900px)').matches)app.querySelector('.arch-panel').scrollIntoView({behavior:'smooth',block:'nearest'});}});
+  function flow(f){app.setAttribute('data-flow',f);
+    app.querySelectorAll('.arch-flows button').forEach(function(b){b.setAttribute('aria-selected',b.getAttribute('data-flow')===f);});
+    app.querySelectorAll('.node').forEach(function(n){n.classList.toggle('dim',f!=='all'&&(' '+n.getAttribute('data-f')+' ').indexOf(' '+f+' ')<0);});
+    show(f==='inbound'?'form':f==='outbound'?'public':'orch');}
+  app.querySelectorAll('.arch-flows button').forEach(function(b){b.addEventListener('click',function(){flow(b.getAttribute('data-flow'));});});
+  document.querySelectorAll('[data-show]').forEach(function(b){b.addEventListener('click',function(){flow(b.getAttribute('data-show'));document.getElementById('arch').scrollIntoView({behavior:'smooth'});});});
+  flow('all');
+  /* ---------- path to 95% ---------- */
+  var fill=document.getElementById('pmFill'),pv=document.getElementById('pmVal');
+  function setP(b){document.querySelectorAll('.path-steps button').forEach(function(x){x.classList.toggle('on',x===b);});var p=+b.getAttribute('data-p');fill.style.width=Math.min(p,100)+'%';pv.textContent=p===100?'95%+, audited':p===20?'Drafts only':p+'%';}
+  document.querySelectorAll('.path-steps button').forEach(function(b){b.addEventListener('click',function(){setP(b);});});
+  setP(document.querySelector('.path-steps button'));
+  /* ---------- prompt viewer ---------- */
+  var P={{PROMPTS_JSON}},cur=0;
+  function lines(s,n){return s.split('\n').slice(0,n).join('\n');}
+  function pview(i){cur=i;var p=P[i],full=i===0;
+    document.getElementById('pvLayer').textContent=p.n+' · '+p.layer;document.getElementById('pvTitle').textContent=p.title;document.getElementById('pvUse').textContent=p.use;
+    document.getElementById('pvCode').textContent=full?p.prompt:lines(p.prompt,14);
+    document.getElementById('pvFade').hidden=full;document.getElementById('pvCopy').hidden=!full;
+    document.getElementById('pvCheck').innerHTML='<b>Check before you trust it:</b> '+p.check.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    document.querySelectorAll('.layers-pick button').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-l')===i);b.setAttribute('aria-selected',+b.getAttribute('data-l')===i);});}
+  document.querySelectorAll('.layers-pick button').forEach(function(b){b.addEventListener('click',function(){pview(+b.getAttribute('data-l'));});});
+  document.getElementById('pvCopy').addEventListener('click',function(){var b=this,t=P[cur].prompt;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}).catch(function(){b.textContent='Select and copy'});});
+  pview(0);
+  /* ---------- gated packs ---------- */
+  var pf=document.getElementById('packForm'),pfMsg=document.getElementById('pfMsg'),want=null;
+  function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
+  document.querySelectorAll('[data-pack]').forEach(function(b){b.addEventListener('click',function(){
+    want=b.getAttribute('data-pack');document.getElementById('pfTitle').textContent='Get '+PACKS[want].title+'.';
+    document.querySelectorAll('.pack').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-id')===want);});
+    var card=document.querySelector('.pack[data-id="'+want+'"]');card.parentNode.parentNode.insertBefore(pf,card.parentNode.nextSibling);
+    pf.hidden=false;pfMsg.textContent='';pf.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){pf.querySelector('input[name=firstname]').focus({preventScroll:true});},400);
+    try{if(window.umami)umami.track('Open pack form',{pack:want})}catch(e){}});});
+  pf.addEventListener('submit',function(ev){
+    ev.preventDefault();var f=new FormData(pf),em=(f.get('email')||'').trim(),btn=pf.querySelector('button[type=submit]');
+    if(!f.get('firstname')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){pfMsg.textContent='Add your first name and a work email.';return;}
+    if(!f.get('consent')){pfMsg.textContent='Tick the box so I can send it.';return;}
+    var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct',pack=PACKS[want],url='assets/downloads/packs/'+pack.file;
+    btn.disabled=true;pfMsg.textContent='Sending...';
+    function done(){
+      pf.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>'+pack.title+' is on its way to '+em.replace(/[<>&]/g,'')+'.</p><p><a class="btn" href="'+url+'" target="_blank" rel="noopener">Open the PDF now <span class="arr">→</span></a></p></div>';
+      try{if(window.umami)umami.track('Pack requested',{pack:want})}catch(e){}}
+    function viaHubSpot(){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:[['firstname',f.get('firstname')],['email',em],['resource_requested',pack.title+' ('+src+')']].map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+          context:{pageUri:location.href,pageName:document.title},
+          legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to send the resource.',communications:[{value:true,subscriptionTypeId:+HS_SUB,text:'Send me the resource and an occasional follow-up from Harry. Unsubscribe any time.'}]}}})})
+      .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({type:'resource',resource:want,firstname:f.get('firstname'),email:em,consent:true,source:src,page:location.href,website:f.get('website')||''})})
+    .then(function(r){return r.json();})
+    .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;pfMsg.textContent='Check your name and email.';return;}throw new Error(j.error);})
+    .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;pfMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a>.';});});
+  });
+})();
 </script>
 </body>
 </html>

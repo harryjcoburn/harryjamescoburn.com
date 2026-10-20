@@ -45,7 +45,7 @@
   <div class="bars" id="r-bars"></div>
   <div class="also res-cta">
     <p id="r-rec"></p>
-    <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
+    <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" target="_blank" rel="noopener" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
   </div>
   <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
 </section>
@@ -162,7 +162,7 @@
     function done(){
       rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
       try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}}
-    function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'">email me</a>.';}
+    function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a>.';}
     function viaHubSpot(){
       return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),

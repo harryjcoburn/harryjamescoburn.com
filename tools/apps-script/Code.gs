@@ -58,6 +58,7 @@ function doPost(e) {
   var d;
   try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ok: false, error: 'bad_json'}); }
   if (d.website) return json_({ok: true});              // honeypot: bots fill hidden fields
+  if (d.type === 'resource') return resource_(d);
   var lead = clean_(d);
   if (lead.error) return json_({ok: false, error: lead.error});
 
@@ -214,4 +215,77 @@ function testSend() {
   sendReport_(lead, r);
   Logger.log('Aliases: ' + GmailApp.getAliases().join(', '));
   Logger.log('Sent test report to ' + CFG.NOTIFY);
+}
+
+/* ---------- Free resources (PDF packs) ---------- */
+var RESOURCES = {
+  prompts:   {title: 'The Sales Agent Prompt Pack', file: 'hjc-sales-agent-prompts-7k2q.pdf',
+              blurb: 'Seven production prompts, one for each layer of the engine, with how to check each one.'},
+  workflows: {title: 'Sales Agent Workflows', file: 'hjc-agent-workflows-p9x4.pdf',
+              blurb: 'Three end-to-end builds, step by step: the inbound agent, the outbound signal engine and a lead engine on free tools.'},
+  skills:    {title: 'Claude Skills for Sales', file: 'hjc-claude-skills-for-sales-m3v8.pdf',
+              blurb: 'Five ready-to-use skills with the full SKILL.md files and templates for your reference files.'}
+};
+
+function resource_(d) {
+  var res = RESOURCES[d.resource];
+  if (!res) return json_({ok: false, error: 'resource'});
+  var email = String(d.email || '').trim().toLowerCase();
+  if (!/^[^@\s<>]+@[^@\s<>]+\.[a-z]{2,}$/i.test(email) || email.length > 120) return json_({ok: false, error: 'email'});
+  var first = String(d.firstname || '').replace(/[\r\n\t<>]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (/https?:|www\.|\.[a-z]{2,}\//i.test(first)) first = '';
+  first = first.slice(0, 40);
+  if (!first) return json_({ok: false, error: 'name'});
+  if (d.consent !== true) return json_({ok: false, error: 'consent'});
+  var url = CFG.SITE + '/assets/downloads/packs/' + res.file;
+
+  var lock = LockService.getScriptLock(); lock.waitLock(10000);
+  try {
+    var cache = CacheService.getScriptCache();
+    var key = 'res_' + d.resource + '_' + Utilities.base64EncodeWebSafe(email);
+    if (cache.get(key)) return json_({ok: true, repeat: true, url: url});
+    var props = PropertiesService.getScriptProperties();
+    var day = Utilities.formatDate(new Date(), 'Europe/Berlin', 'yyyy-MM-dd');
+    var count = props.getProperty('day') === day ? +props.getProperty('count') : 0;
+    if (count >= CFG.DAILY_MAX) return json_({ok: false, error: 'busy'});
+    props.setProperties({day: day, count: String(count + 1)});
+    cache.put(key, '1', CFG.PER_ADDRESS_HOURS * 3600);
+  } finally { lock.releaseLock(); }
+
+  var src = String(d.source || 'direct').replace(/[\r\n<>]/g, ' ').slice(0, 120);
+  var hs = {ok: false, code: 0, body: ''};
+  try {
+    var r = UrlFetchApp.fetch(CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      payload: JSON.stringify({
+        fields: [{objectTypeId: '0-1', name: 'firstname', value: first}, {objectTypeId: '0-1', name: 'email', value: email},
+                 {objectTypeId: '0-1', name: 'resource_requested', value: res.title + ' (' + src + ')'}],
+        context: {pageUri: String(d.page || CFG.SITE + '/ai.html').slice(0, 200), pageName: 'AI in sales'},
+        legalConsentOptions: {consent: {consentToProcess: true,
+          text: 'I agree to Harry James Coburn storing my details to send the resource.',
+          communications: [{value: true, subscriptionTypeId: CFG.HS_SUB,
+            text: 'Send me the resource and an occasional follow-up from Harry. Unsubscribe any time.'}]}}})});
+    hs = {ok: r.getResponseCode() < 300, code: r.getResponseCode(), body: r.getContentText().slice(0, 300)};
+  } catch (x) { hs.body = String(x); }
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var subject = res.title + ': your copy';
+  var plain = 'Hi ' + first + ',\n\nHere is your copy of ' + res.title + ':\n' + url + '\n\n' + res.blurb + '\n\n' +
+    'They are starting points. Test them on your own data before you trust them, and hold them to the 95% rule: only let an agent run on its own once your best person would send 95% of what it writes.\n\n' +
+    'If you want to talk about building any of this into your sales engine, book 30 minutes: ' + CFG.BOOK + '\nOr just reply. I read every one.\n\nThanks,\nHarry\n\n' +
+    '--\nHarry James Coburn, Charlottenburger Straße 136B, 13086 Berlin, Germany\n' + CFG.SITE + '\nYou asked for this on ' + CFG.SITE + '. Reply "unsubscribe" and I won\'t email you again.';
+  var html = '<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#16181d;max-width:560px">' +
+    '<p>Hi ' + esc(first) + ',</p><p>Here is your copy of <b>' + esc(res.title) + '</b>. ' + esc(res.blurb) + '</p>' +
+    '<p style="margin:22px 0"><a href="' + url + '" style="display:inline-block;background:#10372A;color:#fff;text-decoration:none;padding:12px 20px;border-radius:6px">Download the PDF</a></p>' +
+    '<p>They are starting points. Test them on your own data before you trust them, and hold them to the 95% rule: only let an agent run on its own once your best person would send 95% of what it writes.</p>' +
+    '<p>If you want to talk about building any of this into your sales engine, <a href="' + CFG.BOOK + '">book 30 minutes</a>, or just reply. I read every one.</p>' +
+    '<p>Thanks,<br>Harry</p>' +
+    '<p style="font-size:12px;color:#5b606b;margin-top:28px">Harry James Coburn · Charlottenburger Straße 136B, 13086 Berlin, Germany · <a href="' + CFG.SITE + '" style="color:#5b606b">harryjamescoburn.com</a><br>You asked for this on harryjamescoburn.com. Reply "unsubscribe" and I won\'t email you again.</p></div>';
+  var sent = false, err = '';
+  try {
+    var opts = {htmlBody: html, name: CFG.NAME, replyTo: CFG.FROM, bcc: CFG.NOTIFY};
+    if (GmailApp.getAliases().indexOf(CFG.FROM) >= 0) opts.from = CFG.FROM;
+    GmailApp.sendEmail(email, subject, plain, opts); sent = true;
+  } catch (x) { err = String(x); }
+  if (!sent || !hs.ok) notify_('Resource request problem', {email: email, resource: d.resource}, 'email sent: ' + sent + ' ' + err + '\nHubSpot: ' + hs.code + ' ' + hs.body);
+  return json_({ok: sent, hubspot: hs.ok, url: url});
 }

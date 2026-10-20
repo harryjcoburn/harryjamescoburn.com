@@ -68,7 +68,7 @@
   <div class="bars" id="r-bars"></div>
   <div class="also res-cta">
     <p id="r-rec"></p>
-    <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
+    <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" target="_blank" rel="noopener" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
   </div>
   <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
 </section>
@@ -79,11 +79,11 @@
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
   <p>A short intro call. You leave with at least one thing to fix this month, whether we work together or not.</p>
   <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><span class="mail">harry@harryjamescoburn.com</span></div>
-  <div class="alt"><a href="mailto:harry@harryjamescoburn.com?subject=Hello%20Harry">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
+  <div class="alt"><a href="mailto:harry@harryjamescoburn.com?subject=Hello%20Harry" target="_blank" rel="noopener">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
 </div></section>
 <footer><div class="wrap">
   <span class="sign"><svg class="mark" viewBox="0 0 70 32" width="42" height="19" aria-hidden="true" focusable="false"><rect width="6" height="32" fill="currentColor"/><rect x="14" width="6" height="32" fill="currentColor"/><rect x="6" y="13" width="8" height="6" fill="currentColor"/><path d="M35 0V23A6 6 0 0 1 29 29H26" fill="none" stroke="currentColor" stroke-width="6"/><path d="M66.19 6.81A13 13 0 1 0 66.19 25.19" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="57" cy="16" r="3.8" class="stn"/></svg><span>© 2026 Harry James Coburn · Berlin · London</span></span>
-  <nav aria-label="Footer"><a href="./#offers">Offers</a><a href="faq.html">FAQ</a><a href="speaking.html">Speaking</a><a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Newsletter</a><a href="https://www.linkedin.com/in/hcoburn/" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:harry@harryjamescoburn.com">Email</a><a href="impressum.html">Impressum</a><a href="privacy.html">Privacy</a></nav>
+  <nav aria-label="Footer"><a href="./#offers">Offers</a><a href="faq.html">FAQ</a><a href="speaking.html">Speaking</a><a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Newsletter</a><a href="https://www.linkedin.com/in/hcoburn/" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:harry@harryjamescoburn.com" target="_blank" rel="noopener">Email</a><a href="impressum.html">Impressum</a><a href="privacy.html">Privacy</a></nav>
 </div></footer>
 <script>
 (function(){
@@ -194,7 +194,7 @@
     function done(){
       rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
       try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}}
-    function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'">email me</a>.';}
+    function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a>.';}
     function viaHubSpot(){
       return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({fields:fields.map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
