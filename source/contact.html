@@ -1,0 +1,66 @@
+{{HEAD}}
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<header class="wrap">{{NAV}}</header>
+<main id="top" class="wrap">
+
+<div class="page-head">
+  <div class="label mono">Contact</div>
+  <h1>Send me <em>a message.</em></h1>
+  <p>Tell me what's going on in your sales engine, ask about a role or a talk, or just say hello. I read and reply to every message myself.</p>
+</div>
+
+<section class="contact" aria-label="Ways to get in touch">
+  <form id="msg" class="rep msg-form" novalidate>
+    <div class="rep-copy"><span class="mono">Message</span><h3>What's on your mind?</h3><p>A few lines is plenty. If it's about your sales engine, the stage you're at and what feels stuck help me give you a useful answer.</p></div>
+    <div class="rep-fields">
+      <label><span>First name</span><input name="firstname" autocomplete="given-name" required maxlength="40"></label>
+      <label><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      <label><span>Company <i class="opt">optional</i></span><input name="company" autocomplete="organization" maxlength="80"></label>
+      <label><span>Message</span><textarea name="message" rows="6" required maxlength="2000"></textarea></label>
+      <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="rep-ok"><input type="checkbox" name="consent" required><span>I agree to Harry James Coburn storing my details to reply to my message. <a href="privacy.html">Privacy</a></span></label>
+      <div class="sc-actions"><button class="btn" type="submit">Send message <span class="arr">→</span></button><span id="msgNote" class="small-note" role="status"></span></div>
+    </div>
+  </form>
+  <div class="contact-alt">
+    <a class="alt-card" href="{{BOOK}}"><span class="mono">Talk</span><b>Book a 30-minute intro call</b><span>Pick a time that suits you.</span></a>
+    <!-- WA --><a class="alt-card" href="https://wa.me/{{WA}}?text=Hi%20Harry%2C%20I%20found%20you%20on%20harryjamescoburn.com" data-umami-event="WhatsApp"><span class="mono">WhatsApp</span><b>Message me on WhatsApp</b><span>Quick questions, any time.</span></a><!-- /WA -->
+    <a class="alt-card" href="mailto:{{EMAIL}}?subject=Hello%20Harry"><span class="mono">Email</span><b>{{EMAIL}}</b><span>If you'd rather use your own inbox.</span></a>
+    <a class="alt-card" href="{{LINKEDIN}}"><span class="mono">LinkedIn</span><b>Connect on LinkedIn</b><span>Say where we met, or why you're getting in touch.</span></a>
+    <a class="alt-card" href="scorecard.html"><span class="mono">Free</span><b>Score your sales engine</b><span>Two minutes, ten taps, a free report.</span></a>
+  </div>
+</section>
+
+</main>
+{{FOOTER}}
+<script>
+(function(){
+  var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}';
+  var f=document.getElementById('msg'),note=document.getElementById('msgNote');
+  function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
+  f.addEventListener('submit',function(ev){
+    ev.preventDefault();var d=new FormData(f),em=(d.get('email')||'').trim(),msg=(d.get('message')||'').trim(),btn=f.querySelector('button[type=submit]');
+    if(!d.get('firstname')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){note.textContent='Add your first name and email.';return;}
+    if(msg.length<5){note.textContent='Add a short message.';return;}
+    if(!d.get('consent')){note.textContent='Tick the box so I can reply.';return;}
+    var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
+    btn.disabled=true;note.textContent='Sending...';
+    function done(){f.innerHTML='<div class="rep-copy"><span class="mono">Sent</span><h3>Thanks, '+String(d.get('firstname')).replace(/[<>&]/g,'')+'.</h3><p>Your message is with me, and I\'ll reply to '+em.replace(/[<>&]/g,'')+' myself.</p></div>';
+      try{if(window.umami)umami.track('Message sent')}catch(e){}}
+    function viaHubSpot(){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['company',d.get('company')||''],['message',msg]].map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+          context:{pageUri:location.href,pageName:document.title},
+          legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to reply to my message.',communications:[]}}})})
+      .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company')||'',message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
+    .then(function(r){return r.json();})
+    .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'||j.error==='message'){btn.disabled=false;note.textContent='Check your name, email and message.';return;}throw new Error(j.error);})
+    .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;note.innerHTML='That didn\'t send. Please <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a> instead.';});});
+  });
+})();
+</script>
+</body>
+</html>

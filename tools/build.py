@@ -60,6 +60,9 @@ PAGES = {
     "ai.html": ("AI in sales: what I'm building and the prompts I use | Harry James Coburn",
                 "AI agents for each layer of a sales engine: the inbound and outbound agents Harry James Coburn has built, "
                 "and a free prompt library for strategy, winning, growing, team, motivation, rhythm and systems."),
+    "contact.html": ("Send a message | Harry James Coburn",
+                     "Send Harry James Coburn a message about your sales engine, a role, a talk or anything else. "
+                     "He reads and replies to every one himself."),
     "about.html": ("About Harry James Coburn",
                    "Harry James Coburn: from IBM, Credit Suisse and Lloyds Banking Group to building sales "
                    "engines at start-ups. Based in Berlin."),
@@ -88,9 +91,12 @@ def nav(current):
         cur = ' aria-current="page"' if href == current else ""
         return f'<a href="{href}"{cur}>{label}</a>'
     home = "" if current == "index.html" else "./"
+    items = (f'{link("services.html", "Services")}{link("work.html", "Work")}{link("engine.html", "The Engine")}'
+             f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if POSTS else ""}{link("about.html", "About")}{link("contact.html", "Contact")}')
+    mobile = (f'<details class="mnav"><summary aria-label="Menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></summary>'
+              f'<div class="mnav-panel">{items}{link("scorecard.html", "Free scorecard")}</div></details>')
     return (f'<nav class="nav" aria-label="Main"><a class="name" href="./">{MARK}<span>Harry James Coburn</span></a>'
-            f'<span class="links">{link("services.html", "Services")}{link("work.html", "Work")}{link("engine.html", "The Engine")}'
-            f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if POSTS else ""}{link("about.html", "About")}'
+            f'<span class="links">{items}{mobile}'
             f'<a class="btn" href="{{{{BOOK}}}}">Book a call</a></span></nav>')
 
 
@@ -99,7 +105,7 @@ CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inn
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
   <p>A short intro call. You leave with at least one thing to fix this month, whether we work together or not.</p>
   <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><span class="mail">{{EMAIL}}</span></div>
-  <div class="alt"><a href="mailto:{{EMAIL}}?subject=Hello%20Harry">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
+  <div class="alt"><a href="contact.html">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
 </div></section>"""
 
 NEWSLETTER = """<section class="sec news" id="newsletter" aria-labelledby="h-news">
@@ -241,7 +247,9 @@ def fill(name, html):
     hs = CFG.get("hubspot", {})
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
         "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
-        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", "")))
+        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", ""))).replace("{{LINKEDIN}}", escape(CFG["linkedin"]))
+    wa = re.sub(r"\D", "", CFG.get("whatsapp", ""))
+    html = re.sub(r"<!-- WA -->(.*?)<!-- /WA -->", (lambda m: m.group(1).replace("{{WA}}", wa)) if wa else "", html, flags=re.S)
     if "{{PACKS_JSON}}" in html:
         pj = {k: {"title": v["title"], "file": v["file"]} for k, v in packs_mod.PACKS.items()}
         pr = [{k: p[k] for k in ("n", "layer", "title", "use", "prompt", "check")} for p in packs_mod.PROMPTS]
@@ -330,8 +338,8 @@ def privacy_html():
 <h2>Booking a call</h2>
 <p>The “Book a call” buttons take you to my booking page on Cal.com (Cal.com, Inc.). If you book, Cal.com processes the name, email address and answers you enter, adds the meeting to my Google Calendar (Google Ireland Ltd) and creates a Google Meet link. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Cal.com's and Google's privacy policies apply to that processing.</p>
 <p>The newsletter sign-up box is provided by Substack, Inc. It loads from Substack only on pages that show it. If you subscribe, Substack processes your email address to send you the newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe from any issue. Substack's privacy policy applies.</p>
-{hubspot_privacy()}<h2>When you email me</h2>
-<p>If you contact me by email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>
+{hubspot_privacy()}<h2>When you message or email me</h2>
+<p>If you use the message form, it sends your name, email, company and message to the same script in my Google Workspace account, which emails it to me and records it in HubSpot. If you contact me by message or email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>
 <h2>Your rights</h2>
 <p>You can ask for access to, correction or deletion of your data, restriction of or objection to its processing, and data portability (Art. 15 to 21 GDPR). You can also complain to a data protection authority, such as the Berlin Commissioner for Data Protection and Freedom of Information.</p>"""
 

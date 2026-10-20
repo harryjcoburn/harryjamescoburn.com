@@ -88,7 +88,7 @@
     <article class="b2">
       <div class="b2-top"><span class="chip live">Live · UXCam, 2026</span></div>
       <h3>An inbound agent that replies in five minutes</h3>
-      <p>Built with HubSpot and Claude Code. Several agents in one flow: one enriching every lead, one scoring fit from the profile, one writing the message. Every message came to Slack, where SDRs approved or rejected it, so we could track quality and only automate once it was good enough.</p>
+      <p>Built with HubSpot and Claude Code, plus our own enrichment. Several agents in one flow: one enriching every lead, one scoring fit from the profile, one writing the message. Each new lead landed in a Slack channel with the qualification, the details that mattered and a reply already drafted. The team could check it, give feedback right there on the message, and approve to send, so every piece of feedback was collected in one place.</p>
       <p class="proof-line">First reply went from about a day to 5 minutes.</p>
       <button type="button" class="ghost linkbtn" data-show="inbound">See it in the architecture</button>
     </article>
@@ -130,9 +130,9 @@
   <div class="sec-head"><div class="label mono">The lab</div><h2 id="h-lab">What I'm testing <em>right now.</em></h2><p>I'm learning in public. Each of these gets written up in the newsletter: what worked, what didn't, and what I'd do next.</p></div>
   <div class="lab">
     <article><span class="chip build">Building</span><h3>A research agent that reads for me</h3><p>Scans X, a set of Substacks and funding news every day, and gives me the highlights worth acting on. The best ideas become builds, and the builds become posts.</p></article>
-    <article><span class="chip test">Exploring</span><h3>Voice agents</h3><p>Testing ElevenLabs for voice: where a voice agent helps a sales team, and where a person on the phone is still the point.</p></article>
+    <article><span class="chip test">Exploring</span><h3>Voice agents</h3><p>Starting with ElevenLabs: where a voice agent could help a sales team, and where a person on the phone is still the point.</p></article>
     <article><span class="chip test">Exploring</span><h3>Video with an AI avatar</h3><p>Testing HeyGen for short videos alongside clips I film myself, to see what's worth automating and what isn't.</p></article>
-    <article><span class="chip test">Exploring</span><h3>Small apps with Codex</h3><p>Building little apps and systems, not all about sales, to keep my hands on the tools and find better ways to work.</p></article>
+    <article><span class="chip live">Built</span><h3>Small apps with Codex</h3><p>A personal CRM for my own relationships, so I follow up and reply to everyone, and a rituals and habits app that works on my phone and the web. Small tools, built to keep my hands on the tech.</p></article>
   </div>
 </section>
 
@@ -207,7 +207,7 @@
     score:{l:'Agents',t:'Scoring agent',w:'Scores fit from 1 to 5 against your ICP, with a one-line reason and the facts behind it.',h:'At UXCam, one agent scored every lead from its profile. Low scores get a helpful resource instead of a meeting.',x:'Scores with no reason. If you can\'t see why, you can\'t correct it.'},
     write:{l:'Agents',t:'Writing agent',w:'Drafts the message in your best rep\'s voice: short, specific, one clear next step.',h:'Trained on your real examples and returns JSON: subject, body, the facts it used and how confident it is.',x:'Opening with a compliment that isn\'t in the data, or the same email for everyone.'},
     check:{l:'Agents',t:'Check agent',w:'A separate check before any person sees it: are the facts real, the rules kept, the tone right?',h:'A different prompt from the writer, with a checklist. Failures go back to the writer once, then to a person.',x:'Letting the writer mark its own homework.'},
-    approve:{l:'People',t:'Approve, edit or reject',w:'A person sees the lead, the score and the draft, and decides. This is where the agent learns.',h:'At UXCam this happened in Slack: SDRs approved or rejected every message, so we could track quality. Every edit and rejection keeps its reason.',x:'Skipping this step. The approval data is what tells you when an agent is ready to run alone.'},
+    approve:{l:'People',t:'Approve, edit or reject',w:'A person sees the lead, the score and the draft, and decides. This is where the agent learns.',h:'At UXCam every lead arrived in one Slack channel the moment it came in: whether it qualified, the details that mattered, and the reply already drafted. We gave feedback right on the message and hit approve to send, so all the feedback sat in one channel to learn from.',x:'Skipping this step. The approval data is what tells you when an agent is ready to run alone.'},
     send:{l:'Act',t:'Send',w:'The approved message goes out from a real person\'s mailbox, or a warmed-up sending domain for outbound.',h:'Inbound replies from the rep. Outbound from separate domains, warmed up first with Lemlist, at low volumes per inbox.',x:'Sending outbound from your main domain, and burning it.'},
     alert:{l:'Act',t:'Alert a rep',w:'The best leads don\'t wait for an email. A rep gets an alert to call now, with the brief.',h:'Fit 4 or 5 triggers an alert with the research and the draft, so the call starts informed.',x:'Alerting on every lead. If everything is urgent, nothing is.'},
     log:{l:'Act',t:'Log in CRM',w:'Everything goes on the record: score, reason, draft, decision, what was sent.',h:'Written back to HubSpot automatically, so reporting and the next agent both see the full history.',x:'Agents working outside the CRM. Then nobody can see what happened.'},

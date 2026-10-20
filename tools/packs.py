@@ -294,7 +294,7 @@ PROMPT_INTRO = [
 
 WORKFLOWS = [
  {"slug": "inbound", "title": "The inbound agent", "sub": "Reply to every lead in minutes, with people approving until it earns the right to send alone.",
-  "proof": "I built this at UXCam with HubSpot and Claude Code: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every message approved or rejected in Slack. First reply went from about a day to 5 minutes.",
+  "proof": "I built this at UXCam with HubSpot and Claude Code, plus our own enrichment: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every lead and drafted reply posted to a Slack channel for feedback and approval. First reply went from about a day to 5 minutes.",
   "stack": [("CRM and trigger", "HubSpot form submission"), ("Agents", "Claude, orchestrated with Claude Code"), ("Approval", "Slack: approve, edit or reject"), ("Booking", "Your calendar link")],
   "steps": [
    ("Trigger", "A form is submitted in HubSpot. The workflow passes the contact and form answers to the orchestrator.", "Contact ID, form answers, page and source"),
@@ -302,7 +302,7 @@ WORKFLOWS = [
    ("Scoring agent", "Scores fit from 1 to 5 against your written ICP, with a one-line reason and the facts behind it.", "Fit score, reason, evidence"),
    ("Writing agent", "Drafts the reply in your best rep's voice from their real examples, using prompt 02 from the Prompt Pack. Returns JSON with the facts it used.", "Subject, body, facts used, confidence"),
    ("Quality check", "A separate check: every fact must be in the enrichment, no banned phrases, length and tone in range. Fails go back to the writer once, then to a person.", "Pass or fail, with reasons"),
-   ("Approval in Slack", "A card with the lead, score, reason and draft. Buttons: approve, edit, reject, and a reason when it's not \"approve\".", "Decision and reason, logged"),
+   ("Approval in Slack", "Every lead lands in one Slack channel as it comes in: whether it qualifies, the details that matter, and the reply already drafted. The team gives feedback right on the message and approves to send. All feedback stays in that one channel.", "Decision and feedback, in one place"),
    ("Send and log", "The approved reply is sent from the rep's mailbox. Everything is logged on the HubSpot contact: score, reason, draft, decision.", "Sent email, CRM timeline"),
    ("Hot lead alert", "Fit 4 or 5 alerts an SDR to call straight away, with the brief in the message.", "Slack alert with call brief"),
    ("Learn", "Every edit and rejection is saved with its reason. Once a week, the best edits become new examples for the writer.", "Better examples, rising approve rate")],

@@ -59,6 +59,7 @@ function doPost(e) {
   try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ok: false, error: 'bad_json'}); }
   if (d.website) return json_({ok: true});              // honeypot: bots fill hidden fields
   if (d.type === 'resource') return resource_(d);
+  if (d.type === 'message') return message_(d);
   var lead = clean_(d);
   if (lead.error) return json_({ok: false, error: lead.error});
 
@@ -288,4 +289,47 @@ function resource_(d) {
   } catch (x) { err = String(x); }
   if (!sent || !hs.ok) notify_('Resource request problem', {email: email, resource: d.resource}, 'email sent: ' + sent + ' ' + err + '\nHubSpot: ' + hs.code + ' ' + hs.body);
   return json_({ok: sent, hubspot: hs.ok, url: url});
+}
+
+/* ---------- Contact form messages ---------- */
+function message_(d) {
+  var email = String(d.email || '').trim().toLowerCase();
+  if (!/^[^@\s<>]+@[^@\s<>]+\.[a-z]{2,}$/i.test(email) || email.length > 120) return json_({ok: false, error: 'email'});
+  function line(v, max) { return String(v || '').replace(/[\r\n\t<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max); }
+  var first = line(d.firstname, 40), company = line(d.company, 80);
+  var msg = String(d.message || '').replace(/\r/g, '').trim().slice(0, 2000);
+  if (!first) return json_({ok: false, error: 'name'});
+  if (msg.length < 5) return json_({ok: false, error: 'message'});
+  if (d.consent !== true) return json_({ok: false, error: 'consent'});
+
+  var lock = LockService.getScriptLock(); lock.waitLock(10000);
+  try {
+    var cache = CacheService.getScriptCache(), key = 'msg_' + Utilities.base64EncodeWebSafe(email);
+    var n = +(cache.get(key) || 0);
+    if (n >= 3) return json_({ok: true, repeat: true});            // max 3 messages per address per hour
+    cache.put(key, String(n + 1), 3600);
+    var props = PropertiesService.getScriptProperties();
+    var day = Utilities.formatDate(new Date(), 'Europe/Berlin', 'yyyy-MM-dd');
+    var count = props.getProperty('day') === day ? +props.getProperty('count') : 0;
+    if (count >= CFG.DAILY_MAX) return json_({ok: false, error: 'busy'});
+    props.setProperties({day: day, count: String(count + 1)});
+  } finally { lock.releaseLock(); }
+
+  var src = line(d.source, 120) || 'direct';
+  var hs = {ok: false, code: 0, body: ''};
+  try {
+    var r = UrlFetchApp.fetch(CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      payload: JSON.stringify({
+        fields: [['firstname', first], ['email', email], ['company', company], ['message', msg]].map(function (f) { return {objectTypeId: '0-1', name: f[0], value: f[1]}; }),
+        context: {pageUri: line(d.page, 200) || CFG.SITE + '/contact.html', pageName: 'Send a message'},
+        legalConsentOptions: {consent: {consentToProcess: true, text: 'I agree to Harry James Coburn storing my details to reply to my message.', communications: []}}})});
+    hs = {ok: r.getResponseCode() < 300, code: r.getResponseCode(), body: r.getContentText().slice(0, 300)};
+  } catch (x) { hs.body = String(x); }
+
+  // Only Harry receives this email, so the visitor's text never goes to anyone else.
+  var body = 'New message from harryjamescoburn.com\n\nFrom: ' + first + (company ? ' (' + company + ')' : '') + ' <' + email + '>\n' +
+    'Source: ' + src + '\nHubSpot: ' + (hs.ok ? 'saved' : 'NOT saved (' + hs.code + ')') + '\n\n' + msg + '\n\nReply to this email to answer them directly.';
+  var sent = false;
+  try { GmailApp.sendEmail(CFG.NOTIFY, 'Website message from ' + first + (company ? ', ' + company : ''), body, {name: 'harryjamescoburn.com', replyTo: email}); sent = true; } catch (x) {}
+  return json_({ok: sent || hs.ok, hubspot: hs.ok});
 }
