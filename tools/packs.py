@@ -294,8 +294,8 @@ PROMPT_INTRO = [
 
 WORKFLOWS = [
  {"slug": "inbound", "title": "The inbound agent", "sub": "Reply to every lead in minutes, with people approving until it earns the right to send alone.",
-  "proof": "I built this at UXCam with HubSpot and Claude Code, plus our own enrichment: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every lead and drafted reply posted to a Slack channel for feedback and approval. First reply went from about a day to 5 minutes.",
-  "stack": [("CRM and trigger", "HubSpot form submission"), ("Agents", "Claude, orchestrated with Claude Code"), ("Approval", "Slack: approve, edit or reject"), ("Booking", "Your calendar link")],
+  "proof": "I built this at UXCam with HubSpot and Claude Code, with Apollo, Lusha and LinkedIn Sales Navigator for enrichment: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every lead and drafted reply posted to a Slack channel for feedback and approval. First reply went from about a day to 5 minutes.",
+  "stack": [("CRM and trigger", "HubSpot form submission"), ("Enrichment", "Apollo, Lusha and LinkedIn Sales Navigator"), ("Agents", "Claude, orchestrated with Claude Code"), ("Approval", "A Slack channel: feedback and approve to send"), ("Booking", "Your calendar link")],
   "steps": [
    ("Trigger", "A form is submitted in HubSpot. The workflow passes the contact and form answers to the orchestrator.", "Contact ID, form answers, page and source"),
    ("Enrichment agent", "Researches the company and person: size, funding, what they sell, tech, hiring, recent news. Every fact keeps its source.", "Enrichment record with sources"),

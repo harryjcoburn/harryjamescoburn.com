@@ -95,7 +95,7 @@ def nav(current):
              f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if POSTS else ""}{link("about.html", "About")}{link("contact.html", "Contact")}')
     mobile = (f'<details class="mnav"><summary aria-label="Menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></summary>'
               f'<div class="mnav-panel">{items}{link("scorecard.html", "Free scorecard")}</div></details>')
-    return (f'<nav class="nav" aria-label="Main"><a class="name" href="./">{MARK}<span>Harry James Coburn</span></a>'
+    return (f'<nav class="nav" aria-label="Main"><a class="name" href="./" aria-label="Harry James Coburn, home">{MARK}<span>Harry James Coburn</span></a>'
             f'<span class="links">{items}{mobile}'
             f'<a class="btn" href="{{{{BOOK}}}}">Book a call</a></span></nav>')
 
@@ -105,7 +105,7 @@ CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inn
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
   <p>A short intro call. You leave with at least one thing to fix this month, whether we work together or not.</p>
   <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><span class="mail">{{EMAIL}}</span></div>
-  <div class="alt"><a href="contact.html">Or send a message</a><a href="speaking.html">Invite me to speak or on a podcast</a></div>
+  <div class="alt"><a href="contact.html">Or send a message</a><!-- WA --><a href="https://wa.me/{{WA}}?text=Hi%20Harry%2C%20I%20found%20you%20on%20harryjamescoburn.com" data-umami-event="WhatsApp">WhatsApp me</a><!-- /WA --><a href="speaking.html">Invite me to speak or on a podcast</a></div>
 </div></section>"""
 
 NEWSLETTER = """<section class="sec news" id="newsletter" aria-labelledby="h-news">
@@ -338,7 +338,9 @@ def privacy_html():
 <h2>Booking a call</h2>
 <p>The “Book a call” buttons take you to my booking page on Cal.com (Cal.com, Inc.). If you book, Cal.com processes the name, email address and answers you enter, adds the meeting to my Google Calendar (Google Ireland Ltd) and creates a Google Meet link. I use them only to hold the call and follow up (Art. 6(1)(b) GDPR). Cal.com's and Google's privacy policies apply to that processing.</p>
 <p>The newsletter sign-up box is provided by Substack, Inc. It loads from Substack only on pages that show it. If you subscribe, Substack processes your email address to send you the newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe from any issue. Substack's privacy policy applies.</p>
-{hubspot_privacy()}<h2>When you message or email me</h2>
+{hubspot_privacy()}<h2>WhatsApp</h2>
+<p>The WhatsApp links only open a chat with my business number. Nothing is sent until you send a message yourself. If you do, WhatsApp (WhatsApp Ireland Ltd, part of Meta) processes it under its own privacy policy, and I use your number and message only to reply (Art. 6(1)(b) and (f) GDPR).</p>
+<h2>When you message or email me</h2>
 <p>If you use the message form, it sends your name, email, company and message to the same script in my Google Workspace account, which emails it to me and records it in HubSpot. If you contact me by message or email, I use your details only to reply and to discuss working together (Art. 6(1)(b) and (f) GDPR). I keep them only as long as needed for that, or as the law requires.</p>
 <h2>Your rights</h2>
 <p>You can ask for access to, correction or deletion of your data, restriction of or objection to its processing, and data portability (Art. 15 to 21 GDPR). You can also complain to a data protection authority, such as the Berlin Commissioner for Data Protection and Freedom of Information.</p>"""
