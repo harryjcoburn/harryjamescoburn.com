@@ -141,7 +141,7 @@ def kit_page():
 <section class="page">
  <div class="top">{MARK}<span class="mono">Speaking kit</span></div>
  <div><div class="mono">Talks · panels · podcasts · portfolio workshops</div><h1>Harry James <em>Coburn.</em></h1><p class="ctx">Commercial strategy in the age of AI agents. Practical, honest about what fails, and built on real numbers.</p></div>
- <div class="bio"><img class="photo" src="../../assets/photos/hero.jpg" alt="Harry James Coburn"><div class="stack"><div class="mono">Speaker bio</div><p>{escape(bio)}</p><p class="note">Feel free to use this bio and photo. For a high-resolution photo, email harry@harryjamescoburn.com.</p></div></div>
+ <div class="bio"><img class="photo" src="../../assets/photos/speaking.jpg" alt="Harry James Coburn"><div class="stack"><div class="mono">Speaker bio</div><p>{escape(bio)}</p><p class="note">Feel free to use this bio and photo. For a high-resolution photo, email harry@harryjamescoburn.com.</p></div></div>
  <div><h2>What I talk about</h2><div class="cols3">{t}</div></div>
  <div><h2>Formats</h2><div class="cols">{f}</div></div>
  <div class="after"><h2>Invite me</h2><p>Email harry@harryjamescoburn.com with the date, audience and format.</p></div>
