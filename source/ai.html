@@ -227,7 +227,7 @@
       var sc=document.createElement('script');sc.src='https://unpkg.com/@elevenlabs/convai-widget-embed';sc.async=true;document.body.appendChild(sc);
       try{if(window.umami)umami.track('Open voice agent')}catch(e){}
     }
-    if(note)note.textContent='It\'s opening in the bottom-right corner. Press "Talk to my AI" there to start.';
+    if(note)note.textContent='It\'s opening in the bottom-right corner. Press "Start a call" to talk, or the chat icon to type.';
     document.getElementById('talk').scrollIntoView({behavior:'smooth',block:'center'});
   }
   document.getElementById('talkBtn').addEventListener('click',talk);
