@@ -29,6 +29,27 @@
 </form>
 </div>
 
+<section class="sc-how" id="how" aria-labelledby="h-how">
+  <div class="sc-how-in">
+    <div class="sc-how-l"><div class="label mono">How it works</div><h2 id="h-how">Two minutes now. A clear first move for <em>Monday.</em></h2></div>
+    <ol class="sc-steps">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><b>Answer nine quick screens</b><span>The eight areas I score in a paid GTM Diagnostic, from pitch to AI.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/></svg><b>See your engine</b><span>Your score out of 5, and where each area stands.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg><b>Unlock your report</b><span>Your three first moves and where I'd start, on the page and in your inbox.</span></li>
+    </ol>
+  </div>
+  <div class="backers sc-backers">
+    <p>Built sales inside companies backed by</p>
+    <div class="logos">
+      <img src="assets/logos/headline.svg" alt="Headline" width="120" height="22" loading="lazy">
+      <img src="assets/logos/plural.svg" alt="Plural" width="90" height="22" loading="lazy">
+      <img src="assets/logos/concentric.svg" alt="Concentric" width="130" height="22" loading="lazy">
+      <img src="assets/logos/seedcamp.svg" alt="Seedcamp" width="120" height="22" loading="lazy">
+      <img class="tall" src="assets/logos/playfair.svg" alt="Playfair Capital" width="90" height="28" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <section id="result" class="result r2" hidden aria-live="polite">
   <div class="r2-head">
     <figure class="eng eng-lg" aria-hidden="true">
@@ -98,6 +119,12 @@
   var LEVEL={1:'Struggling',2:'Not sure',3:'Getting there',5:'Strong'};
 
   // Step 1 asks both "about you" questions on one screen. Then the eight areas, in two chapters.
+  var OIC={Seed:'<path d="M12 21v-8"/><path d="M12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/>',
+    'Series A':'<path d="M5 19L19 5"/><path d="M10 5h9v9"/>','Series B':'<path d="M5 20V13"/><path d="M12 20V8"/><path d="M19 20V4"/>',
+    'Series C+':'<path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-5h6v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>',
+    launch:'<path d="M12 3c3 2 5 6 4 11l-4 3-4-3c-1-5 1-9 4-11z"/><circle cx="12" cy="10" r="1.6"/><path d="M8 14l-3 3 1 3 3-2M16 14l3 3-1 3-3-2"/>',
+    stall:'<path d="M3 14l5-5 4 4 3-3"/><path d="M15 10h6"/>',founder:'<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+    ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>'};
   var STAGES=[['Seed','Pre-seed or Seed'],['Series A','Series A'],['Series B','Series B'],['Series C+','Series C or later']];
   var FOCUS=[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Sales still runs through the founder'],['ai','Making AI actually work in sales']];
   var A=[
@@ -147,10 +174,11 @@
   function render(){
     var h;
     if(i===0){
-      h='<fieldset><legend><span class="sc-qhead">'+ico('stage')+'<span class="mono">Two quick ones first</span></span><span class="sc-q">Where are you now?</span></legend>'+
-        '<div class="chips2" role="group" aria-label="Stage">'+STAGES.map(function(o){var on=ans.stage===o[0];return '<button type="button" class="chip2'+(on?' on':'')+'" data-g="stage" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+esc(o[1])+'</button>';}).join('')+'</div>'+
-        '<span class="sc-sub">And what\'s on your mind most?</span>'+
-        '<div class="tiles">'+FOCUS.map(function(o){var on=ans.sit===o[0];return '<button type="button" class="tile'+(on?' on':'')+'" data-g="sit" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+CHECK+'<span class="tt">'+esc(o[1])+'</span></button>';}).join('')+'</div></fieldset>';
+      function grp(n,k,title,opts,cls){
+        return '<div class="ab'+(ans[k]?' ok':'')+'" data-grp="'+k+'"><span class="ab-q"><span class="ab-n">'+(ans[k]?CHECK:n)+'</span>'+title+'</span><div class="tiles ab-'+cls+'">'+
+          opts.map(function(o){var on=ans[k]===o[0];return '<button type="button" class="tile'+(on?' on':'')+'" data-g="'+k+'" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+CHECK+'<span class="oi">'+svg(OIC[o[0]],'')+'</span><span class="tt">'+esc(o[1])+'</span></button>';}).join('')+'</div></div>';}
+      h='<fieldset><legend><span class="sc-qhead">'+ico('stage')+'<span class="mono">Two quick ones first</span></span></legend>'+
+        grp('1','stage','What stage are you at?',STAGES,'stage')+grp('2','sit','What\'s on your mind most?',FOCUS,'focus')+'</fieldset>';
     }else{
       var s=A[i-1];
       h='<fieldset><legend><span class="sc-qhead">'+ico(s.k)+'<span class="mono">'+esc(s.n)+'</span></span><span class="sc-q">'+esc(s.q)+'</span></legend><div class="tiles lv">';
@@ -171,7 +199,11 @@
     if(!started){started=true;try{if(window.umami)umami.track('Scorecard started')}catch(x){}}
     if(i===0){var g=b.getAttribute('data-g');ans[g]=v;
       card.querySelectorAll('[data-g="'+g+'"]').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
-      if(ans.stage&&ans.sit)next();return;}
+      var gb=card.querySelector('[data-grp="'+g+'"]');gb.classList.add('ok');gb.querySelector('.ab-n').innerHTML=CHECK;
+      if(ans.stage&&ans.sit){next();return;}
+      var miss=card.querySelector('[data-grp="'+(ans.stage?'sit':'stage')+'"]');miss.classList.add('need');
+      note.textContent=ans.stage?'Now pick what\'s on your mind most.':'Now pick your stage above.';
+      if(miss.getBoundingClientRect().top<0)miss.scrollIntoView({behavior:'smooth',block:'center'});return;}
     var s=A[i-1];ans[s.k]=+v;
     card.querySelectorAll('[data-v]').forEach(function(x){x.classList.toggle('on',x===b);});
     paintRing($('ring'),s.k);$('ring-n').textContent=scored();next();
@@ -214,7 +246,7 @@
     // No report form configured: show everything.
     if(!(HS_PORTAL&&HS_FORM)&&!REPORT_URL){unlock();rep.hidden=true;}else{lock.classList.add('locked');rep.hidden=false;}
     try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
-    quiz.hidden=true;res.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+    quiz.hidden=true;$('how').hidden=true;res.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
     var m=$('r-mark');m.style.left='0%';requestAnimationFrame(function(){requestAnimationFrame(function(){m.style.left=((avg-1)/4*100)+'%';});});
   }
   function unlock(){lock.classList.remove('locked');lock.classList.add('open');$('lock-h').textContent='Your three first moves.';$('lock-p').textContent='Start with the first. Each one moves a lever you can measure.';}
