@@ -27,47 +27,71 @@
 <header class="wrap"><nav class="nav" aria-label="Main"><a class="name" href="./" aria-label="Harry James Coburn, home"><svg class="mark" viewBox="0 0 70 32" width="42" height="19" aria-hidden="true" focusable="false"><rect width="6" height="32" fill="currentColor"/><rect x="14" width="6" height="32" fill="currentColor"/><rect x="6" y="13" width="8" height="6" fill="currentColor"/><path d="M35 0V23A6 6 0 0 1 29 29H26" fill="none" stroke="currentColor" stroke-width="6"/><path d="M66.19 6.81A13 13 0 1 0 66.19 25.19" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="57" cy="16" r="3.8" class="stn"/></svg><span>Harry James Coburn</span></a><span class="links"><a href="services.html">Services</a><a href="work.html">Work</a><a href="engine.html">The Engine</a><a href="ideas.html">Ideas</a><a href="ai.html">AI</a><a href="about.html">About</a><a href="contact.html">Contact</a><details class="mnav"><summary aria-label="Menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></summary><div class="mnav-panel"><a href="services.html">Services</a><a href="work.html">Work</a><a href="engine.html">The Engine</a><a href="ideas.html">Ideas</a><a href="ai.html">AI</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="scorecard.html" aria-current="page">Free scorecard</a></div></details><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book a call</a></span></nav></header>
 <main id="top" class="wrap">
 
-<div class="sc-layout">
-<div class="page-head sc-head">
-  <div class="label mono">Free · 2 minutes</div>
-  <h1>Score your <em>sales engine.</em></h1>
-  <p>Ten taps across the eight areas I score in a paid Diagnostic. You get your score, your three weakest areas and a first move for each.</p>
-</div>
+<div class="sc-layout" id="quiz">
+<aside class="sc-side">
+  <div class="page-head sc-head">
+    <div class="label mono">Free · 2 minutes</div>
+    <h1>Score your <em>sales engine.</em></h1>
+    <p>The eight areas I score in a paid Diagnostic. Watch your engine build as you answer.</p>
+  </div>
+  <figure class="eng" aria-hidden="true">
+    <svg viewBox="0 0 240 240" id="ring"></svg>
+    <figcaption class="eng-mid"><b id="ring-n">0</b><span id="ring-l">of 8 scored</span></figcaption>
+  </figure>
+</aside>
 
 <form id="sc" class="sc2 sc3" novalidate aria-live="polite">
   <div class="sc-top">
     <button type="button" class="sc-back" id="back" hidden>← Back</button>
-    <span class="mono" id="step">1 / 10</span>
+    <span class="mono sc-chap" id="chap">About you</span>
+    <span class="mono" id="step">1 / 9</span>
   </div>
   <div class="sc-seg" id="seg" aria-hidden="true"></div>
   <div id="card" class="sc-card"></div>
-  <p class="small-note sc-note">Nothing leaves your browser unless you ask for the report.</p>
+  <p class="small-note sc-note" id="note">Nothing leaves your browser unless you ask for the report.</p>
 </form>
 </div>
 
-<section id="result" class="result" hidden aria-live="polite">
-  <div class="res-head">
-    <div><span class="mono">Your score</span><b id="r-score">0.0</b><span class="of">out of 5</span></div>
-    <div><span class="mono" id="r-band-label">Where you are</span><h2 id="r-band"></h2><p id="r-band-text"></p></div>
-    <div class="sc-scale" aria-hidden="true"><span class="sc-scale-bar"><i id="r-mark"></i></span><span class="sc-scale-l"><span>Uphill</span><span>The crest</span><span>Momentum</span></span></div>
-  </div>
-  <form id="rep" class="rep rep-top" novalidate hidden>
-    <div class="rep-copy"><span class="mono">Free report by email</span><h3>Get your full report.</h3><p>All eight areas, your three first moves and what I'd do first, in one email. I read every one myself.</p></div>
-    <div class="rep-fields">
-      <label><span>First name</span><input name="firstname" autocomplete="given-name" required></label>
-      <label><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
-      <label><span>Company</span><input name="company" autocomplete="organization"></label>
-      <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
-      <label class="rep-ok"><input type="checkbox" name="consent" required><span>Send me the report and an occasional follow-up from Harry. Unsubscribe any time. <a href="privacy.html">Privacy</a></span></label>
-      <div class="sc-actions"><button class="btn" type="submit">Email me the report <span class="arr">→</span></button><span id="rep-msg" class="small-note" role="status"></span></div>
+<section id="result" class="result r2" hidden aria-live="polite">
+  <div class="r2-head">
+    <figure class="eng eng-lg" aria-hidden="true">
+      <svg viewBox="0 0 240 240" id="ring2"></svg>
+      <figcaption class="eng-mid"><b id="r-score">0.0</b><span>out of 5</span></figcaption>
+    </figure>
+    <div class="r2-sum">
+      <span class="mono" id="r-band-label">Where you are</span>
+      <h2 id="r-band"></h2>
+      <p id="r-band-text"></p>
+      <div class="sc-scale" aria-hidden="true"><span class="sc-scale-bar"><i id="r-mark"></i></span><span class="sc-scale-l"><span>Uphill</span><span>The crest</span><span>Momentum</span></span></div>
+      <a class="r2-jump" href="#lock">See your three first moves <span class="arr">↓</span></a>
     </div>
-  </form>
-  <h3 class="res-sub">Your three first moves</h3>
-  <div class="moves" id="r-moves"></div>
-  <h3 class="res-sub">All eight areas</h3>
-  <div class="bars" id="r-bars"></div>
+    <div class="r2-areas"><span class="mono">All eight areas</span><ul id="r-bars"></ul></div>
+  </div>
+
+  <div class="r2-lock" id="lock">
+    <div class="r2-lock-head">
+      <span class="mono">Your full report</span>
+      <h3 id="lock-h">I've found three first moves for you.</h3>
+      <p id="lock-p">Your three weakest areas, the first move for each and where I'd start, for your stage and goal.</p>
+    </div>
+    <div class="moves" id="r-moves"></div>
+    <div class="r2-rec" id="r-rec-wrap"><span class="mono">Where I'd start</span><p id="r-rec"></p></div>
+
+    <form id="rep" class="r2-form" novalidate>
+      <div class="r2-fields">
+        <label><span>First name</span><input name="firstname" autocomplete="given-name" required></label>
+        <label><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
+        <label><span>Company <em>optional</em></span><input name="company" autocomplete="organization"></label>
+        <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <label class="rep-ok"><input type="checkbox" name="consent" required><span>Send me the report and an occasional follow-up from Harry. Unsubscribe any time. <a href="privacy.html">Privacy</a></span></label>
+      <div class="sc-actions"><button class="btn" type="submit">Unlock my report <span class="arr">→</span></button><span class="small-note r2-free">Free. It opens here and lands in your inbox. I read every one.</span></div>
+      <p id="rep-msg" class="small-note" role="status"></p>
+    </form>
+  </div>
+
   <div class="also res-cta">
-    <p id="r-rec"></p>
+    <p>Want to talk it through? A short call, and you leave with at least one thing to fix this month.</p>
     <div class="cta"><a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a><a class="ghost" id="r-mail" href="#" target="_blank" rel="noopener" data-umami-event="Email scorecard results">Email my results to Harry</a></div>
   </div>
   <p><button class="ghost linkbtn" type="button" id="again">Start again</button></p>
@@ -88,11 +112,26 @@
 <script>
 (function(){
   var EMAIL='harry@harryjamescoburn.com',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_HOST='api-eu1.hsforms.com',HS_SUB='3921244406',REPORT_URL='https://script.google.com/macros/s/AKfycbxX6JbUwwLp0VuHaJaQ97TAWxpq8hh86QeIDhaLHsKWwiexuMZaCnVT0o_7xQvDyFf5/exec';
-  // Context questions, then the eight areas. Area values: 1, 3, 5, or 2 for "not sure" (same scale as the report script).
-  var CTX=[
-    {k:'stage',label:'About you',q:'What stage are you at?',o:[['Seed','Pre-seed or Seed'],['Series A','Series A'],['Series B','Series B'],['Series C+','Series C or later']]},
-    {k:'sit',label:'About you',q:'What\'s on your mind most?',o:[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Sales still runs through the founder'],['ai','Making AI actually work in sales']]}
-  ];
+  var IC={stage:'<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>',
+    pitch:'<path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/>',icp:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/>',
+    price:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.4"/>',funnel:'<path d="M3 4h18l-7 9v6l-4 2v-8z"/>',
+    team:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2a5 5 0 0 1 5 4.8"/>',
+    comp:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    data:'<ellipse cx="12" cy="5.5" rx="8" ry="2.8"/><path d="M4 5.5v13c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8v-13"/><path d="M4 12c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8"/>',
+    ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>',
+    lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'};
+  var OI={1:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
+    3:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" class="half"/>',
+    5:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>'};
+  function svg(p,c){return '<svg class="'+(c||'ic')+'" viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';}
+  function ico(k,c){return svg(IC[k],c);}
+  function oico(v,l){return '<span class="oi lv'+l+'" aria-hidden="true">'+svg(OI[v],'')+'</span>';}
+  var CHECK=svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>','ck');
+  var LEVEL={1:'Struggling',2:'Not sure',3:'Getting there',5:'Strong'};
+
+  // Step 1 asks both "about you" questions on one screen. Then the eight areas, in two chapters.
+  var STAGES=[['Seed','Pre-seed or Seed'],['Series A','Series A'],['Series B','Series B'],['Series C+','Series C or later']];
+  var FOCUS=[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Sales still runs through the founder'],['ai','Making AI actually work in sales']];
   var A=[
     {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',q:'Can everyone say who you\'re for, in one line?',
      o:['No. Every rep pitches it differently.','Our best people can. The rest drift.','Yes. One pitch, and the site, deck and demo match.'],
@@ -119,91 +158,98 @@
      o:['Hours or days. AI is people using ChatGPT alone.','Some tools, not joined up. Varies by person.','Minutes, by agents trained on our data and checked.'],
      m:'Reply to every inbound lead within five minutes, with an agent trained on your past leads and checked against your standard.'}
   ];
-  var IC={stage:'<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>',sit:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
-    pitch:'<path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/>',icp:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/>',
-    price:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.4"/>',funnel:'<path d="M3 4h18l-7 9v6l-4 2v-8z"/>',
-    team:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2a5 5 0 0 1 5 4.8"/>',
-    comp:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
-    data:'<ellipse cx="12" cy="5.5" rx="8" ry="2.8"/><path d="M4 5.5v13c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8v-13"/><path d="M4 12c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8"/>',
-    ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>'};
-  var OI={Seed:'<path d="M12 21v-8"/><path d="M12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/>',
-    'Series A':'<path d="M5 19L19 5"/><path d="M10 5h9v9"/>',
-    'Series B':'<path d="M5 20V13"/><path d="M12 20V8"/><path d="M19 20V4"/>',
-    'Series C+':'<path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-5h6v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>',
-    launch:'<path d="M12 3c3 2 5 6 4 11l-4 3-4-3c-1-5 1-9 4-11z"/><circle cx="12" cy="10" r="1.6"/><path d="M8 14l-3 3 1 3 3-2M16 14l3 3-1 3-3-2"/>',
-    stall:'<path d="M3 14l5-5 4 4 3-3"/><path d="M15 10h6"/>',
-    founder:'<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
-    ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>',
-    1:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
-    3:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" class="half"/>',
-    5:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>'};
-  function oico(v,l){return '<span class="oi'+(l?' lv'+l:'')+'" aria-hidden="true"><svg viewBox="0 0 24 24">'+OI[v]+'</svg></span>';}
-  function ico(k,c){return '<svg class="'+(c||'ic')+'" viewBox="0 0 24 24" aria-hidden="true">'+IC[k]+'</svg>';}
-  var CHECK='<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  var vals=[1,3,5],steps=CTX.concat(A),ans={},i=0,N=steps.length;
-  var card=document.getElementById('card'),stepEl=document.getElementById('step'),prog=document.getElementById('prog'),
-      back=document.getElementById('back'),form=document.getElementById('sc'),res=document.getElementById('result'),
-      head=document.querySelector('.sc-head'),lay=document.querySelector('.sc-layout'),seg=document.getElementById('seg');
-  seg.innerHTML=steps.map(function(){return '<i></i>';}).join('');var segs=seg.querySelectorAll('i');
-  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  var vals=[1,3,5],ans={},i=0,N=A.length+1,started=false;
+  var $=function(id){return document.getElementById(id);};
+  var card=$('card'),stepEl=$('step'),chap=$('chap'),seg=$('seg'),back=$('back'),form=$('sc'),res=$('result'),quiz=$('quiz'),note=$('note');
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+  seg.innerHTML=Array(N+1).join('<i></i>');var segs=seg.querySelectorAll('i');
+
+  // The engine ring: eight segments, one per area, filling in as you answer.
+  function arc(cx,cy,r1,r2,a0,a1){function p(r,a){a=(a-90)*Math.PI/180;return (cx+r*Math.cos(a)).toFixed(2)+' '+(cy+r*Math.sin(a)).toFixed(2);}
+    return 'M'+p(r2,a0)+' A'+r2+' '+r2+' 0 0 1 '+p(r2,a1)+' L'+p(r1,a1)+' A'+r1+' '+r1+' 0 0 0 '+p(r1,a0)+' Z';}
+  function drawRing(el){var h='';A.forEach(function(a,j){var a0=j*45+2,a1=(j+1)*45-2,m=(a0+a1)/2,r=(m-90)*Math.PI/180,x=120+94*Math.cos(r),y=120+94*Math.sin(r);
+    h+='<g class="rs" data-k="'+a.k+'"><path class="rp" d="'+arc(120,120,72,116,a0,a1)+'"/><g class="ri" transform="translate('+(x-9).toFixed(1)+' '+(y-9).toFixed(1)+') scale(.75)">'+IC[a.k]+'</g></g>';});
+    el.innerHTML=h;}
+  drawRing($('ring'));drawRing($('ring2'));
+  function paintRing(el,cur){el.querySelectorAll('.rs').forEach(function(g){var k=g.getAttribute('data-k'),v=ans[k];
+    g.setAttribute('class','rs'+(v?' v'+v:'')+(k===cur?' cur':''));});}
+  function scored(){return A.filter(function(a){return ans[a.k]!=null;}).length;}
+
+  function chapter(){return i===0?'About you':(i<=4?'Win · '+i+' of 4':'Grow · '+(i-4)+' of 4');}
   function render(){
-    var s=steps[i],isArea=i>=CTX.length,h='<fieldset><legend><span class="sc-qhead">'+ico(s.k)+'<span class="mono">'+(isArea?(i-CTX.length+1)+' of 8 · '+esc(s.n):s.label)+'</span></span><span class="sc-q">'+esc(s.q)+'</span></legend><div class="tiles'+(isArea?' lv':'')+'">';
-    var opts=isArea?s.o.map(function(t,j){return [vals[j],t];}):s.o;
-    opts.forEach(function(o,j){
-      var on=String(ans[s.k])===String(o[0]);
-      h+='<button type="button" class="tile'+(on?' on':'')+'" data-v="'+esc(o[0])+'" aria-pressed="'+on+'"><span class="kb">'+(j+1)+'</span>'+
-        (isArea?oico(o[0],j+1):(OI[o[0]]?oico(o[0]):''))+'<span class="tt">'+esc(o[1])+'</span></button>';
-    });
-    h+='</div>'+(isArea?'<button type="button" class="tile-unsure'+(ans[s.k]===2?' on':'')+'" data-v="2">Not sure</button>':'')+'</fieldset>';
+    var h;
+    if(i===0){
+      h='<fieldset><legend><span class="sc-qhead">'+ico('stage')+'<span class="mono">Two quick ones first</span></span><span class="sc-q">Where are you now?</span></legend>'+
+        '<div class="chips2" role="group" aria-label="Stage">'+STAGES.map(function(o){var on=ans.stage===o[0];return '<button type="button" class="chip2'+(on?' on':'')+'" data-g="stage" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+esc(o[1])+'</button>';}).join('')+'</div>'+
+        '<span class="sc-sub">And what\'s on your mind most?</span>'+
+        '<div class="tiles">'+FOCUS.map(function(o){var on=ans.sit===o[0];return '<button type="button" class="tile'+(on?' on':'')+'" data-g="sit" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+CHECK+'<span class="tt">'+esc(o[1])+'</span></button>';}).join('')+'</div></fieldset>';
+    }else{
+      var s=A[i-1];
+      h='<fieldset><legend><span class="sc-qhead">'+ico(s.k)+'<span class="mono">'+esc(s.n)+'</span></span><span class="sc-q">'+esc(s.q)+'</span></legend><div class="tiles lv">';
+      s.o.forEach(function(t,j){var v=vals[j],on=ans[s.k]===v;
+        h+='<button type="button" class="tile'+(on?' on':'')+'" data-v="'+v+'" aria-pressed="'+on+'">'+CHECK+oico(v,j+1)+'<span class="tt">'+esc(t)+'</span></button>';});
+      h+='</div><button type="button" class="tile-unsure'+(ans[s.k]===2?' on':'')+'" data-v="2">Not sure</button></fieldset>';
+    }
     card.innerHTML=h;card.classList.remove('in');void card.offsetWidth;card.classList.add('in');
-    stepEl.textContent=(i+1)+' / '+N;back.hidden=i===0;
+    stepEl.textContent=(i+1)+' / '+N;chap.textContent=chapter();back.hidden=i===0;
     segs.forEach(function(g,j){g.className=j<i?'d':(j===i?'n':'');});
+    note.textContent=i===N-1?'Last one. Your results are next.':(i===5?'Halfway. The Win side is done.':'Nothing leaves your browser unless you ask for the report.');
+    $('ring-n').textContent=scored();paintRing($('ring'),i>0?A[i-1].k:null);
     var first=card.querySelector('.tile.on')||card.querySelector('.tile');if(first&&i>0)first.focus({preventScroll:true});
   }
-  function pick(v){
-    var s=steps[i];ans[s.k]=i>=CTX.length?+v:v;
-    if(i===0){try{if(window.umami)umami.track('Scorecard started')}catch(e){}}
-    card.querySelectorAll('[data-v]').forEach(function(b){var on=b.getAttribute('data-v')===String(v);b.classList.toggle('on',on);});
-    setTimeout(function(){if(i<N-1){i++;render();}else{finish();}},150);
-  }
-  card.addEventListener('click',function(e){var b=e.target.closest('[data-v]');if(b)pick(b.getAttribute('data-v'));});
+  function next(){setTimeout(function(){if(i<N-1){i++;render();}else finish();},170);}
+  card.addEventListener('click',function(e){
+    var b=e.target.closest('[data-v]');if(!b)return;var v=b.getAttribute('data-v');
+    if(!started){started=true;try{if(window.umami)umami.track('Scorecard started')}catch(x){}}
+    if(i===0){var g=b.getAttribute('data-g');ans[g]=v;
+      card.querySelectorAll('[data-g="'+g+'"]').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
+      if(ans.stage&&ans.sit)next();return;}
+    var s=A[i-1];ans[s.k]=+v;
+    card.querySelectorAll('[data-v]').forEach(function(x){x.classList.toggle('on',x===b);});
+    paintRing($('ring'),s.k);$('ring-n').textContent=scored();next();
+  });
   back.addEventListener('click',function(){if(i>0){i--;render();}});
   document.addEventListener('keydown',function(e){
-    if(form.hidden||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;
-    var n=+e.key;if(n>=1&&n<=4){var bs=card.querySelectorAll('[data-v]');if(bs[n-1])pick(bs[n-1].getAttribute('data-v'));}
+    if(quiz.hidden||i===0||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;
+    var n=+e.key;if(n>=1&&n<=4){var bs=card.querySelectorAll('[data-v]');if(bs[n-1])bs[n-1].click();}
     else if(e.key==='Backspace'&&i>0){e.preventDefault();i--;render();}
   });
-  function val(n){return ans[n]==null?null:String(ans[n]);}
-  var rep=document.getElementById('rep'),repMsg=document.getElementById('rep-msg'),last=null;
+
+  var rep=$('rep'),repMsg=$('rep-msg'),lock=$('lock'),last=null;
   function finish(){
     var scores=A.map(function(a){return {a:a,s:ans[a.k]};});
     var avg=scores.reduce(function(t,x){return t+x.s;},0)/scores.length;
-    document.getElementById('r-score').textContent=avg.toFixed(1);
+    $('r-score').textContent=avg.toFixed(1);
     var band,text;
     if(avg<2.2){band='Running on heroics';text='Revenue depends on a few people working very hard. The good news: the first fixes are usually fast and visible.';}
     else if(avg<3.7){band='Works, but depends on people';text='The engine runs, but it leaks and it won\'t scale on its own. This is where the biggest gains usually are.';}
     else{band='Ready to scale';text='The basics are in place. The question now is how far AI and new markets can take it.';}
-    document.getElementById('r-band').textContent=band;document.getElementById('r-band-text').textContent=text;
+    $('r-band').textContent=band;$('r-band-text').textContent=text;
     var sorted=scores.slice().sort(function(x,y){return x.s-y.s;});
-    document.getElementById('r-bars').innerHTML=scores.map(function(x){return '<div class="bar"><span class="bn">'+ico(x.a.k)+x.a.n+'</span><span class="bt"><span class="fill s'+x.s+'" style="width:'+(x.s/5*100)+'%"></span></span><span class="bv">'+(x.s===2?'?':x.s)+'</span></div>';}).join('');
-    document.getElementById('r-moves').innerHTML=sorted.slice(0,3).map(function(x){return '<div class="move"><span class="mono">'+x.a.lever+'</span><h4>'+x.a.n+'</h4><p>'+x.a.m+'</p></div>';}).join('');
-    var sit=val('sit'),rec;
-    if(avg<2.6){rec='<b>Where I\'d start:</b> a GTM Diagnostic. We\'d stop the bleeding in your weakest areas within 30 days, then plan the engine.';}
-    else if(avg<3.7){rec='<b>Where I\'d start:</b> a GTM Diagnostic, then a Commercial Systems Build for the areas holding you back.';}
-    else{rec='<b>Where I\'d start:</b> a GTM Teardown to find the next level, or an advisory role while you scale.';}
+    $('r-bars').innerHTML=scores.map(function(x){return '<li class="l'+x.s+'">'+ico(x.a.k)+'<span>'+x.a.n+'</span><b>'+LEVEL[x.s]+'</b></li>';}).join('');
+    paintRing($('ring2'),null);
+    $('r-moves').innerHTML=sorted.slice(0,3).map(function(x,n){return '<div class="move"><span class="mono">Move '+(n+1)+' · '+x.a.lever+'</span><h4>'+ico(x.a.k)+x.a.n+'</h4>'+
+      '<p class="mv-text">'+x.a.m+'</p><p class="mv-lock" aria-hidden="true"><i></i><i></i><i></i></p></div>';}).join('');
+    var sit=ans.sit,rec;
+    if(avg<2.6){rec='A GTM Diagnostic. We\'d stop the bleeding in your weakest areas within 30 days, then plan the engine.';}
+    else if(avg<3.7){rec='A GTM Diagnostic, then a Commercial Systems Build for the areas holding you back.';}
+    else{rec='A GTM Teardown to find the next level, or an advisory role while you scale.';}
     var extra={launch:' For a new market or product, we\'d prove the formula small before scaling it.',stall:' After a raise, the fastest wins are usually in targeting and the funnel.',founder:' Getting sales out of the founder\'s head starts with the pitch and the handovers.',ai:' AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
-    document.getElementById('r-rec').innerHTML=rec+(extra[sit]||'');
-    var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+val('stage')+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
-    document.getElementById('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
-    last={score:avg.toFixed(1),band:band,stage:val('stage'),focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Sales still runs through the founder',ai:'Making AI actually work in sales'}[sit]||'',
+    $('r-rec').textContent=rec+(extra[sit]||'');
+    $('lock-h').textContent='Your three first moves start with '+sorted[0].a.n.toLowerCase()+'.';
+    var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+ans.stage+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
+    $('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
+    last={score:avg.toFixed(1),band:band,stage:ans.stage,focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Sales still runs through the founder',ai:'Making AI actually work in sales'}[sit]||'',
       areas:scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s+'/5');}).join('\n'),
-      moves:sorted.slice(0,3).map(function(x,i){return (i+1)+'. '+x.a.n+': '+x.a.m;}).join('\n'),
-      rec:document.getElementById('r-rec').textContent,stageRaw:val('stage'),sit:sit,answers:A.reduce(function(o,a){o[a.k]=ans[a.k];return o;},{})};
-    if(HS_PORTAL&&HS_FORM){rep.hidden=false;}
+      moves:sorted.slice(0,3).map(function(x,n){return (n+1)+'. '+x.a.n+': '+x.a.m;}).join('\n'),
+      rec:'Where I\'d start: '+$('r-rec').textContent,sit:sit,answers:A.reduce(function(o,a){o[a.k]=ans[a.k];return o;},{})};
+    // No report form configured: show everything.
+    if(!(HS_PORTAL&&HS_FORM)&&!REPORT_URL){unlock();rep.hidden=true;}else{lock.classList.add('locked');rep.hidden=false;}
     try{if(window.umami)umami.track('Scorecard completed')}catch(e){}
-    form.hidden=true;head.hidden=true;lay.hidden=true;res.hidden=false;placeTrain(avg);res.scrollIntoView({behavior:'smooth',block:'start'});
+    quiz.hidden=true;res.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+    var m=$('r-mark');m.style.left='0%';requestAnimationFrame(function(){requestAnimationFrame(function(){m.style.left=((avg-1)/4*100)+'%';});});
   }
-  function placeTrain(avg){var m=document.getElementById('r-mark');m.style.left='0%';requestAnimationFrame(function(){requestAnimationFrame(function(){m.style.left=((avg-1)/4*100)+'%';});});}
+  function unlock(){lock.classList.remove('locked');lock.classList.add('open');$('lock-h').textContent='Your three first moves.';$('lock-p').textContent='Start with the first. Each one moves a lever you can measure.';}
   function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
   rep.addEventListener('submit',function(ev){
     ev.preventDefault();
@@ -216,7 +262,8 @@
       ['scorecard_report','YOUR THREE FIRST MOVES\n'+last.moves+'\n\nALL EIGHT AREAS\n'+last.areas+'\n\n'+last.rec],['scorecard_source',src]];
     var btn=rep.querySelector('button');btn.disabled=true;repMsg.textContent='Sending...';
     function done(){
-      rep.innerHTML='<div class="rep-copy"><span class="mono">On its way</span><h3>Check your inbox.</h3><p>Your report is on its way to '+em.replace(/[<>&]/g,'')+'. If it hasn\'t arrived in ten minutes, check spam or email me at '+EMAIL+'.</p></div>';
+      unlock();
+      rep.innerHTML='<div class="r2-done">'+svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>','ck2')+'<div><b>Unlocked. A copy is on its way to '+esc(em)+'.</b><span>Not there in ten minutes? Check spam, or email me at '+EMAIL+'.</span></div></div>';
       try{if(window.umami)umami.track('Scorecard report requested')}catch(e){}}
     function fail(){btn.disabled=false;repMsg.innerHTML='That didn\'t send. Try again, or <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a>.';}
     function viaHubSpot(){
@@ -229,13 +276,13 @@
     // The report script emails the report from Harry's own mailbox and records the lead in HubSpot.
     // text/plain keeps it a simple request (no preflight). If the script can't be reached, the lead still goes to HubSpot.
     fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({firstname:f.get('firstname'),email:em,company:f.get('company')||'',stage:last.stageRaw,sit:last.sit,
+      body:JSON.stringify({firstname:f.get('firstname'),email:em,company:f.get('company')||'',stage:last.stage,sit:last.sit,
         answers:last.answers,consent:true,source:src,page:location.href,website:f.get('website')||''})})
     .then(function(r){return r.json();})
     .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;repMsg.textContent='Check your name and email.';return;}throw new Error(j.error);})
     .catch(function(){viaHubSpot().then(done).catch(fail);});
   });
-  document.getElementById('again').addEventListener('click',function(){ans={};i=0;res.hidden=true;rep.hidden=true;form.hidden=false;head.hidden=false;lay.hidden=false;render();head.scrollIntoView({behavior:'smooth'});});
+  $('again').addEventListener('click',function(){location.reload();});
   render();
 })();
 </script>
