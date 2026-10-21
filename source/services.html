@@ -13,11 +13,11 @@
 
 <section class="picker" aria-label="Who are you?">
   <div class="chips" role="tablist" aria-label="Who are you?">
-    <button class="chip" role="tab" id="t-founder" aria-controls="p-founder" aria-selected="true">Founder or CEO, Series A</button>
-    <button class="chip" role="tab" id="t-scale" aria-controls="p-scale" aria-selected="false">CEO or CRO, Series B to C</button>
-    <button class="chip" role="tab" id="t-vc" aria-controls="p-vc" aria-selected="false">Investor or platform team</button>
-    <button class="chip" role="tab" id="t-hire" aria-controls="p-hire" aria-selected="false">Hiring a sales leader</button>
-    <button class="chip" role="tab" id="t-host" aria-controls="p-host" aria-selected="false">Event or podcast host</button>
+    <button class="chip" role="tab" id="t-founder" aria-controls="p-founder" aria-selected="true">{{Is:founder}}Founder or CEO, Series A</button>
+    <button class="chip" role="tab" id="t-scale" aria-controls="p-scale" aria-selected="false">{{Is:rocket}}CEO or CRO, Series B to C</button>
+    <button class="chip" role="tab" id="t-vc" aria-controls="p-vc" aria-selected="false">{{Is:investor}}Investor or platform team</button>
+    <button class="chip" role="tab" id="t-hire" aria-controls="p-hire" aria-selected="false">{{Is:hire}}Hiring a sales leader</button>
+    <button class="chip" role="tab" id="t-host" aria-controls="p-host" aria-selected="false">{{Is:mic}}Event or podcast host</button>
   </div>
 
   <div class="panel" role="tabpanel" id="p-founder" aria-labelledby="t-founder">
@@ -104,7 +104,7 @@
     <li class="stop">
       <span class="dot" aria-hidden="true"></span>
       <div class="meta mono"><span>1 week</span><span class="step">Diagnose</span></div>
-      <h3>GTM Teardown</h3>
+      {{I:search}}<h3>GTM Teardown</h3>
       <p class="ask">“Is our go-to-market holding us back, and where?”</p>
       <p>Your site, pricing, pitch and funnel, studied from the outside, then 90 minutes together.</p>
       <p class="promise">Three fixes worth making, or you don't pay.</p>
@@ -114,7 +114,7 @@
     <li class="stop star">
       <span class="dot" aria-hidden="true"></span>
       <div class="meta mono"><span>2–3 weeks</span><span class="step">Diagnose · Fix</span></div>
-      <h3>GTM Diagnostic <span class="flag mono">Where most start</span></h3>
+      {{I:pulse}}<h3>GTM Diagnostic <span class="flag mono">Where most start</span></h3>
       <p class="ask">“Why has growth stalled, and what do we fix first?”</p>
       <p>Interviews, CRM and call review, and the engine scored across 28 focus areas. Fixes inside 30 days and a plan for the next one to three quarters.</p>
       <p class="price">{{PRICE:GTM Diagnostic}}</p>
@@ -123,7 +123,7 @@
     <li class="stop">
       <span class="dot" aria-hidden="true"></span>
       <div class="meta mono"><span>8–12 weeks</span><span class="step">Scale</span></div>
-      <h3>Commercial Systems Build</h3>
+      {{I:build}}<h3>Commercial Systems Build</h3>
       <p class="ask">“Can we scale this without it breaking, or losing trust?”</p>
       <p>ICP and messaging, pricing, inbound and outbound with AI workflows, CRM and forecasting, comp and hiring. Built with your team and handed over.</p>
       <p class="price">{{PRICE:Commercial Systems Build}}</p>
@@ -131,7 +131,7 @@
     <li class="stop">
       <span class="dot" aria-hidden="true"></span>
       <div class="meta mono"><span>3–6 months</span><span class="step">Run · Own</span></div>
-      <h3>Fractional Head of Sales</h3>
+      {{I:wheel}}<h3>Fractional Head of Sales</h3>
       <p class="ask">“Who runs sales until the right leader is in the seat?”</p>
       <p>I run the motion and the team while you hire, help you hire, and hand over once they're in.</p>
       <p class="price">{{PRICE:Fractional Head of Sales}}</p>
@@ -139,7 +139,7 @@
     <li class="stop">
       <span class="dot" aria-hidden="true"></span>
       <div class="meta mono"><span>6–12 months</span><span class="step">Own</span></div>
-      <h3>Advisor</h3>
+      {{I:compass}}<h3>Advisor</h3>
       <p class="ask">“Who do I test the big commercial calls against?”</p>
       <p>A monthly session and on-call support for the founder as you scale.</p>
       <p class="price">{{PRICE:Advisor}}</p>

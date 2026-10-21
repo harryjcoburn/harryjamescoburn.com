@@ -1140,3 +1140,18 @@ main.wrap .sec{background-size:100% 1px}
 @media (max-width:900px){.sc-how-in{grid-template-columns:minmax(0,1fr)}.sc-steps{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.ab{padding:12px}.ab .tiles:not(.lv){grid-template-columns:minmax(0,1fr)}.ab-stage{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ab .tile{padding:10px 30px 10px 10px!important;font-size:14.5px!important}}
 .sc-layout{padding-bottom:clamp(32px,4vw,56px)}.sc-how{padding-block:clamp(40px,5vw,72px)}
+/* shared line icons ({{I:name}} tile, {{Is:name}} inline) */
+.si{display:inline-grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:#FBE3D6;color:var(--emberText)}
+.si svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.si.si-s{width:auto;height:auto;background:none;border-radius:0;vertical-align:-3px;margin-right:8px}
+.si.si-s svg{width:18px;height:18px}
+.chip .si-s{margin-right:7px;vertical-align:-3px}
+.chip[aria-selected=true] .si-s{color:inherit}
+.layer summary b .si-s{margin-right:10px;color:var(--emberText);vertical-align:-2px}.layer summary b .si-s svg{width:20px;height:20px}
+.track>.si,.beliefs article>.si,.alt-card>.si{margin-bottom:6px}
+.stop>.si{margin:2px 0 4px}
+.arch .si,.deep .si,.close .si{background:rgba(255,255,255,.1);color:var(--sun)}
+h3 .si-s{color:var(--emberText)}
+.alt-card:has(>.si){display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:16px;align-items:start}
+.alt-card>.si{grid-row:1/span 3;margin:0}
+.alt-card:has(>.si)>*:not(.si){grid-column:2}

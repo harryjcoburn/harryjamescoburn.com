@@ -21,6 +21,7 @@ from pathlib import Path
 from brand import mark as brand_mark
 from substack import posts as substack_posts
 import packs as packs_mod
+import icons as icons_mod
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "source"
@@ -257,6 +258,7 @@ def fill(name, html):
         html = html.replace("{{PACKS_JSON}}", js(pj)).replace("{{PROMPTS_JSON}}", js(pr))
     if name == "scorecard.html" and not (hs.get("portal") and hs.get("form")):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
+    html = re.sub(r"\{\{I(s?):([a-z]+)\}\}", lambda m: icons_mod.svg(m.group(2), 'si si-s' if m.group(1) else 'si'), html)
     html = prices(html)
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
