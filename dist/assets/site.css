@@ -1015,3 +1015,11 @@ main.wrap .sec{background-size:100% 1px}
 @media (max-width:720px){.sc3 .sc-card{min-height:0}.moves{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.sc-scale-bar i,.sc-seg i{transition:none}}
 #result{padding-top:clamp(24px,4vw,56px)}
+.oi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--soft)}
+.oi svg{width:19px;height:19px;fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.oi.lv1{background:#FBE3D6}.oi.lv1 svg{stroke:var(--emberText)}
+.oi.lv2{background:#FDF0D2}.oi.lv2 svg{stroke:#9A6A0E}.oi.lv2 .half{fill:#9A6A0E;stroke:none}
+.oi.lv3{background:#DCEDE3}.oi.lv3 svg{stroke:var(--green)}
+.tile.on .oi{background:var(--ember)}.tile.on .oi svg{stroke:#fff}.tile.on .oi .half{fill:#fff}
+.sc3 .tiles:not(.lv) .tile{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
+@media (max-width:720px){.sc3 .tiles.lv .tile{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}}
