@@ -78,8 +78,8 @@
 <section class="sec wrap" id="tracks" aria-labelledby="h-tracks">
   <div class="sec-head"><div class="label mono">Where are you?</div><h2 id="h-tracks">Two ways to start.</h2><p>From founder-led selling and a pipeline nobody trusts, to an engine your team runs and AI makes faster.</p></div>
   <div class="tracks">
-    <div class="track"><span class="mono">Something's broken</span><h3>Stop the bleeding</h3><p>Pipeline flat, deals slipping, a busy team that isn't winning. I find where revenue leaks and fix the biggest leak first. Weeks, not quarters.</p><a class="go" href="#offers">Start with a Teardown</a></div>
-    <div class="track"><span class="mono">Something's next</span><h3>Build the future</h3><p>A raise, a new market, a new product or an AI play. I find the formula small, prove it, then build the engine that scales it.</p><a class="go" href="#offers">Start with a Diagnostic</a></div>
+    <div class="track"><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 15a2.5 2.5 0 0 0 2.5 2.5"/></svg></span><span class="mono">Something's broken</span><h3>Stop the bleeding</h3><p>Pipeline flat, deals slipping, a busy team that isn't winning. I find where revenue leaks and fix the biggest leak first. Weeks, not quarters.</p><a class="go" href="#offers">Start with a Teardown</a></div>
+    <div class="track"><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3c3 2 5 6 4 11l-4 3-4-3c-1-5 1-9 4-11z"/><circle cx="12" cy="10" r="1.6"/><path d="M8 14l-3 3 1 3 3-2M16 14l3 3-1 3-3-2"/></svg></span><span class="mono">Something's next</span><h3>Build the future</h3><p>A raise, a new market, a new product or an AI play. I find the formula small, prove it, then build the engine that scales it.</p><a class="go" href="#offers">Start with a Diagnostic</a></div>
   </div>
 </section>
 
@@ -132,46 +132,97 @@
   </div>
 </section>
 
-<section class="sec wrap" id="offers" aria-labelledby="h-offers">
-  <div class="sec-head"><div class="label mono">Working together</div><h2 id="h-offers">Start small. Go as far as you need.</h2><p>Each one answers a specific question, so you know what you'll be able to decide at the end. Before we start, we agree the number we're moving and where it stands today.</p></div>
-  <div class="offers">
-    <div class="offer">
-      <div class="meta mono"><span>1 week</span></div>
-      <h3>GTM Teardown</h3>
-      <p class="ask">“Is our go-to-market holding us back, and where?”</p>
-      <p>For when something feels off after a raise or before a launch. I study your site, pricing, pitch and funnel from the outside, then we spend 90 minutes on it together. You leave knowing the three fixes to make first, ranked.</p>
-      <p class="promise">If you don't leave with at least three fixes worth making, you don't pay. The fee is credited in full against a Diagnostic.</p>
-      <p class="price">€2,500</p>
+<section class="ob" id="offers" aria-labelledby="h-offers">
+  <div class="wrap ob-in">
+    <div class="ob-head">
+      <div class="ob-h">
+        <div class="label mono">Working together</div>
+        <h2 id="h-offers">3x the fee back.<br><em>Or you don't pay.</em></h2>
+      </div>
+      <div class="ob-sub">
+        <p>I find at least three times my fee in revenue you're losing, measured on your own numbers. If I don't, you pay nothing.</p>
+        <p class="ob-easy">Not ready to talk? <a href="scorecard.html">Score your sales engine in 2 minutes →</a></p>
+      </div>
     </div>
-    <div class="offer star">
-      <div class="meta mono"><span>2–3 weeks</span><span class="flag">Where most start</span></div>
-      <h3>GTM Diagnostic</h3>
-      <p class="ask">“Why has growth stalled, and what do we fix first?”</p>
-      <p>For when the numbers aren't following the raise, or a new market or product is about to launch. Interviews, your CRM, calls and numbers, scored across the 28 focus areas of the Commercial Engine. You'll know whether the constraint is the customer, the price, the pitch, the process or the team, with fixes inside 30 days and a plan for the next one to three quarters.</p>
-      <p class="promise">The fee is credited against a Build booked within 30 days.</p>
-      <p class="price">Price on request</p>
+    <div class="ob-strip">
+      <div class="ob-wait">
+        <div class="label mono">The cost of waiting</div>
+        <p class="ob-big"><span id="ob-month">€83k</span><small>a month</small></p>
+        <p class="ob-wait-t">That's what a stalled engine costs when sales is <b id="ob-gap-t">€1M</b> behind plan this year. Every week you wait is another <b id="ob-week">€19k</b> you don't get back.</p>
+        <label class="ob-calc"><span class="mono">How far behind plan are you this year?</span>
+          <input id="ob-gap" type="range" min="250000" max="5000000" step="250000" value="1000000" aria-describedby="ob-gap-v"><output id="ob-gap-v" class="mono">€1M</output></label>
+      </div>
+      <div class="ob-avail">
+        <div class="ob-av-top mono"><span class="ob-dot" aria-hidden="true"></span>Availability</div>
+        <p class="ob-av-n"><b>2</b> Diagnostic places open for November</p>
+        <p class="ob-av-s">I keep my client list small so every company gets me, not a junior. When November is full, the next start is December.</p>
+        <a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Hold a place <span class="arr">→</span></a>
+        <p class="ob-av-f mono">30-minute call · No prep · No hard sell</p>
+      </div>
     </div>
-    <div class="offer">
-      <div class="meta mono"><span>8–12 weeks</span></div>
-      <h3>Commercial Systems Build</h3>
-      <p class="ask">“Can we scale this without it breaking, or losing trust?”</p>
-      <p>For when you know what to fix and need it built. ICP and messaging, pricing, inbound and outbound with AI workflows you can trust, CRM and forecasting, comp and hiring, built with your team and handed over. You leave ready to add headcount and AI with confidence.</p>
-      <p class="price">Price on request</p>
+    <div class="ob-cards">
+      <article class="ob-card">
+        <div class="ob-top mono"><span>Start here</span><span>1 week</span></div>
+        <span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg></span><h3>GTM Teardown</h3>
+        <p class="ob-q">Where is your go-to-market holding you back?</p>
+        <ul class="ob-list">
+          <li>Site, pricing, pitch and funnel, reviewed from the outside</li>
+          <li>90 minutes together</li>
+          <li>Your three fixes, ranked</li>
+        </ul>
+        <p class="ob-promise">3 fixes worth making, or you don't pay.</p>
+        <div class="ob-foot"><span class="ob-price">From €2,500</span><span class="mono">Credited against a Diagnostic</span></div>
+        <a class="btn dark" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book a Teardown <span class="arr">→</span></a>
+      </article>
+      <article class="ob-card main">
+        <div class="ob-flag mono">Recommended</div>
+        <div class="ob-top mono"><span>The main offer</span><span>2–3 weeks</span></div>
+        <span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></span><h3>GTM Diagnostic</h3>
+        <p class="ob-q">Why has growth stalled, and what do we fix first?</p>
+        <ul class="ob-list">
+          <li>Team interviews, CRM and real calls</li>
+          <li>The engine scored across 28 focus areas</li>
+          <li>Fixes inside 30 days, plus a 90-day plan</li>
+          <li>Fee credited against a Build</li>
+        </ul>
+        <p class="ob-promise big">3x the fee in revenue found, or you don't pay.</p>
+        <div class="ob-foot"><span class="ob-price">Fixed fee, agreed upfront</span><span class="mono">2 places open for November</span></div>
+        <a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book a 30-minute call <span class="arr">→</span></a>
+        <a class="ob-alt" href="scorecard.html">Or score your engine first, free</a>
+      </article>
+      <article class="ob-card">
+        <div class="ob-top mono"><span>Build it</span><span>8–12 weeks</span></div>
+        <span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><rect x="8" y="3" width="8" height="8" rx="1.5"/></svg></span><h3>Commercial Systems Build</h3>
+        <p class="ob-q">Can we scale this without it breaking?</p>
+        <ul class="ob-list">
+          <li>ICP, messaging and pricing</li>
+          <li>Inbound and outbound with AI workflows</li>
+          <li>CRM, forecasting, comp and hiring</li>
+          <li>Built with your team, then handed over</li>
+        </ul>
+        <div class="ob-foot"><span class="ob-price">From €25,000</span><span class="mono">After a Diagnostic</span></div>
+        <a class="btn dark" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Talk it through <span class="arr">→</span></a>
+      </article>
     </div>
+    <p class="ob-then"><a class="ob-sc" href="scorecard.html"><b>The easiest place to start:</b> score your sales engine in 2 minutes and get a free report →</a><br><b>Need someone in the seat?</b> I also work as a Fractional Head of Sales or as an Advisor to the founder. <a class="ghost" href="services.html">See all the ways to work together</a></p>
   </div>
-  <div class="also">
-    <p><b>Need someone in the seat?</b> I also work as a Fractional Head of Sales, two days a week until your permanent leader is in the seat (usually three to six months), or as an Advisor to the founder. Whatever we choose, I walk you through the proposal on a call, never just by email.</p>
-    <a class="ghost" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Talk it through</a>
-  </div>
+
+  <script>
+  (function(){var r=document.getElementById('ob-gap');if(!r)return;
+  function f(n){return n>=1e6?'€'+(Math.round(n/1e5)/10).toString().replace(/\.0$/,'')+'M':'€'+Math.round(n/1e3)+'k'}
+  function u(){var g=+r.value;document.getElementById('ob-gap-v').textContent=f(g);document.getElementById('ob-gap-t').textContent=f(g);
+  document.getElementById('ob-month').textContent=f(g/12);document.getElementById('ob-week').textContent=f(g/52)}
+  r.addEventListener('input',u);u()})();
+  </script>
 </section>
 
 <section class="sec wrap" id="method" aria-labelledby="h-method">
   <div class="sec-head"><div class="label mono">How it works</div><h2 id="h-method">The Commercial <em>Engine.</em></h2><p>The same four steps every time, whether the engine stalled after a raise or you're taking it into a new market.</p></div>
   <ol class="engine">
-    <li><span class="mono">01 · Find the leak</span><h3>Diagnose</h3><p>Score all 28 focus areas of the engine and find the one lever holding revenue back.</p></li>
-    <li><span class="mono">02 · Prove it small</span><h3>Fix</h3><p>Fix the biggest leak first, in one market or segment, inside 30 days. Agree the number it should move, and measure it.</p></li>
-    <li><span class="mono">03 · Build and teach</span><h3>Scale</h3><p>Build the engine around what worked, and train AI on your own past deals until it sends what you would send, at least 95% of the time.</p></li>
-    <li><span class="mono">04 · Hand it over</span><h3>Own</h3><p>Your team runs it, with one dashboard everyone trusts. Sales grows without running through you.</p></li>
+    <li><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg></span><span class="mono">01 · Find the leak</span><h3>Diagnose</h3><p>Score all 28 focus areas of the engine and find the one lever holding revenue back.</p></li>
+    <li><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L3 18l3 3 6.2-6.2a4 4 0 0 0 5.3-5.3l-2.7 2.7-2.3-.7-.7-2.3z"/></svg></span><span class="mono">02 · Prove it small</span><h3>Fix</h3><p>Fix the biggest leak first, in one market or segment, inside 30 days. Agree the number it should move, and measure it.</p></li>
+    <li><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span class="mono">03 · Build and teach</span><h3>Scale</h3><p>Build the engine around what worked, and train AI on your own past deals until it sends what you would send, at least 95% of the time.</p></li>
+    <li><span class="si" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg></span><span class="mono">04 · Hand it over</span><h3>Own</h3><p>Your team runs it, with one dashboard everyone trusts. Sales grows without running through you.</p></li>
   </ol>
   <p class="more"><a class="ghost" href="engine.html">See the whole engine</a> &nbsp;·&nbsp; <a class="ghost" href="services.html#help">The five levers, and the proof</a></p>
 </section>
