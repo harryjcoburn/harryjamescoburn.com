@@ -9,7 +9,7 @@
   <div class="page-head sc-head">
     <div class="label mono">Free · 2 minutes</div>
     <h1>Score your <em>sales engine.</em></h1>
-    <p>The eight areas I score in a paid Diagnostic. Watch your engine build as you answer.</p>
+    <p>The seven layers I score in a paid Diagnostic. Watch your engine build as you answer.</p>
   </div>
   <figure class="eng" aria-hidden="true">
     <svg viewBox="0 0 240 240" id="ring"></svg>
@@ -33,8 +33,8 @@
   <div class="sc-how-in">
     <div class="sc-how-l"><div class="label mono">How it works</div><h2 id="h-how">Two minutes now. A clear first move for <em>Monday.</em></h2></div>
     <ol class="sc-steps">
-      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><b>Answer nine quick screens</b><span>The eight areas I score in a paid GTM Diagnostic, from pitch to AI.</span></li>
-      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/></svg><b>See your engine</b><span>Your score out of 5, and where each area stands.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><b>Answer eight quick screens</b><span>The seven layers of the engine, from strategy to systems.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/></svg><b>See your engine</b><span>Your score out of 5, and where each layer stands.</span></li>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg><b>Unlock your report</b><span>Your three first moves and where I'd start, on the page and in your inbox.</span></li>
     </ol>
   </div>
@@ -63,14 +63,14 @@
       <div class="sc-scale" aria-hidden="true"><span class="sc-scale-bar"><i id="r-mark"></i></span><span class="sc-scale-l"><span>Uphill</span><span>The crest</span><span>Momentum</span></span></div>
       <a class="r2-jump" href="#lock">See your three first moves <span class="arr">↓</span></a>
     </div>
-    <div class="r2-areas"><span class="mono">All eight areas</span><ul id="r-bars"></ul></div>
+    <div class="r2-areas"><span class="mono">All seven layers</span><ul id="r-bars"></ul></div>
   </div>
 
   <div class="r2-lock" id="lock">
     <div class="r2-lock-head">
       <span class="mono">Your full report</span>
       <h3 id="lock-h">I've found three first moves for you.</h3>
-      <p id="lock-p">Your three weakest areas, the first move for each and where I'd start, for your stage and goal.</p>
+      <p id="lock-p">Your three weakest layers, the first move for each and where I'd start, for your stage and goal.</p>
     </div>
     <div class="moves" id="r-moves"></div>
     <div class="r2-rec" id="r-rec-wrap"><span class="mono">Where I'd start</span><p id="r-rec"></p></div>
@@ -108,6 +108,9 @@
     comp:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
     data:'<ellipse cx="12" cy="5.5" rx="8" ry="2.8"/><path d="M4 5.5v13c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8v-13"/><path d="M4 12c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8"/>',
     ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>',
+    strategy:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/>',win:'<path d="M3 4h18l-7 9v6l-4 2v-8z"/>',
+    grow:'<path d="M12 21v-8"/><path d="M12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/>',motivation:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    rhythm:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',systems:'<ellipse cx="12" cy="5.5" rx="8" ry="2.8"/><path d="M4 5.5v13c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8v-13"/><path d="M4 12c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8"/>',
     lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'};
   var OI={1:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
     3:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" class="half"/>',
@@ -118,7 +121,7 @@
   var CHECK=svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>','ck');
   var LEVEL={1:'Struggling',2:'Not sure',3:'Getting there',5:'Strong'};
 
-  // Step 1 asks both "about you" questions on one screen. Then the eight areas, in two chapters.
+  // Step 1 asks both "about you" questions on one screen. Then the seven layers, one screen each.
   var OIC={Seed:'<path d="M12 21v-8"/><path d="M12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/>',
     'Series A':'<path d="M5 19L19 5"/><path d="M10 5h9v9"/>','Series B':'<path d="M5 20V13"/><path d="M12 20V8"/><path d="M19 20V4"/>',
     'Series C+':'<path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-5h6v5"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>',
@@ -128,30 +131,27 @@
   var STAGES=[['Seed','Pre-seed or Seed'],['Series A','Series A'],['Series B','Series B'],['Series C+','Series C or later']];
   var FOCUS=[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Sales still runs through the founder'],['ai','Making AI actually work in sales']];
   var A=[
-    {k:'pitch',n:'Positioning and pitch',lever:'Win rate, deal size',q:'Can everyone say who you\'re for, in one line?',
-     o:['No. Every rep pitches it differently.','Our best people can. The rest drift.','Yes. One pitch, and the site, deck and demo match.'],
-     m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
-    {k:'icp',n:'Ideal customer and targeting',lever:'Deals created, win rate',q:'How clear is your ideal customer?',
-     o:['"Anyone who\'ll buy." Lots of poor-fit deals.','It\'s on paper, but we don\'t use it to say no.','Backed by win and loss data, and we say no.'],
-     m:'Pull your last 20 wins and losses. Write down what the best fits have in common, and start saying no to the rest.'},
-    {k:'price',n:'Pricing',lever:'Deal size, win rate',q:'How is the price decided?',
-     o:['Deal by deal, with heavy discounts.','A price list, but discounting is loose.','A few value-based packages, with discount rules.'],
-     m:'Cut to three packages, price them on the value your customer gets, and set discount rules with approval levels.'},
-    {k:'funnel',n:'Funnel and process',lever:'Time to close, win rate',q:'What happens to deals after the demo?',
+    {k:'strategy',n:'Strategy',lever:'Win rate, deal size',q:'Can everyone say who you\'re for, and why they buy?',
+     o:['No. We sell to anyone, and every rep pitches it differently.','It\'s written down, but we don\'t use it to say no.','One ideal customer, one pitch, priced on value. We say no.'],
+     m:'Pull your last 20 wins and losses, write down what the best fits share, and make one pitch in their words. Price on the value they get, and start saying no.'},
+    {k:'win',n:'Win',lever:'Time to close, win rate',q:'What happens to deals after the first call?',
      o:['They stall, and nobody knows why.','Stages exist, but exit criteria are loose.','Every stage has exit criteria. Leaks fixed weekly.'],
      m:'Write exit criteria for every stage and find the one stage where most deals stall. Fix that first.'},
-    {k:'team',n:'Team and roles',lever:'Deals created, win rate',q:'Who\'s your best closer?',
+    {k:'grow',n:'Grow',lever:'Net retention',q:'What happens after the contract is signed?',
+     o:['Sales moves on. We find out about churn when they leave.','There\'s onboarding, but nobody owns renewals or expansion.','Every customer has a first-impact goal. Renewals and upsells are planned.'],
+     m:'Agree a first-impact goal with every new customer in their first 30 days, and give one person ownership of renewals and expansion.'},
+    {k:'team',n:'Team',lever:'Deals created, win rate',q:'Who\'s your best closer?',
      o:['Still the founder. Everyone does a bit of everything.','Roles exist, but handovers leak.','Clear roles and handovers, coached every week.'],
      m:'Map every handover from first touch to onboarding, and give new hires a written 30-60-90.'},
-    {k:'comp',n:'Targets and compensation',lever:'Deals created, deal size',q:'Where do the targets come from?',
+    {k:'motivation',n:'Motivation',lever:'Deals created, deal size',q:'Where do the targets come from?',
      o:['A board number, with no maths behind it.','A plan exists, but it rewards the wrong things.','Built bottom-up. Simple comp. Most reps hit it.'],
      m:'Rebuild targets from capacity and conversion, and pay for good-fit revenue and price held, not just volume.'},
-    {k:'data',n:'Systems and data',lever:'Time to close, and every other lever',q:'Does everyone trust the CRM?',
-     o:['No. The forecast is a gut feel.','It\'s used, but cluttered. Reports get argued about.','Clean data, one dashboard, an accurate forecast.'],
-     m:'Make only the fields that matter mandatory, and build one dashboard for the five levers everyone trusts.'},
-    {k:'ai',n:'AI and automation',lever:'Deals created, time to close',q:'How fast does an inbound lead get a reply?',
-     o:['Hours or days. AI is people using ChatGPT alone.','Some tools, not joined up. Varies by person.','Minutes, by agents trained on our data and checked.'],
-     m:'Reply to every inbound lead within five minutes, with an agent trained on your past leads and checked against your standard.'}
+    {k:'rhythm',n:'Rhythm',lever:'Time to close, and every other lever',q:'What does your weekly pipeline review look like?',
+     o:['A status update. The forecast is a gut feel.','There\'s a cadence, but it reports instead of fixing.','One weekly rhythm: the numbers, the stuck deals, one experiment.'],
+     m:'Run one 45-minute weekly review on the five levers: the stuck deals, the next step on each, and one experiment.'},
+    {k:'systems',n:'Systems',lever:'Every lever',q:'Does everyone trust the CRM and the tools on top of it?',
+     o:['No. Data is messy, and AI is people using ChatGPT alone.','It\'s used, but cluttered. Some tools, not joined up.','Clean data, one dashboard, and agents trained on it and checked.'],
+     m:'Make only the fields that matter mandatory, build one dashboard everyone trusts, then add agents trained on your data and checked against your standard.'}
   ];
   var vals=[1,3,5],ans={},i=0,N=A.length+1,started=false;
   var $=function(id){return document.getElementById(id);};
@@ -159,10 +159,10 @@
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
   seg.innerHTML=Array(N+1).join('<i></i>');var segs=seg.querySelectorAll('i');
 
-  // The engine ring: eight segments, one per area, filling in as you answer.
+  // The engine ring: seven segments, one per layer, filling in as you answer.
   function arc(cx,cy,r1,r2,a0,a1){function p(r,a){a=(a-90)*Math.PI/180;return (cx+r*Math.cos(a)).toFixed(2)+' '+(cy+r*Math.sin(a)).toFixed(2);}
     return 'M'+p(r2,a0)+' A'+r2+' '+r2+' 0 0 1 '+p(r2,a1)+' L'+p(r1,a1)+' A'+r1+' '+r1+' 0 0 0 '+p(r1,a0)+' Z';}
-  function drawRing(el){var h='';A.forEach(function(a,j){var a0=j*45+2,a1=(j+1)*45-2,m=(a0+a1)/2,r=(m-90)*Math.PI/180,x=120+94*Math.cos(r),y=120+94*Math.sin(r);
+  function drawRing(el){var h='';A.forEach(function(a,j){var w=360/A.length,a0=j*w+2,a1=(j+1)*w-2,m=(a0+a1)/2,r=(m-90)*Math.PI/180,x=120+94*Math.cos(r),y=120+94*Math.sin(r);
     h+='<g class="rs" data-k="'+a.k+'"><path class="rp" d="'+arc(120,120,72,116,a0,a1)+'"/><g class="ri" transform="translate('+(x-9).toFixed(1)+' '+(y-9).toFixed(1)+') scale(.75)">'+IC[a.k]+'</g></g>';});
     el.innerHTML=h;}
   drawRing($('ring'));drawRing($('ring2'));
@@ -170,7 +170,7 @@
     g.setAttribute('class','rs'+(v?' v'+v:'')+(k===cur?' cur':''));});}
   function scored(){return A.filter(function(a){return ans[a.k]!=null;}).length;}
 
-  function chapter(){return i===0?'About you':(i<=4?'Win · '+i+' of 4':'Grow · '+(i-4)+' of 4');}
+  function chapter(){return i===0?'About you':'Layer '+i+' of '+A.length;}
   function render(){
     var h;
     if(i===0){
@@ -189,7 +189,7 @@
     card.innerHTML=h;card.classList.remove('in');void card.offsetWidth;card.classList.add('in');
     stepEl.textContent=(i+1)+' / '+N;chap.textContent=chapter();back.hidden=i===0;
     segs.forEach(function(g,j){g.className=j<i?'d':(j===i?'n':'');});
-    note.textContent=i===N-1?'Last one. Your results are next.':(i===5?'Halfway. The Win side is done.':'Nothing leaves your browser unless you ask for the report.');
+    note.textContent=i===N-1?'Last one. Your results are next.':(i===4?'Halfway there.':'Nothing leaves your browser unless you ask for the report.');
     $('ring-n').textContent=scored();paintRing($('ring'),i>0?A[i-1].k:null);
     var first=card.querySelector('.tile.on')||card.querySelector('.tile');if(first&&i>0)first.focus({preventScroll:true});
   }
@@ -231,10 +231,10 @@
     $('r-moves').innerHTML=sorted.slice(0,3).map(function(x,n){return '<div class="move"><span class="mono">Move '+(n+1)+' · '+x.a.lever+'</span><h4>'+ico(x.a.k)+x.a.n+'</h4>'+
       '<p class="mv-text">'+x.a.m+'</p><p class="mv-lock" aria-hidden="true"><i></i><i></i><i></i></p></div>';}).join('');
     var sit=ans.sit,rec;
-    if(avg<2.6){rec='A GTM Diagnostic. We\'d stop the bleeding in your weakest areas within 30 days, then plan the engine.';}
-    else if(avg<3.7){rec='A GTM Diagnostic, then a Commercial Systems Build for the areas holding you back.';}
+    if(avg<2.6){rec='A GTM Diagnostic. We\'d stop the bleeding in your weakest layers within 30 days, then plan the engine.';}
+    else if(avg<3.7){rec='A GTM Diagnostic, then a Commercial Systems Build for the layers holding you back.';}
     else{rec='A GTM Teardown to find the next level, or an advisory role while you scale.';}
-    var extra={launch:' For a new market or product, we\'d prove the formula small before scaling it.',stall:' After a raise, the fastest wins are usually in targeting and the funnel.',founder:' Getting sales out of the founder\'s head starts with the pitch and the handovers.',ai:' AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
+    var extra={launch:' For a new market or product, we\'d prove the formula small before scaling it.',stall:' After a raise, the fastest wins are usually in strategy and the Win stations.',founder:' Getting sales out of the founder\'s head starts with the pitch and the handovers.',ai:' AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
     $('r-rec').textContent=rec+(extra[sit]||'');
     $('lock-h').textContent='Your three first moves start with '+sorted[0].a.n.toLowerCase()+'.';
     var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+ans.stage+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
@@ -259,7 +259,7 @@
     var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
     var fields=[['firstname',f.get('firstname')],['email',em],['company',f.get('company')||''],
       ['scorecard_score',last.score],['scorecard_band',last.band],['scorecard_stage',last.stage],['scorecard_focus',last.focus],
-      ['scorecard_report','YOUR THREE FIRST MOVES\n'+last.moves+'\n\nALL EIGHT AREAS\n'+last.areas+'\n\n'+last.rec],['scorecard_source',src]];
+      ['scorecard_report','YOUR THREE FIRST MOVES\n'+last.moves+'\n\nALL SEVEN LAYERS\n'+last.areas+'\n\n'+last.rec],['scorecard_source',src]];
     var btn=rep.querySelector('button');btn.disabled=true;repMsg.textContent='Sending...';
     function done(){
       unlock();

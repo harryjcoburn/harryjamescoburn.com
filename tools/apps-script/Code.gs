@@ -25,28 +25,26 @@ var CFG = {
 };
 
 var AREAS = [
-  {k:'pitch', n:'Positioning and pitch', lever:'Win rate, deal size',
-   m:'Write the one-line pitch in your best customer\'s words. Make the deck, demo and website say the same thing.'},
-  {k:'icp', n:'Ideal customer and targeting', lever:'Deals created, win rate',
-   m:'Pull your last 20 wins and losses. Write down what the best fits have in common, and start saying no to the rest.'},
-  {k:'price', n:'Pricing', lever:'Deal size, win rate',
-   m:'Cut to three packages, price them on the value your customer gets, and set discount rules with approval levels.'},
-  {k:'funnel', n:'Funnel and process', lever:'Time to close, win rate',
+  {k:'strategy', n:'Strategy', lever:'Win rate, deal size',
+   m:'Pull your last 20 wins and losses, write down what the best fits share, and make one pitch in their words. Price on the value they get, and start saying no.'},
+  {k:'win', n:'Win', lever:'Time to close, win rate',
    m:'Write exit criteria for every stage and find the one stage where most deals stall. Fix that first.'},
-  {k:'team', n:'Team and roles', lever:'Deals created, win rate',
+  {k:'grow', n:'Grow', lever:'Net retention',
+   m:'Agree a first-impact goal with every new customer in their first 30 days, and give one person ownership of renewals and expansion.'},
+  {k:'team', n:'Team', lever:'Deals created, win rate',
    m:'Map every handover from first touch to onboarding, and give new hires a written 30-60-90.'},
-  {k:'comp', n:'Targets and compensation', lever:'Deals created, deal size',
+  {k:'motivation', n:'Motivation', lever:'Deals created, deal size',
    m:'Rebuild targets from capacity and conversion, and pay for good-fit revenue and price held, not just volume.'},
-  {k:'data', n:'Systems and data', lever:'Time to close, and every other lever',
-   m:'Make only the fields that matter mandatory, and build one dashboard for the five levers everyone trusts.'},
-  {k:'ai', n:'AI and automation', lever:'Deals created, time to close',
-   m:'Reply to every inbound lead within five minutes, with an agent trained on your past leads and checked against your standard.'}
+  {k:'rhythm', n:'Rhythm', lever:'Time to close, and every other lever',
+   m:'Run one 45-minute weekly review on the five levers: the stuck deals, the next step on each, and one experiment.'},
+  {k:'systems', n:'Systems', lever:'Every lever',
+   m:'Make only the fields that matter mandatory, build one dashboard everyone trusts, then add agents trained on your data and checked against your standard.'}
 ];
 var STAGES = ['Seed', 'Series A', 'Series B', 'Series C+'];
 var FOCUS = {launch:'Launching a new market or product', stall:'Growth has stalled since the raise',
              founder:'Sales still runs through the founder', ai:'Making AI actually work in sales'};
 var EXTRA = {launch:'For a new market or product, we\'d prove the formula small before scaling it.',
-             stall:'After a raise, the fastest wins are usually in targeting and the funnel.',
+             stall:'After a raise, the fastest wins are usually in strategy and the Win stations.',
              founder:'Getting sales out of the founder\'s head starts with the pitch and the handovers.',
              ai:'AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
 
@@ -116,8 +114,8 @@ function report_(lead) {
   else if (avg < 3.7) { band = 'Works, but depends on people'; text = 'The engine runs, but it leaks and it won\'t scale on its own. This is where the biggest gains usually are.'; }
   else { band = 'Ready to scale'; text = 'The basics are in place. The question now is how far AI and new markets can take it.'; }
   var rec;
-  if (avg < 2.6) rec = 'a GTM Diagnostic. We\'d stop the bleeding in your weakest areas within 30 days, then plan the engine.';
-  else if (avg < 3.7) rec = 'a GTM Diagnostic, then a Commercial Systems Build for the areas holding you back.';
+  if (avg < 2.6) rec = 'a GTM Diagnostic. We\'d stop the bleeding in your weakest layers within 30 days, then plan the engine.';
+  else if (avg < 3.7) rec = 'a GTM Diagnostic, then a Commercial Systems Build for the layers holding you back.';
   else rec = 'a GTM Teardown to find the next level, or an advisory role while you scale.';
   var sorted = scores.slice().sort(function (x, y) { return x.s - y.s; });
   return {score: avg.toFixed(1), band: band, text: text, rec: rec, extra: EXTRA[lead.sit],
@@ -130,7 +128,7 @@ function sendReport_(lead, r) {
     'Thanks for taking the scorecard. Here is your report.\n\n' +
     'YOUR SCORE: ' + r.score + ' out of 5 (' + r.band + ')\n' + r.text + '\n\n' +
     'YOUR THREE FIRST MOVES\n' + r.moves.map(function (x, i) { return (i + 1) + '. ' + x.a.n + ': ' + x.a.m; }).join('\n') + '\n\n' +
-    'ALL EIGHT AREAS\n' + r.scores.map(function (x) { return x.a.n + ': ' + (x.s === 2 ? 'not sure' : x.s + '/5'); }).join('\n') + '\n\n' +
+    'ALL SEVEN LAYERS\n' + r.scores.map(function (x) { return x.a.n + ': ' + (x.s === 2 ? 'not sure' : x.s + '/5'); }).join('\n') + '\n\n' +
     'Where I\'d start: ' + r.rec + ' ' + r.extra + '\n\n' +
     'If you want to talk it through, book 30 minutes here: ' + CFG.BOOK + '\n' +
     'Or just reply to this email. I read every one.\n\n' +
@@ -162,7 +160,7 @@ function sendReport_(lead, r) {
     '<p style="font-size:15px;line-height:1.5;margin:0 0 24px;color:' + C.soft + '">' + esc(r.text) + '</p>' +
     '<div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:' + C.soft + ';margin-bottom:4px">Your three first moves</div>' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + moves + '</table>' +
-    '<div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:' + C.soft + ';margin:24px 0 8px">All eight areas</div>' +
+    '<div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:' + C.soft + ';margin:24px 0 8px">All seven layers</div>' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + bars + '</table>' +
     '<p style="font-size:15px;line-height:1.5;margin:24px 0 0"><b>Where I\'d start:</b> ' + esc(r.rec) + ' ' + esc(r.extra) + '</p>' +
     '<p style="margin:24px 0"><a href="' + CFG.BOOK + '" style="display:inline-block;background:' + C.ink + ';color:#fff;text-decoration:none;padding:12px 20px;border-radius:6px;font-size:15px">Book 30 minutes with me</a></p>' +
@@ -180,7 +178,7 @@ function sendReport_(lead, r) {
 
 function toHubSpot_(lead, r) {
   var report = 'YOUR THREE FIRST MOVES\n' + r.moves.map(function (x, i) { return (i + 1) + '. ' + x.a.n + ': ' + x.a.m; }).join('\n') +
-    '\n\nALL EIGHT AREAS\n' + r.scores.map(function (x) { return x.a.n + ': ' + (x.s === 2 ? 'not sure' : x.s + '/5'); }).join('\n') +
+    '\n\nALL SEVEN LAYERS\n' + r.scores.map(function (x) { return x.a.n + ': ' + (x.s === 2 ? 'not sure' : x.s + '/5'); }).join('\n') +
     '\n\nWhere I\'d start: ' + r.rec + ' ' + r.extra;
   var fields = [['firstname', lead.firstname], ['email', lead.email], ['company', lead.company],
     ['scorecard_score', r.score], ['scorecard_band', r.band], ['scorecard_stage', lead.stage],
@@ -212,7 +210,7 @@ function json_(o) {
 /** Run once from the editor: authorises the script and sends a sample report to NOTIFY. */
 function testSend() {
   var lead = clean_({firstname: 'Harry', email: CFG.NOTIFY, company: 'Test', stage: 'Series A', sit: 'stall', consent: true,
-    answers: {pitch: 3, icp: 1, price: 3, funnel: 2, team: 3, comp: 1, data: 3, ai: 5}, source: 'apps-script test'});
+    answers: {strategy: 3, win: 1, grow: 2, team: 3, motivation: 1, rhythm: 3, systems: 5}, source: 'apps-script test'});
   var r = report_(lead);
   sendReport_(lead, r);
   Logger.log('Aliases: ' + GmailApp.getAliases().join(', '));
