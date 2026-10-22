@@ -33,40 +33,28 @@ THEME = "#10372A"
 UNUSED_ASSETS = ("tsb.svg", "british-army.svg", "wheely.svg", "adventure-peak.jpg", "adventure-hike.jpg", "SOURCES.md", "*.txt")
 
 PAGES = {
-    "index.html": ("Harry James Coburn: an AI sales engine you can trust",
-                   "Harry James Coburn helps CEOs of VC-backed companies build AI into their sales engine without "
-                   "losing trust: the right customer, price and pitch, AI trained and tested to their standard, "
-                   "then scaled. Berlin and London, working across the UK, Europe and the US."),
-    "work.html": ("Case studies: UXCam, Arbonics, Wheely and Pronto | Harry James Coburn",
-                  "How Harry James Coburn rebuilt and scaled sales at UXCam, Arbonics, Wheely and Pronto: "
-                  "before, what he did, and the results."),
-    "services.html": ("Services: how I can help | Harry James Coburn",
-                      "One problem, solved well: a sales engine that still runs through the founder, or stalls after the "
-                      "raise. Teardown, Diagnostic, Build, fractional Head of Sales and advisory for VC-backed CEOs."),
-    "scorecard.html": ("Sales engine scorecard | Harry James Coburn",
-                       "A free 2-minute scorecard across the seven layers of the Coburn Commercial Engine, "
-                       "with your three first moves."),
-    "ideas.html": ("Ideas: find the formula, then scale it | Harry James Coburn",
-                   "Harry James Coburn on commercial strategy, his selling principles and the state of AI in "
-                   "go-to-market."),
-    "engine.html": ("The Coburn Commercial Engine: revenue is momentum | Harry James Coburn",
-                    "The Coburn Commercial Engine: how Harry James Coburn diagnoses, fixes and scales how a company "
-                    "wins customers and keeps them. Five levers, seven layers, one standard."),
-    "faq.html": ("FAQ: go-to-market, sales and AI | Harry James Coburn",
-                 "Answers on how Harry James Coburn works, who he works with, what a GTM Teardown and Diagnostic are, "
-                 "what it costs and how AI is changing B2B sales."),
-    "speaking.html": ("Speaking, podcasts and portfolio workshops | Harry James Coburn",
-                      "Invite Harry James Coburn to speak, join a podcast or run a portfolio workshop on commercial "
-                      "strategy and go-to-market in the age of AI agents."),
-    "ai.html": ("AI in sales: what I'm building and the prompts I use | Harry James Coburn",
-                "AI agents for each layer of a sales engine: the inbound and outbound agents Harry James Coburn has built, "
-                "and a free prompt library for strategy, winning, growing, team, motivation, rhythm and systems."),
-    "contact.html": ("Send a message | Harry James Coburn",
-                     "Send Harry James Coburn a message about your sales engine, a role, a talk or anything else. "
-                     "He reads and replies to every one himself."),
-    "about.html": ("About Harry James Coburn",
-                   "Harry James Coburn: from IBM, Credit Suisse and Lloyds Banking Group to building sales "
-                   "engines at start-ups. Based in Berlin."),
+    'index.html': ('Harry James Coburn | Sales and GTM adviser for Series A–C CEOs',
+        'I find where your sales engine leaks, fix it, then scale it with AI. GTM Teardown, Diagnostic and Build for VC-backed CEOs. Berlin and London.'),
+    'work.html': ('Sales turnaround case studies: UXCam, Arbonics, Wheely, Pronto | Harry James Coburn',
+        'How Harry James Coburn rebuilt and scaled B2B sales at UXCam, Arbonics, Wheely and Pronto: the problem, what he did and the results.'),
+    'services.html': ('GTM consulting and fractional Head of Sales | Harry James Coburn',
+        "GTM Teardown from €2,500, a GTM Diagnostic that finds 3x its fee or you don't pay, and a Commercial Systems Build. For Series A–C CEOs."),
+    'scorecard.html': ('Free sales engine scorecard: score your GTM in 2 minutes | Harry James Coburn',
+        'Seven questions, one per layer of the Coburn Commercial Engine. Get your score out of 5 and your three first moves. Free, 2 minutes.'),
+    'ideas.html': ('Ideas on sales, GTM and AI | Harry James Coburn',
+        'Harry James Coburn on commercial strategy, selling principles and how AI is changing go-to-market for B2B companies.'),
+    'engine.html': ('The Coburn Commercial Engine: a sales growth framework | Harry James Coburn',
+        'Five levers, seven layers, 28 focus areas. How Harry James Coburn diagnoses, fixes and scales how B2B companies win and keep customers.'),
+    'faq.html': ('FAQ: GTM consulting, sales diagnostics and AI in sales | Harry James Coburn',
+        'What a GTM Teardown and Diagnostic are, what they cost, who Harry James Coburn works with, and how AI is changing B2B sales.'),
+    'speaking.html': ('Speaker on sales, GTM and AI | Harry James Coburn',
+        'Book Harry James Coburn for a talk, podcast or VC portfolio workshop on go-to-market, sales leadership and AI agents in sales.'),
+    'ai.html': ('AI in sales: agents and free prompts | Harry James Coburn',
+        'The inbound and outbound AI agents Harry James Coburn has built, and a free sales prompt library for every layer of the engine.'),
+    'contact.html': ('Contact Harry James Coburn',
+        'Book a 30-minute call, message on WhatsApp or email Harry James Coburn about your sales engine, a role or a talk.'),
+    'about.html': ('About Harry James Coburn: sales leader and GTM adviser, Berlin',
+        'From IBM, Credit Suisse and Lloyds Banking Group to Head of Sales at four growth companies. Now a GTM adviser based in Berlin.'),
 }
 
 POSTS = substack_posts()
@@ -74,6 +62,11 @@ import os
 # Pages kept off the live site until approved (site.json "hold_pages"); PREVIEW=1 builds them anyway.
 HOLD = set() if os.environ.get("PREVIEW") else set(CFG.get("hold_pages", []))
 
+OFFER_DESC = {"GTM Teardown": "One week, outside-in review of site, pricing, pitch and funnel, then 90 minutes together: three fixes ranked, or you don't pay.",
+              "GTM Diagnostic": "Two to three weeks: team interviews, CRM and call review, all 28 focus areas scored. At least 3x the fee in revenue found, or you don't pay.",
+              "Commercial Systems Build": "Eight to twelve weeks: ICP, messaging, pricing, inbound and outbound with AI workflows, CRM and forecasting, built with the team and handed over.",
+              "Fractional Head of Sales": "Runs the sales motion and team for three to six months while you hire a permanent leader.",
+              "Advisor": "An ongoing sounding board for the founder on commercial decisions."}
 OFFERS = ["GTM Teardown", "GTM Diagnostic", "Commercial Systems Build", "Fractional Head of Sales", "Advisor"]
 
 warnings = []
@@ -170,15 +163,15 @@ def faq_entries(html):
     return [(clean(q), clean(a)) for q, a in items]
 
 
-def jsonld(html):
+def jsonld(html, name="index.html"):
     person = {
         "@type": "Person", "@id": BASE + "#person", "name": "Harry James Coburn",
-        "jobTitle": "Commercial strategy and go-to-market adviser",
+        "jobTitle": "Sales and go-to-market (GTM) adviser, fractional Head of Sales",
         "description": ("Berlin-based commercial strategy and go-to-market adviser for growing tech companies. "
                         "Has led sales at UXCam, Arbonics, Wheely and Pronto, and trained at IBM, Credit Suisse "
                         "and Lloyds Banking Group."),
         "url": BASE, "email": f"mailto:{CFG['email']}", "image": BASE + "assets/photos/hero.jpg",
-        "sameAs": [CFG["linkedin"]], "nationality": "British",
+        "sameAs": [CFG["linkedin"], "https://www.linkedin.com/company/harryjamescoburn/", "https://harryjamescoburn.substack.com"], "nationality": "British",
         "homeLocation": {"@type": "Place", "name": "Berlin, Germany"},
         "address": {"@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE"},
         "alumniOf": [{"@type": "CollegeOrUniversity", "name": "University of Manchester"},
@@ -197,13 +190,20 @@ def jsonld(html):
         "areaServed": [{"@type": "Country", "name": "United Kingdom"}, {"@type": "Place", "name": "Europe"},
                        {"@type": "Country", "name": "United States"}],
         "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Ways to work together",
-                            "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": o}}
+                            "itemListElement": [dict({"@type": "Offer", "itemOffered": {"@type": "Service", "name": o, "description": OFFER_DESC.get(o, "")}},
+                                                     **({"price": re.sub(r"[^0-9]", "", CFG["prices"].get(o, "")), "priceCurrency": "EUR"} if CFG["prices"].get(o, "").strip() else {}))
                                                 for o in OFFERS]},
     }
     faq = {"@type": "FAQPage", "@id": BASE + "#faq",
            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
-                          for q, a in faq_entries(html)]}
+                          for q, a in (faq_entries(html) if 'class="faq-item"' in html else [])]}
     data = {"@context": "https://schema.org", "@graph": [person, service]}
+    if name == "faq.html":
+        data = {"@context": "https://schema.org", "@graph": [faq]}
+    elif name == "services.html":
+        data = {"@context": "https://schema.org", "@graph": [service]}
+    elif name == "about.html":
+        data = {"@context": "https://schema.org", "@graph": [person]}
     return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>\n'
 
 
@@ -251,6 +251,8 @@ def fill(name, html):
     extra = ""
     if name == "index.html":
         extra = '<link rel="preload" href="assets/photos/hero.webp" as="image" fetchpriority="high">\n' + jsonld(html)
+    if name in ("services.html", "about.html"):
+        extra = jsonld(html, name)
     if name == "faq.html":
         extra = f'<script type="application/ld+json">{json.dumps(faq_ld(html), ensure_ascii=False)}</script>\n'
     html = html.replace("{{HEAD}}", head(title, desc, name, extra))
