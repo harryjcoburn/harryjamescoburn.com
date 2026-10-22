@@ -86,57 +86,66 @@
   <ul class="weights" aria-hidden="true"><li>Poor-fit customers</li><li>Discounts to close</li><li>Deals that stall</li><li>Customers who leave</li></ul>
 </section>
 
-<section class="sec wrap eng-route" aria-labelledby="h-route">
-  <div class="eng-head">
-    <h2 id="h-route">More effort won't fix the wrong <em>route.</em></h2>
-    <p class="eng-serif">Be clear who you're for, and selling gets easy.</p>
+<section class="sec wrap eng-lev" aria-labelledby="h-lev">
+  <div class="eng-head"><div class="label mono">The model</div>
+  <h2 id="h-lev">Small gains <em>multiply.</em></h2>
+  <p>New revenue is four numbers multiplied together. Get each one a little better and the total moves a lot. Try it.</p></div>
+  <div class="lev-grid">
+    <div class="lev-sliders">
+      <label><span><b>Deals created</b><i>More of the right deals in</i></span><input type="range" min="0" max="30" value="10" data-k="d" aria-label="Deals created, percent better"><output>+10%</output></label>
+      <label><span><b>Win rate</b><i>More of them won</i></span><input type="range" min="0" max="30" value="10" data-k="w" aria-label="Win rate, percent better"><output>+10%</output></label>
+      <label><span><b>Deal size</b><i>Price held, better packages</i></span><input type="range" min="0" max="30" value="10" data-k="s" aria-label="Deal size, percent better"><output>+10%</output></label>
+      <label><span><b>Time to close</b><i>A faster cycle</i></span><input type="range" min="0" max="30" value="10" data-k="c" aria-label="Time to close, percent faster"><output>−10%</output></label>
+    </div>
+    <div class="lev-result" aria-live="polite">
+      <p class="mono">New revenue</p>
+      <p class="lev-big" id="lev-pct">+48%</p>
+      <p class="lev-sum">Four numbers, a little better each. No new hires, no new market.</p>
+      <p class="lev-eq mono" id="lev-eq">1.10 × 1.10 × 1.10 × 1.11 = 1.48×</p>
+      <p class="lev-ret"><b>Then keep them.</b> Above 100% net retention, every year starts with more. That's the fifth lever.</p>
+    </div>
   </div>
-  <figure class="eng-fig eng-route-fig">
-    <svg viewBox="0 0 1200 440" role="img" aria-label="A map with two routes from You are here to Growth: a long winding climb over the hill when selling to everyone, and a short route around it when selling to the right customer">
-      <g class="g-contour">
-        <ellipse cx="600" cy="205" rx="430" ry="170"/>
-        <ellipse cx="600" cy="205" rx="350" ry="138"/>
-        <ellipse cx="600" cy="205" rx="270" ry="106"/>
-        <ellipse cx="600" cy="205" rx="190" ry="75"/>
-        <ellipse cx="600" cy="205" rx="110" ry="44"/>
-        <ellipse cx="600" cy="205" rx="40" ry="16"/>
-      </g>
-      <path class="g-route-bad" d="M130 340 C 300 330, 330 140, 470 150 S 600 300, 700 260 S 760 70, 900 90 S 1020 170, 1070 110"/>
-      <path class="g-route-good" d="M130 340 C 420 420, 900 410, 1000 250 S 1050 140, 1070 110"/>
-      <text class="g-note" x="470" y="128" text-anchor="middle">Selling to everyone</text>
-      <text class="g-note good" x="620" y="430" text-anchor="middle">Selling to the right customer</text>
-      <g class="g-pin"><line x1="130" y1="340" x2="130" y2="296"/><circle cx="130" cy="340" r="7"/><text x="130" y="284" text-anchor="middle">You are here</text></g>
-      <line class="g-pole" x1="1070" y1="110" x2="1070" y2="66"/>
-      <polygon class="g-flag" points="1070,66 1104,75 1070,84"/>
-      <text class="g-label" x="1070" y="52" text-anchor="middle">Growth</text>
-    </svg>
-    <figcaption class="eng-cap">The same train and the same team, on a different route.</figcaption>
-  </figure>
 </section>
 
 <section class="sec wrap eng-linesec" aria-labelledby="h-line">
   <div class="eng-head">
     <h2 id="h-line">Every customer travels the same <em>line.</em></h2>
-    <p>Find the station where yours get stuck.</p>
+    <p>Each station moves one of the numbers. Find the one where yours get stuck.</p>
   </div>
   <div class="line">
     <div class="line-halves" aria-hidden="true"><span>Win · to the signature</span><span>Grow · after the signature</span></div>
     <ol class="stations">
-      <li class="win"><button type="button" data-tip="Inbound answered in minutes. Outbound aimed at the best-fit customers, with the message tested before the volume.">Create pipeline</button></li>
-      <li class="win"><button type="button" data-tip="One quality bar for everyone, and discovery that reaches what the problem really costs.">Qualify and discover</button></li>
-      <li class="win"><button type="button" data-tip="A demo built on their problem, a value case in their numbers, and a plan to signature agreed together.">Win the deal</button></li>
-      <li class="win"><button type="button" data-tip="The customer never has to tell their story twice.">Hand over</button></li>
+      <li class="win" data-lever="Deals created"><button type="button" data-tip="Inbound answered in minutes. Outbound aimed at the best-fit customers, with the message tested before the volume.">Create pipeline</button></li>
+      <li class="win" data-lever="Win rate"><button type="button" data-tip="One quality bar for everyone, and discovery that reaches what the problem really costs.">Qualify and discover</button></li>
+      <li class="win" data-lever="Win rate · deal size"><button type="button" data-tip="A demo built on their problem, a value case in their numbers, and a plan to signature agreed together.">Win the deal</button></li>
+      <li class="win" data-lever="Time to value"><button type="button" data-tip="The customer never has to tell their story twice.">Hand over</button></li>
       <li class="sig"><span>Signed</span></li>
-      <li class="grow"><button type="button" data-tip="The first result the customer can see, as fast as possible.">First impact</button></li>
-      <li class="grow"><button type="button" data-tip="The outcome they bought, measured and shown back to them.">Recurring impact</button></li>
-      <li class="grow"><button type="button" data-tip="Renewals worked early, and risk spotted long before notice is given.">Renew and save</button></li>
-      <li class="grow"><button type="button" data-tip="More seats, teams and markets, and customers who bring you the next one.">Expand and refer</button></li>
+      <li class="grow" data-lever="Retention"><button type="button" data-tip="The first result the customer can see, as fast as possible.">First impact</button></li>
+      <li class="grow" data-lever="Retention"><button type="button" data-tip="The outcome they bought, measured and shown back to them.">Recurring impact</button></li>
+      <li class="grow" data-lever="Retention"><button type="button" data-tip="Renewals worked early, and risk spotted long before notice is given.">Renew and save</button></li>
+      <li class="grow" data-lever="Expansion · referrals"><button type="button" data-tip="More seats, teams and markets, and customers who bring you the next one.">Expand and refer</button></li>
     </ol>
     <div class="line-loop" aria-hidden="true"></div>
     <p class="line-loop-txt">Happy customers bring new passengers: referrals start the line again.</p>
     <p class="line-tip" aria-live="polite">Tap a station to see what good looks like.</p>
   </div>
-  <div class="proof">
+</section>
+
+
+<section class="sec wrap eng-fix" aria-labelledby="h-fix">
+  <div class="eng-head"><h2 id="h-fix">How we fix it.</h2><p>Look, diagnose, fix the biggest leak, then build and hand it over.</p></div>
+  <ol class="fix-steps">
+    <li><span class="mono">01 · 1 week</span><h3>Look</h3><p>The GTM Teardown. Outside in, your three fixes ranked.</p><a href="services.html">From €2,500</a></li>
+    <li class="on"><span class="mono">02 · 2–3 weeks</span><h3>Diagnose</h3><p>The GTM Diagnostic. All 28 focus areas scored, the weakest lever found.</p><a href="services.html">3x the fee, or you don't pay</a></li>
+    <li><span class="mono">03 · Inside 30 days</span><h3>Fix</h3><p>The biggest leak first, in one market or segment.</p></li>
+    <li><span class="mono">04 · 8–12 weeks</span><h3>Scale and own</h3><p>The Commercial Systems Build. AI only where it passes the 95% rule, then your team runs it.</p><a href="services.html">From €25,000</a></li>
+  </ol>
+</section>
+
+<section class="sec wrap eng-why" aria-labelledby="h-why">
+  <div class="eng-head"><div class="label mono">Why me</div><h2 id="h-why">I've run this engine <em>from the inside.</em></h2>
+  <p>Head of Sales at four growth companies. The engine is what worked, written down so your team can run it.</p></div>
+  <div class="why-proof">
     <div><b>75 → 16 days</b><span>Arbonics: average sales cycle</span></div>
     <div><b>~1 day → 5 min</b><span>UXCam: first reply to an inbound lead</span></div>
     <div><b>€0.1M → €5.4M</b><span>Arbonics: sales a quarter in nine months, estimated contract value</span></div>
@@ -144,35 +153,8 @@
   <p class="more"><a class="ghost" href="work.html">Read the case studies</a></p>
 </section>
 
-<section class="sec wrap eng-momentum" aria-labelledby="h-mom">
-  <div class="eng-head">
-    <h2 id="h-mom">Keep them on board, add carriages, and the train starts pulling <em>itself.</em></h2>
-    <p><b>Momentum is weight times speed.</b> The weight is the customers you carry. The speed is how fast you win new ones.</p>
-  </div>
-  <div class="mom">
-    <figure class="mom-row">
-      <figcaption><span class="mono">Below 100% net retention</span><b>Every year starts with less.</b></figcaption>
-      <svg viewBox="0 0 560 72" role="img" aria-label="A train with two carriages attached and two uncoupled carriages left behind">
-        <line class="g-track" x1="0" y1="64" x2="560" y2="64"/>
-        <g class="tr-faded"><rect x="110" y="30" width="56" height="26" rx="4"/><circle cx="122" cy="60" r="4"/><circle cx="154" cy="60" r="4"/><rect x="190" y="30" width="56" height="26" rx="4"/><circle cx="202" cy="60" r="4"/><circle cx="234" cy="60" r="4"/></g>
-        <g class="tr-grey"><line x1="398" y1="46" x2="406" y2="46"/><rect x="342" y="30" width="56" height="26" rx="4"/><circle cx="354" cy="60" r="4"/><circle cx="386" cy="60" r="4"/><line x1="462" y1="46" x2="470" y2="46"/><rect x="406" y="30" width="56" height="26" rx="4"/><circle cx="418" cy="60" r="4"/><circle cx="450" cy="60" r="4"/><rect x="470" y="20" width="24" height="36" rx="4"/><rect x="494" y="32" width="46" height="24" rx="4"/><rect x="526" y="18" width="9" height="14" rx="2"/><circle cx="482" cy="60" r="5"/><circle cx="508" cy="60" r="5"/><circle cx="530" cy="60" r="5"/></g>
-      </svg>
-    </figure>
-    <figure class="mom-row good">
-      <figcaption><span class="mono">Above 100% net retention</span><b>Every year starts with more.</b></figcaption>
-      <svg viewBox="0 0 560 72" role="img" aria-label="A train with five carriages attached, the two newest just added">
-        <line class="g-track" x1="0" y1="64" x2="560" y2="64"/>
-        <g class="tr-car-new"><rect x="86" y="30" width="56" height="26" rx="4"/><rect x="150" y="30" width="56" height="26" rx="4"/></g>
-        <g class="tr-ember-line"><line x1="142" y1="46" x2="150" y2="46"/><line x1="206" y1="46" x2="214" y2="46"/><line x1="270" y1="46" x2="278" y2="46"/><line x1="334" y1="46" x2="342" y2="46"/><line x1="398" y1="46" x2="406" y2="46"/><line x1="462" y1="46" x2="470" y2="46"/></g>
-        <g class="tr-car-solid"><rect x="214" y="30" width="56" height="26" rx="4"/><rect x="278" y="30" width="56" height="26" rx="4"/><rect x="342" y="30" width="56" height="26" rx="4"/><rect x="406" y="30" width="56" height="26" rx="4"/></g>
-        <g class="tr-loco-solid"><rect x="470" y="20" width="24" height="36" rx="4"/><rect x="494" y="32" width="46" height="24" rx="4"/><rect x="526" y="18" width="9" height="14" rx="2"/></g>
-        <g class="tr-wheel-row"><circle cx="98" cy="60" r="4"/><circle cx="130" cy="60" r="4"/><circle cx="162" cy="60" r="4"/><circle cx="194" cy="60" r="4"/><circle cx="226" cy="60" r="4"/><circle cx="258" cy="60" r="4"/><circle cx="290" cy="60" r="4"/><circle cx="322" cy="60" r="4"/><circle cx="354" cy="60" r="4"/><circle cx="386" cy="60" r="4"/><circle cx="418" cy="60" r="4"/><circle cx="450" cy="60" r="4"/><circle cx="482" cy="60" r="5"/><circle cx="508" cy="60" r="5"/><circle cx="530" cy="60" r="5"/></g>
-      </svg>
-    </figure>
-  </div>
-</section>
+<section class="sec wrap eng-hood" aria-label="Under the hood"><details><summary><span class="label mono">Under the hood</span><b>Seven layers, 28 focus areas, one standard.</b><span class="hood-open mono">Open</span></summary>
 
-<section class="sec wrap eng-model" aria-labelledby="h-model">
   <div class="eng-head">
     <div class="label mono">Under the story</div>
     <h2 id="h-model">A system. Five levers, seven layers, one <em>standard.</em></h2>
@@ -206,58 +188,14 @@
     <p>Each layer sets the ceiling for the one below. Two threads run through all seven: <span class="k k1">one definition of a good deal</span> and <span class="k k2">return on effort</span>.</p>
     <p class="scale"><span class="mono">Scored on evidence</span><span>1 Missing</span><span>2 In heads</span><span>3 Written</span><span>4 Run</span><span>5 Compounding</span></p>
   </div>
-</section>
 
-<section class="sec wrap eng-method" aria-labelledby="h-method">
-  <div class="eng-head">
-    <h2 id="h-method">Two weeks to find where you are. Thirty days to the first fix. Then <em>momentum.</em></h2>
-  </div>
-  <ol class="steps">
-    <li><span class="mono">Two weeks</span><h3>Diagnose</h3><p>Score all 28 focus areas and find the weakest lever.</p></li>
-    <li><span class="mono">Inside 30 days</span><h3>Fix</h3><p>The biggest leak first, in one market or segment.</p></li>
-    <li><span class="mono">Next</span><h3>Scale</h3><p>Build around what worked, with AI trained to the 95% rule.</p></li>
-    <li><span class="mono">For good</span><h3>Own</h3><p>Your team runs it, with one dashboard everyone trusts.</p></li>
-  </ol>
-  <p class="eng-start">Not sure yet? Start with a <a href="services.html">GTM Teardown</a>: 90 minutes, your three fixes ranked, or you don't pay.</p>
-</section>
-
-<section class="sec wrap eng-report" aria-labelledby="h-report">
-  <div class="report-copy">
-    <h2 id="h-report">Your engine, <em>scored.</em></h2>
-    <p>The Commercial Engine Score Report. One page your whole leadership team can act on.</p>
-    <ul>
-      <li>All 28 focus areas, scored on evidence</li>
-      <li>Your weakest lever, and how much of next year depends on it</li>
-      <li>The three gaps to close first, each with a 30-day fix</li>
-    </ul>
-    <a class="ghost" href="services.html">How the Diagnostic works</a>
-  </div>
-  <figure class="report-card" aria-label="Sample Commercial Engine Score Report for a fictional company">
-    <div class="rc-top"><span class="mono">Score Report · sample</span><span class="rc-note">Fictional company</span></div>
-    <p class="rc-verdict">Wins the right customers, then loses them after the signature.</p>
-    <div class="rc-mid">
-      <div class="rc-score"><b>2.5</b><span>/ 5</span></div>
-      <div class="rc-grid" aria-hidden="true">
-        <i class="s3"></i><i class="s3"></i><i class="s2"></i><i class="s3"></i>
-        <i class="s3"></i><i class="s2"></i><i class="s3"></i><i class="s1"></i>
-        <i class="s2"></i><i class="s1"></i><i class="s2"></i><i class="s2"></i>
-        <i class="s2"></i><i class="s3"></i><i class="s3"></i><i class="s2"></i>
-        <i class="s3"></i><i class="s2"></i><i class="s4"></i><i class="s3"></i>
-        <i class="s3"></i><i class="s3"></i><i class="s2"></i><i class="s2"></i>
-        <i class="s3"></i><i class="s2"></i><i class="s4"></i><i class="s2"></i>
-      </div>
-    </div>
-    <ol class="rc-gaps"><li><b>Hand over</b><span>score 1 · 30-day fix</span></li><li><b>Prove recurring impact</b><span>score 1 · 30-day fix</span></li><li><b>Qualify and discover</b><span>score 2 · 30-day fix</span></li></ol>
-  </figure>
-</section>
-
-</main>
+</details></section>
 
 <section class="close" aria-labelledby="h-where"><div class="wrap inner">
-  <div class="mono">Where are you on the line?</div>
-  <h2 id="h-where">Find your station in <em>three minutes.</em></h2>
-  <p>Eight questions, your score, and your three first moves.</p>
-  <div class="cta"><a class="btn" href="scorecard.html">Score your engine <span class="arr">→</span></a><a class="mail" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Or book a call</a></div>
+  <div class="mono">Where is your engine leaking?</div>
+  <h2 id="h-where">Score your engine in <em>two minutes.</em></h2>
+  <p>Seven questions, one per layer. Your score and your three first moves.</p>
+  <div class="cta"><a class="btn" href="scorecard.html">Score your engine <span class="arr">→</span></a><a class="mail" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Or book a 30-minute call</a></div>
 </div></section>
 <footer><div class="wrap">
   <span class="sign"><svg class="mark" viewBox="0 0 70 32" width="42" height="19" aria-hidden="true" focusable="false"><rect width="6" height="32" fill="currentColor"/><rect x="14" width="6" height="32" fill="currentColor"/><rect x="6" y="13" width="8" height="6" fill="currentColor"/><path d="M35 0V23A6 6 0 0 1 29 29H26" fill="none" stroke="currentColor" stroke-width="6"/><path d="M66.19 6.81A13 13 0 1 0 66.19 25.19" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="57" cy="16" r="3.8" class="stn"/></svg><span>© 2026 Harry James Coburn · Berlin · London</span></span>
@@ -302,6 +240,12 @@
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(place); } }, { passive: true });
   place();
 })();
+</script>
+<script>
+(function(){var r=[].slice.call(document.querySelectorAll('.lev-sliders input'));if(!r.length)return;
+function u(){var m=1,eq=[];r.forEach(function(x){var v=+x.value/100,c=x.dataset.k==='c',f=c?1/(1-v):1+v;m*=f;eq.push(f.toFixed(2));x.nextElementSibling.textContent=(c?'−':'+')+x.value+'%';});
+document.getElementById('lev-pct').textContent='+'+Math.round((m-1)*100)+'%';document.getElementById('lev-eq').textContent=eq.join(' × ')+' = '+m.toFixed(2)+'×';}
+r.forEach(function(x){x.addEventListener('input',u);});u();})();
 </script>
 </body>
 </html>
