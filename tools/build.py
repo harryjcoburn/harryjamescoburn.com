@@ -224,6 +224,19 @@ def adventure():
     return f'<div class="strip">{figs}</div>'
 
 
+def availability():
+    """Rolling availability: always offers next calendar month, so it rolls over on the 1st
+    (the daily refresh rebuilds the site). Places default to site.json availability.default_places,
+    with optional per-month overrides, e.g. "overrides": {"2026-12": 1}."""
+    import datetime, calendar
+    cfg = CFG.get("availability", {})
+    today = datetime.date.today()
+    y, m = (today.year + (today.month == 12), today.month % 12 + 1)
+    y2, m2 = (y + (m == 12), m % 12 + 1)
+    places = cfg.get("overrides", {}).get(f"{y}-{m:02d}", cfg.get("default_places", 2))
+    return {"month": calendar.month_name[m], "next": calendar.month_name[m2], "places": places}
+
+
 def prices(html):
     def sub(m):
         p = CFG["prices"].get(m.group(1))
@@ -260,7 +273,7 @@ def fill(name, html):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = re.sub(r"\{\{I(s?):([a-z]+)\}\}", lambda m: icons_mod.svg(m.group(2), 'si si-s' if m.group(1) else 'si'), html)
     html = prices(html)
-    av = CFG.get("availability", {})
+    av = availability()
     html = re.sub(r"\{\{AV:([a-z_]+)\}\}", lambda m: escape(str(av.get(m.group(1), ""))), html)
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)

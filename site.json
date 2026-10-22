@@ -33,8 +33,7 @@
   "whatsapp": "+4915229261438",
   "voice_agent": "agent_3601m5cpfjkhfkxasf1gsrbwxg39",
   "availability": {
-    "month": "November",
-    "places": "2",
-    "next": "December"
+    "default_places": 2,
+    "overrides": {}
   }
 }
