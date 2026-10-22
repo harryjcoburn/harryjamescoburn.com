@@ -260,6 +260,8 @@ def fill(name, html):
         warnings.append("Scorecard email report is off: add hubspot.portal and hubspot.form to site.json.")
     html = re.sub(r"\{\{I(s?):([a-z]+)\}\}", lambda m: icons_mod.svg(m.group(2), 'si si-s' if m.group(1) else 'si'), html)
     html = prices(html)
+    av = CFG.get("availability", {})
+    html = re.sub(r"\{\{AV:([a-z_]+)\}\}", lambda m: escape(str(av.get(m.group(1), ""))), html)
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
     html = html.replace('href="{{BOOK}}"', f'href="{attrs}"').replace("{{EMAIL}}", CFG["email"])

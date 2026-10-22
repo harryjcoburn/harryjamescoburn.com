@@ -31,5 +31,10 @@
   "hold_pages": [],
   "report_endpoint": "https://script.google.com/macros/s/AKfycbxX6JbUwwLp0VuHaJaQ97TAWxpq8hh86QeIDhaLHsKWwiexuMZaCnVT0o_7xQvDyFf5/exec",
   "whatsapp": "+4915229261438",
-  "voice_agent": "agent_3601m5cpfjkhfkxasf1gsrbwxg39"
+  "voice_agent": "agent_3601m5cpfjkhfkxasf1gsrbwxg39",
+  "availability": {
+    "month": "November",
+    "places": "2",
+    "next": "December"
+  }
 }

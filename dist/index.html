@@ -141,8 +141,23 @@
       </div>
       <div class="ob-sub">
         <p>I find at least three times my fee in revenue you're losing, measured on your own numbers. If I don't, you pay nothing.</p>
-        <p class="ob-cost"><b>Waiting is the expensive option.</b> If sales is €1M behind plan this year, that's more than €80k walking out of the door every month it isn't fixed.</p>
-        <p class="ob-cap mono"><span class="ob-dot" aria-hidden="true"></span>Limited places each quarter · Book ahead</p>
+        <p class="ob-easy">Not ready to talk? <a href="scorecard.html">Score your sales engine in 2 minutes →</a></p>
+      </div>
+    </div>
+    <div class="ob-strip">
+      <div class="ob-wait">
+        <div class="label mono">The cost of waiting</div>
+        <p class="ob-big"><span id="ob-month">€83k</span><small>a month</small></p>
+        <p class="ob-wait-t">That's what a stalled engine costs when sales is <b id="ob-gap-t">€1M</b> behind plan this year. Every week you wait is another <b id="ob-week">€19k</b> you don't get back.</p>
+        <label class="ob-calc"><span class="mono">How far behind plan are you this year?</span>
+          <input id="ob-gap" type="range" min="250000" max="5000000" step="250000" value="1000000" aria-describedby="ob-gap-v"><output id="ob-gap-v" class="mono">€1M</output></label>
+      </div>
+      <div class="ob-avail">
+        <div class="ob-av-top mono"><span class="ob-dot" aria-hidden="true"></span>Availability</div>
+        <p class="ob-av-n"><b>2</b> Diagnostic places open for November</p>
+        <p class="ob-av-s">I keep my client list small so every company gets me, not a junior. When November is full, the next start is December.</p>
+        <a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Hold a place <span class="arr">→</span></a>
+        <p class="ob-av-f mono">30-minute call · No prep · No hard sell</p>
       </div>
     </div>
     <div class="ob-cards">
@@ -171,8 +186,9 @@
           <li>Fee credited against a Build</li>
         </ul>
         <p class="ob-promise big">3x the fee in revenue found, or you don't pay.</p>
-        <div class="ob-foot"><span class="ob-price">Fixed fee, agreed upfront</span><span class="mono">Limited places each quarter</span></div>
-        <a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book an intro call <span class="arr">→</span></a>
+        <div class="ob-foot"><span class="ob-price">Fixed fee, agreed upfront</span><span class="mono">2 places open for November</span></div>
+        <a class="btn" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Book a 30-minute call <span class="arr">→</span></a>
+        <a class="ob-alt" href="scorecard.html">Or score your engine first, free</a>
       </article>
       <article class="ob-card">
         <div class="ob-top mono"><span>Build it</span><span>8–12 weeks</span></div>
@@ -188,8 +204,16 @@
         <a class="btn dark" href="https://cal.com/harryjamescoburn/intro" target="_blank" rel="noopener">Talk it through <span class="arr">→</span></a>
       </article>
     </div>
-    <p class="ob-then"><b>Need someone in the seat?</b> I also work as a Fractional Head of Sales or as an Advisor to the founder. <a class="ghost" href="services.html">See all the ways to work together</a></p>
+    <p class="ob-then"><a class="ob-sc" href="scorecard.html"><b>The easiest place to start:</b> score your sales engine in 2 minutes and get a free report →</a><br><b>Need someone in the seat?</b> I also work as a Fractional Head of Sales or as an Advisor to the founder. <a class="ghost" href="services.html">See all the ways to work together</a></p>
   </div>
+
+  <script>
+  (function(){var r=document.getElementById('ob-gap');if(!r)return;
+  function f(n){return n>=1e6?'€'+(Math.round(n/1e5)/10).toString().replace(/\.0$/,'')+'M':'€'+Math.round(n/1e3)+'k'}
+  function u(){var g=+r.value;document.getElementById('ob-gap-v').textContent=f(g);document.getElementById('ob-gap-t').textContent=f(g);
+  document.getElementById('ob-month').textContent=f(g/12);document.getElementById('ob-week').textContent=f(g/52)}
+  r.addEventListener('input',u);u()})();
+  </script>
 </section>
 
 <section class="sec wrap" id="method" aria-labelledby="h-method">
