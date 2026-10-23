@@ -313,7 +313,7 @@ WORKFLOWS = [
   "metrics": ["Time to first reply", "Approved without edits, by segment", "Reply and meeting rate", "Inbound to sales-qualified rate", "Cost per lead processed"],
   "pitfalls": ["Starting with automation instead of approval. The approval data is what tells you when it's ready.", "One agent doing everything. Separate steps are easier to test and fix.", "No reason on rejections. Without the reason, you can't teach it."]},
  {"slug": "outbound", "title": "The outbound signal engine", "sub": "Find the companies where you make the biggest difference, then test the message by person, company and timing.",
-  "proof": "I built this at UXCam with Clay and Claude Code, using app store data to find companies where the product could make a big difference. In the first month, the first run reached about 500 accounts and 4,000 contacts, and Lemlist warmed up the sending addresses.",
+  "proof": "I built this at UXCam with Clay and Claude Code, using app store data to find companies where the product could make a big difference. A largely automated engine hitting about 500 accounts and 4,000 contacts a month, with Lemlist warming up the sending addresses.",
   "stack": [("Data and enrichment", "Clay, plus the public data your ICP shows up in"), ("Research and writing", "Claude, orchestrated with Claude Code"), ("Sending", "Separate warmed-up sending domains"), ("CRM", "Every touch logged")],
   "steps": [
    ("Define the signal", "From your ICP work (prompt 01), pick the public signals that predict fit. For a mobile product that can be app store data: number of apps, ratings, update rate.", "Two or three testable signals"),
