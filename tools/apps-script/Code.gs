@@ -335,10 +335,11 @@ function message_(d) {
 
 /* ---------- Website voice agent (ElevenLabs webhook tool) ---------- */
 // The key is a shared secret: the ElevenLabs tool sends it as ?k=..., so only Harry's agent can post here.
-var AGENT_KEY = 'SET_IN_EDITOR';  // the real key lives only in the Apps Script editor
-
+// It lives in Project Settings > Script properties as AGENT_KEY, never in this code, so pasting a new
+// version of this file can't overwrite it. With no key set, the endpoint refuses everything.
 function agent_(d, key) {
-  if (key !== AGENT_KEY) return json_({ok: false, error: 'forbidden'});
+  var secret = PropertiesService.getScriptProperties().getProperty('AGENT_KEY');
+  if (!secret || secret.length < 24 || key !== secret) return json_({ok: false, error: 'forbidden'});
   function line(v, max) { return String(v || '').replace(/[\r\n\t<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max); }
   var name = line(d.visitor_name, 60), company = line(d.company, 80), next = line(d.next_step, 200);
   var email = String(d.visitor_email || '').trim().toLowerCase();

@@ -11,7 +11,7 @@ assistants, and writes the finished site to dist/.
 Prints a checklist of anything still open before go-live.
 """
 import json
-import re
+import base64, hashlib, re
 import shutil
 import sys
 from datetime import date
@@ -450,7 +450,34 @@ def new_tab(html):
         if re.match(r"(https?:|mailto:|tel:)", h) or h.split("#")[0].split("?")[0].endswith(".pdf"):
             return tag[:-1] + ' target="_blank" rel="noopener">'
         return tag
-    return re.sub(r"<a\b[^>]*>", fix, html)
+    return secure(re.sub(r"<a\b[^>]*>", fix, html))
+
+
+def secure(html):
+    """Add a Content Security Policy and referrer policy. Inline scripts are allowed only by their hash,
+    so a script injected into a page (or a tampered third-party snippet) won't run."""
+    hashes = []
+    for m in re.finditer(r"<script(?![^>]*\bsrc=)(?![^>]*application/ld\+json)[^>]*>(.*?)</script>", html, flags=re.S):
+        digest = base64.b64encode(hashlib.sha256(m.group(1).encode("utf-8")).digest()).decode()
+        hashes.append(f"'sha256-{digest}'")
+    policy = "; ".join([
+        "default-src 'self'",
+        "script-src 'self' " + " ".join(sorted(set(hashes))) + " https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io",
+        "style-src 'self' 'unsafe-inline'",
+        "img-src 'self' data: blob: https:",
+        "font-src 'self' data:",
+        "media-src 'self' blob: data: https:",
+        "connect-src 'self' https: wss:",
+        "frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com",
+        "worker-src 'self' blob:",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self' https://*.hsforms.com https://script.google.com",
+        "upgrade-insecure-requests",
+    ])
+    meta = (f'<meta http-equiv="Content-Security-Policy" content="{policy}">\n'
+            '<meta name="referrer" content="strict-origin-when-cross-origin">\n')
+    return html.replace("<head>", "<head>\n" + meta, 1) if "<head>" in html else html
 
 
 def main():
