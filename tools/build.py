@@ -113,7 +113,7 @@ NEWSLETTER = """<section class="sec news" id="newsletter" aria-labelledby="h-new
 
 FOOTER = """<footer><div class="wrap">
   <span class="sign">{mark}<span>© {year} Harry James Coburn · Berlin · London</span></span>
-  <nav aria-label="Footer"><a href="./#offers">Offers</a><a href="faq.html">FAQ</a><a href="speaking.html">Speaking</a><a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Newsletter</a><a href="{linkedin}" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:{email}">Email</a><a href="impressum.html">Impressum</a><a href="privacy.html">Privacy</a></nav>
+  <nav aria-label="Footer"><a href="./#offers">Offers</a><a href="faq.html">FAQ</a><a href="speaking.html">Speaking</a><a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">Newsletter</a><a href="{linkedin}" target="_blank" rel="noopener">LinkedIn</a><a href="{company}" target="_blank" rel="noopener">Company page</a><a href="mailto:{email}">Email</a><a href="impressum.html">Impressum</a><a href="privacy.html">Privacy</a></nav>
 </div></footer>"""
 
 
@@ -257,13 +257,13 @@ def fill(name, html):
         extra = f'<script type="application/ld+json">{json.dumps(faq_ld(html), ensure_ascii=False)}</script>\n'
     html = html.replace("{{HEAD}}", head(title, desc, name, extra))
     html = html.replace("{{NAV}}", nav(name)).replace("{{CLOSE}}", CLOSE)
-    html = html.replace("{{FOOTER}}", FOOTER.format(mark=MARK, year=date.today().year, linkedin=escape(CFG["linkedin"]),
+    html = html.replace("{{FOOTER}}", FOOTER.format(mark=MARK, year=date.today().year, linkedin=escape(CFG["linkedin"]), company=escape(CFG.get("linkedin_company", CFG["linkedin"])),
                                                     email=CFG["email"]))
     html = html.replace("{{NEWSLETTER}}", NEWSLETTER).replace("{{ADVENTURE}}", adventure())
     hs = CFG.get("hubspot", {})
     html = html.replace("{{HS_PORTAL}}", escape(hs.get("portal", ""))).replace("{{HS_FORM}}", escape(hs.get("form", ""))).replace(
         "{{HS_HOST}}", "api-eu1.hsforms.com" if hs.get("region") == "eu1" else "api.hsforms.com").replace(
-        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", ""))).replace("{{LINKEDIN}}", escape(CFG["linkedin"])).replace("{{AGENT_ID}}", escape(CFG.get("voice_agent", "")))
+        "{{HS_SUB}}", escape(str(hs.get("subscription", "")))).replace("{{REPORT_URL}}", escape(CFG.get("report_endpoint", ""))).replace("{{LINKEDIN_COMPANY}}", escape(CFG.get("linkedin_company", CFG["linkedin"]))).replace("{{LINKEDIN}}", escape(CFG["linkedin"])).replace("{{AGENT_ID}}", escape(CFG.get("voice_agent", "")))
     wa = re.sub(r"\D", "", CFG.get("whatsapp", ""))
     html = re.sub(r"<!-- WA -->(.*?)<!-- /WA -->", (lambda m: m.group(1).replace("{{WA}}", wa)) if wa else "", html, flags=re.S)
     if "{{PACKS_JSON}}" in html:
