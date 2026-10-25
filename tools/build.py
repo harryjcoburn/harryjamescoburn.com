@@ -51,6 +51,8 @@ PAGES = {
         'Book Harry James Coburn for a talk, podcast or VC portfolio workshop on go-to-market, sales leadership and AI agents in sales.'),
     'ai.html': ('AI in sales: agents and free prompts | Harry James Coburn',
         'The inbound and outbound AI agents Harry James Coburn has built, and a free sales prompt library for every layer of the engine.'),
+    'apply.html': ('Apply for a GTM Diagnostic | Harry James Coburn',
+        'Six quick questions. If it looks like a fit, book a 30-minute call straight away. At least 3x the fee in revenue found, or you don\'t pay.'),
     'contact.html': ('Contact Harry James Coburn',
         'Book a 30-minute call, message on WhatsApp or email Harry James Coburn about your sales engine, a role or a talk.'),
     'about.html': ('About Harry James Coburn: sales leader and GTM adviser, Berlin',
@@ -280,6 +282,7 @@ def fill(name, html):
     book = booking()
     attrs = f'{escape(book)}" target="_blank" rel="noopener' if book.startswith("http") else escape(book)
     html = html.replace('href="{{BOOK}}"', f'href="{attrs}"').replace("{{EMAIL}}", CFG["email"])
+    html = html.replace("{{BOOK_URL}}", escape(book))
     html = new_tab(html)
     left = re.findall(r"\{\{[^}]+\}\}", html)
     if left:
