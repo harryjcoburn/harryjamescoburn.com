@@ -1,12 +1,15 @@
 /**
- * Scorecard report sender for harryjamescoburn.com
+ * Website forms for harryjamescoburn.com
  *
- * The scorecard page posts the raw answers here. This script:
- *   1. rebuilds the score and report from its own copy of the questions
- *      (so nobody can make it send text they wrote),
- *   2. passes the lead to HubSpot (form "Scorecard report request"),
- *   3. emails the report from Gmail as harry@harryjamescoburn.com,
- *      which is signed for the domain, so it lands in the inbox.
+ * One web app handles everything the site sends in:
+ *   - Scorecard: rebuilds the score and report from its own copy of the questions
+ *     (so nobody can make it send text they wrote), passes the lead to HubSpot
+ *     (form "Scorecard report request") and emails the report from
+ *     harry@harryjamescoburn.com, which is signed for the domain.
+ *   - Contact messages: HubSpot main form + an email to Harry.
+ *   - Diagnostic applications: HubSpot form "Diagnostic application", one answer
+ *     per property, lead status New, + an email to Harry.
+ *   - Voice agent summaries (ElevenLabs) and resource downloads.
  *
  * Deploy: Deploy > New deployment > Web app, execute as me, access: anyone.
  * Run testSend() once from the editor to authorise and send a test to NOTIFY.
@@ -19,6 +22,7 @@ var CFG = {
   BOOK: 'https://cal.com/harryjamescoburn/intro?utm_source=scorecard&utm_medium=email',
   SITE: 'https://harryjamescoburn.com',
   HS_URL: 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149589438/e6a11b52-1579-41a2-a7f8-4ce15ad47af6',
+  HS_APPLY_URL: 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/149589438/82597b16-b6c2-404a-b78f-6fbcd58eaf96',
   HS_SUB: 3921244406,
   DAILY_MAX: 80,           // safety cap on reports per day
   PER_ADDRESS_HOURS: 6     // one report per address per 6 hours
@@ -315,22 +319,57 @@ function message_(d) {
   } finally { lock.releaseLock(); }
 
   var src = line(d.source, 120) || 'direct';
-  var hs = {ok: false, code: 0, body: ''};
+  var app = application_(d.app), hs = {ok: false, code: 0, body: ''};
+  // Diagnostic applications go to their own HubSpot form, one answer per property; other messages to the main form.
+  var fields = app ? [['firstname', first], ['email', email], ['company', company], ['website', app.site]].concat(app.fields)
+                   : [['firstname', first], ['email', email], ['company', company], ['message', msg]];
   try {
-    var r = UrlFetchApp.fetch(CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    var r = UrlFetchApp.fetch(app ? CFG.HS_APPLY_URL : CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
       payload: JSON.stringify({
-        fields: [['firstname', first], ['email', email], ['company', company], ['message', msg]].map(function (f) { return {objectTypeId: '0-1', name: f[0], value: f[1]}; }),
-        context: {pageUri: line(d.page, 200) || CFG.SITE + '/contact.html', pageName: 'Send a message'},
-        legalConsentOptions: {consent: {consentToProcess: true, text: 'I agree to Harry James Coburn storing my details to reply to my message.', communications: []}}})});
+        fields: fields.filter(function (f) { return f[1]; }).map(function (f) { return {objectTypeId: '0-1', name: f[0], value: String(f[1])}; }),
+        context: {pageUri: line(d.page, 200) || CFG.SITE + (app ? '/apply.html' : '/contact.html'), pageName: app ? 'Diagnostic application' : 'Send a message'},
+        legalConsentOptions: {consent: {consentToProcess: true, text: app ? 'I agree to Harry James Coburn storing my details to reply to my application.' : 'I agree to Harry James Coburn storing my details to reply to my message.', communications: []}}})});
     hs = {ok: r.getResponseCode() < 300, code: r.getResponseCode(), body: r.getContentText().slice(0, 300)};
   } catch (x) { hs.body = String(x); }
+  // Safety net: if the application form rejects it (e.g. not yet approved), save it to the main form as text instead.
+  if (app && !hs.ok) {
+    try {
+      var r2 = UrlFetchApp.fetch(CFG.HS_URL, {method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+        payload: JSON.stringify({
+          fields: [['firstname', first], ['email', email], ['company', company], ['message', msg]].map(function (f) { return {objectTypeId: '0-1', name: f[0], value: f[1]}; }),
+          context: {pageUri: line(d.page, 200) || CFG.SITE + '/apply.html', pageName: 'Diagnostic application'},
+          legalConsentOptions: {consent: {consentToProcess: true, text: 'I agree to Harry James Coburn storing my details to reply to my application.', communications: []}}})});
+      if (r2.getResponseCode() < 300) hs = {ok: true, code: r2.getResponseCode(), body: 'saved to main form (application form rejected it)'};
+    } catch (x) {}
+  }
 
   // Only Harry receives this email, so the visitor's text never goes to anyone else.
   var body = 'New message from harryjamescoburn.com\n\nFrom: ' + first + (company ? ' (' + company + ')' : '') + ' <' + email + '>\n' +
-    'Source: ' + src + '\nHubSpot: ' + (hs.ok ? 'saved' : 'NOT saved (' + hs.code + ')') + '\n\n' + msg + '\n\nReply to this email to answer them directly.';
+    'Source: ' + src + '\nHubSpot: ' + (hs.ok ? 'saved' + (/main form/.test(hs.body) ? ' to the main form as text (application form rejected it)' : '') : 'NOT saved (' + hs.code + ')') + '\n\n' + msg + '\n\nReply to this email to answer them directly.';
   var sent = false;
-  try { GmailApp.sendEmail(CFG.NOTIFY, 'Website message from ' + first + (company ? ', ' + company : ''), body, {name: 'harryjamescoburn.com', replyTo: email}); sent = true; } catch (x) {}
+  var subject = app ? 'Diagnostic application (' + (app.fit ? 'fit' : 'not yet a fit') + ') from ' + first + (company ? ', ' + company : '')
+                    : 'Website message from ' + first + (company ? ', ' + company : '');
+  try { GmailApp.sendEmail(CFG.NOTIFY, subject, body, {name: 'harryjamescoburn.com', replyTo: email}); sent = true; } catch (x) {}
   return json_({ok: sent || hs.ok, hubspot: hs.ok});
+}
+
+/* ---------- Diagnostic application answers ---------- */
+// Only accepts the exact dropdown values set up in HubSpot, so a tampered request can't write junk into the properties.
+var APPLY_OPTS = {
+  dx_stage: ['Seed or earlier', 'Series A', 'Series B', 'Series C or later'],
+  dx_stuck: ['Growth has stalled since the raise', 'Sales still runs through the founder', 'Launching a new market or product', 'Making AI actually work in sales'],
+  dx_gap: ['Under €500k', '€500k to €2M', 'Over €2M', 'Not sure yet'],
+  dx_start: ['This month', 'In the next 1 to 2 months', 'Later this year or next', 'Just exploring']
+};
+function application_(a) {
+  if (!a || typeof a !== 'object') return null;
+  var out = [], ok = true;
+  Object.keys(APPLY_OPTS).forEach(function (k) { var v = String(a[k] || ''); if (APPLY_OPTS[k].indexOf(v) < 0) ok = false; else out.push([k, v]); });
+  if (!ok) return null;
+  // Fit is worked out here, not trusted from the page.
+  var fit = a.dx_stage !== 'Seed or earlier' && (a.dx_start === 'This month' || a.dx_start === 'In the next 1 to 2 months');
+  out.push(['dx_fit', fit ? 'Fit' : 'Not yet'], ['dx_notes', String(a.dx_notes || '').replace(/\r/g, '').trim().slice(0, 800)], ['hs_lead_status', 'NEW']);
+  return {fields: out, fit: fit, site: String(a.site || '').replace(/[\s<>"]/g, '').slice(0, 120)};
 }
 
 /* ---------- Website voice agent (ElevenLabs webhook tool) ---------- */

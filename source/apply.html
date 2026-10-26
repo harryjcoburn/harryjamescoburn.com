@@ -78,7 +78,7 @@
 {{FOOTER}}
 <script>
 (function(){
-  var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',BOOK='{{BOOK_URL}}';
+  var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_APPLY='82597b16-b6c2-404a-b78f-6fbcd58eaf96',HS_HOST='{{HS_HOST}}',BOOK='{{BOOK_URL}}';
   var f=document.getElementById('apl'),note=document.getElementById('aplNote');
   function esc(s){return String(s||'').replace(/[<>&"]/g,'');}
   function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
@@ -92,6 +92,7 @@
     var msg='DIAGNOSTIC APPLICATION ('+(fit?'fit: offered a call':'not yet a fit')+')\n'+
       'Company: '+d.get('company')+(d.get('site')?' ('+d.get('site')+')':'')+'\nStage: '+d.get('stage')+'\nOn their mind: '+d.get('stuck')+
       '\nBehind plan: '+d.get('gap')+'\nStart: '+d.get('start')+(d.get('notes')?'\nNotes: '+String(d.get('notes')).trim():'');
+    var app={dx_stage:d.get('stage'),dx_stuck:d.get('stuck'),dx_gap:d.get('gap'),dx_start:d.get('start'),dx_notes:String(d.get('notes')||'').trim(),site:d.get('site')||''};
     var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
     btn.disabled=true;note.textContent='Sending...';
     function done(){
@@ -102,14 +103,18 @@
         '<div class="apl-done"><span class="mono">Application received</span><h3>Thanks, '+name+'.</h3><p>I\'ll read your answers and reply to '+esc(em)+' within one working day. In the meantime, the <a href="scorecard.html">2-minute scorecard</a> will show you where to start.</p></div>';
       window.scrollTo({top:0,behavior:'smooth'});
       try{if(window.umami)umami.track('Diagnostic application',{fit:fit})}catch(e){}}
-    function viaHubSpot(){
-      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['company',d.get('company')],['message',msg]].map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+    function hsPost(form,fields){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+form,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:fields.filter(function(x){return x[1];}).map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
           context:{pageUri:location.href,pageName:document.title},
           legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to reply to my application.',communications:[]}}})})
       .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    function viaHubSpot(){
+      var who=[['firstname',d.get('firstname')],['email',em],['company',d.get('company')]];
+      return hsPost(HS_APPLY,who.concat([['website',app.site],['dx_stage',app.dx_stage],['dx_stuck',app.dx_stuck],['dx_gap',app.dx_gap],['dx_start',app.dx_start],['dx_fit',fit?'Fit':'Not yet'],['dx_notes',app.dx_notes],['hs_lead_status','NEW']]))
+      .catch(function(){return hsPost(HS_FORM,who.concat([['message',msg]]));});}
     fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
+      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,app:app,consent:true,source:src,page:location.href,website:d.get('website')||''})})
     .then(function(r){return r.json();})
     .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;note.textContent='Check your name and email.';return;}throw new Error(j.error);})
     .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;note.innerHTML='That didn\'t send. Please <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a> instead.';});});
