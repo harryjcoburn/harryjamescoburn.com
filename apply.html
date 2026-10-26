@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6jpU+cOT5xFfQZyXgBdEmB707T/Z+vXEfbKe7jA6kjg=' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' 'sha256-hxiSysHxCBas8aHgedUKEIIE/XwoxwMdKdmiK6vNnfU=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta charset="utf-8">
@@ -107,7 +107,7 @@
 </div></footer>
 <script>
 (function(){
-  var EMAIL='harry@harryjamescoburn.com',REPORT_URL='https://script.google.com/macros/s/AKfycbxX6JbUwwLp0VuHaJaQ97TAWxpq8hh86QeIDhaLHsKWwiexuMZaCnVT0o_7xQvDyFf5/exec',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_HOST='api-eu1.hsforms.com',BOOK='https://cal.com/harryjamescoburn/intro';
+  var EMAIL='harry@harryjamescoburn.com',REPORT_URL='https://script.google.com/macros/s/AKfycbxX6JbUwwLp0VuHaJaQ97TAWxpq8hh86QeIDhaLHsKWwiexuMZaCnVT0o_7xQvDyFf5/exec',HS_PORTAL='149589438',HS_FORM='e6a11b52-1579-41a2-a7f8-4ce15ad47af6',HS_APPLY='82597b16-b6c2-404a-b78f-6fbcd58eaf96',HS_HOST='api-eu1.hsforms.com',BOOK='https://cal.com/harryjamescoburn/intro';
   var f=document.getElementById('apl'),note=document.getElementById('aplNote');
   function esc(s){return String(s||'').replace(/[<>&"]/g,'');}
   function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
@@ -121,6 +121,7 @@
     var msg='DIAGNOSTIC APPLICATION ('+(fit?'fit: offered a call':'not yet a fit')+')\n'+
       'Company: '+d.get('company')+(d.get('site')?' ('+d.get('site')+')':'')+'\nStage: '+d.get('stage')+'\nOn their mind: '+d.get('stuck')+
       '\nBehind plan: '+d.get('gap')+'\nStart: '+d.get('start')+(d.get('notes')?'\nNotes: '+String(d.get('notes')).trim():'');
+    var app={dx_stage:d.get('stage'),dx_stuck:d.get('stuck'),dx_gap:d.get('gap'),dx_start:d.get('start'),dx_notes:String(d.get('notes')||'').trim(),site:d.get('site')||''};
     var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
     btn.disabled=true;note.textContent='Sending...';
     function done(){
@@ -131,14 +132,18 @@
         '<div class="apl-done"><span class="mono">Application received</span><h3>Thanks, '+name+'.</h3><p>I\'ll read your answers and reply to '+esc(em)+' within one working day. In the meantime, the <a href="scorecard.html">2-minute scorecard</a> will show you where to start.</p></div>';
       window.scrollTo({top:0,behavior:'smooth'});
       try{if(window.umami)umami.track('Diagnostic application',{fit:fit})}catch(e){}}
-    function viaHubSpot(){
-      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['company',d.get('company')],['message',msg]].map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+    function hsPost(form,fields){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+form,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:fields.filter(function(x){return x[1];}).map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
           context:{pageUri:location.href,pageName:document.title},
           legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to reply to my application.',communications:[]}}})})
       .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    function viaHubSpot(){
+      var who=[['firstname',d.get('firstname')],['email',em],['company',d.get('company')]];
+      return hsPost(HS_APPLY,who.concat([['website',app.site],['dx_stage',app.dx_stage],['dx_stuck',app.dx_stuck],['dx_gap',app.dx_gap],['dx_start',app.dx_start],['dx_fit',fit?'Fit':'Not yet'],['dx_notes',app.dx_notes],['hs_lead_status','NEW']]))
+      .catch(function(){return hsPost(HS_FORM,who.concat([['message',msg]]));});}
     fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
+      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,app:app,consent:true,source:src,page:location.href,website:d.get('website')||''})})
     .then(function(r){return r.json();})
     .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;note.textContent='Check your name and email.';return;}throw new Error(j.error);})
     .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;note.innerHTML='That didn\'t send. Please <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a> instead.';});});
