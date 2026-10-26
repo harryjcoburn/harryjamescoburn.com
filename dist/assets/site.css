@@ -1308,3 +1308,10 @@ h3 .si-s{color:var(--emberText)}
 .stop-btn{margin:6px 0 4px;justify-self:start;width:max-content}
 .close .ghost{color:#fff;border-bottom-color:rgba(255,255,255,.5)}
 .close .ghost:hover{color:var(--sun)}
+
+.lev-hill{display:block;width:100%;max-width:300px;height:auto;margin:4px 0 2px}
+.lh-slope{stroke:rgba(255,255,255,.55);stroke-width:2.5;stroke-linecap:round}
+.lh-start circle{fill:none;stroke:rgba(255,255,255,.35);stroke-width:1.5;stroke-dasharray:3 3}
+.lev-hill .g-rock > path:first-child{stroke:#0d1411}
+.lev-how{font-size:13px;line-height:1.5;color:rgba(255,255,255,.7)}
+@media (prefers-reduced-motion:no-preference){#lev-rock,#lev-rock-s{transition:transform .25s ease-out}}

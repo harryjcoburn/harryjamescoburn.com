@@ -55,7 +55,7 @@
 <section class="sec wrap eng-lev" aria-labelledby="h-lev">
   <div class="eng-head"><div class="label mono">The model</div>
   <h2 id="h-lev">Small gains <em>multiply.</em></h2>
-  <p>New revenue is four numbers multiplied together. Get each one a little better and the total moves a lot. Try it.</p></div>
+  <p>Four numbers set how fast new revenue comes in. They multiply, so get each one a little better and the total moves a lot. Try it.</p></div>
   <div class="lev-grid">
     <div class="lev-sliders">
       <label><span><b>Deals created</b><i>More of the right deals in</i></span><input type="range" min="0" max="30" value="10" data-k="d" aria-label="Deals created, percent better"><output>+10%</output></label>
@@ -64,10 +64,16 @@
       <label><span><b>Time to close</b><i>A faster cycle</i></span><input type="range" min="0" max="30" value="10" data-k="c" aria-label="Time to close, percent faster"><output>−10%</output></label>
     </div>
     <div class="lev-result" aria-live="polite">
-      <p class="mono">New revenue</p>
+      <p class="mono">New revenue a month</p>
       <p class="lev-big" id="lev-pct">+48%</p>
+      <svg class="lev-hill" viewBox="0 0 240 96" aria-hidden="true">
+        <line class="lh-slope" x1="6" y1="22" x2="234" y2="90"/>
+        <g class="lh-start" transform="translate(40 32.1) rotate(16.6)"><circle cx="0" cy="-14.5" r="14.5"/></g>
+        <g id="lev-rock" transform="translate(120 43) rotate(16.6)"><g id="lev-rock-s" class="g-rock"><path d="M-21 -4 Q-24 -16 -14 -21 Q-4 -26 8 -22 Q20 -18 22 -5 Q24 8 14 17 Q3 24 -9 20 Q-21 15 -21 -4 Z"/><path class="g-crack" d="M-8 -12 L2 -4 L-2 6 M8 -14 L12 -6"/></g></g>
+      </svg>
       <p class="lev-sum">Four numbers, a little better each. No new hires, no new market.</p>
       <p class="lev-eq mono" id="lev-eq">1.10 × 1.10 × 1.10 × 1.11 = 1.48×</p>
+      <p class="lev-how">Deals created × win rate × deal size ÷ time to close: the rate new revenue flows out of your pipeline. A shorter cycle means the same deals land sooner, and your team has room for more.</p>
       <p class="lev-ret"><b>Then keep them.</b> Above 100% net retention, every year starts with more. That's the fifth lever.</p>
     </div>
   </div>
@@ -209,7 +215,7 @@
 <script>
 (function(){var r=[].slice.call(document.querySelectorAll('.lev-sliders input'));if(!r.length)return;
 function u(){var m=1,eq=[];r.forEach(function(x){var v=+x.value/100,c=x.dataset.k==='c',f=c?1/(1-v):1+v;m*=f;eq.push(f.toFixed(2));x.nextElementSibling.textContent=(c?'−':'+')+x.value+'%';});
-document.getElementById('lev-pct').textContent='+'+Math.round((m-1)*100)+'%';document.getElementById('lev-eq').textContent=eq.join(' × ')+' = '+m.toFixed(2)+'×';}
+document.getElementById('lev-pct').textContent='+'+Math.round((m-1)*100)+'%';var rk=document.getElementById('lev-rock'),rs=document.getElementById('lev-rock-s');if(rk){var t=Math.min(1,(m-1)/2.2),x=40+t*150,y=22+(x-6)*68/228,k=Math.sqrt(m)*0.66;rk.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate(16.6)');rs.setAttribute('transform','translate(0 '+(-22*k).toFixed(1)+') scale('+k.toFixed(3)+') rotate('+(t*540).toFixed(0)+')');}document.getElementById('lev-eq').textContent=eq.join(' × ')+' = '+m.toFixed(2)+'×';}
 r.forEach(function(x){x.addEventListener('input',u);});u();})();
 </script>
 </body>
