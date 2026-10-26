@@ -93,15 +93,15 @@ def nav(current):
               f'<div class="mnav-panel">{items}{link("scorecard.html", "Free scorecard")}</div></details>')
     return (f'<nav class="nav" aria-label="Main"><a class="name" href="./" aria-label="Harry James Coburn, home">{MARK}<span>Harry James Coburn</span></a>'
             f'<span class="links">{items}{mobile}'
-            f'<a class="btn" href="{{{{BOOK}}}}">Book a call</a></span></nav>')
+            f'<a class="btn" href="apply.html">Apply</a></span></nav>')
 
 
 CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inner">
   <div class="mono">Think clearly. Move fast.</div>
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
-  <p>A short intro call. You leave with at least one thing to fix this month, whether we work together or not.</p>
-  <div class="cta"><a class="btn" href="{{BOOK}}">Book an intro call <span class="arr">→</span></a><span class="mail">{{EMAIL}}</span></div>
-  <div class="alt"><a href="contact.html">Or send a message</a><!-- WA --><a href="https://wa.me/{{WA}}?text=Hi%20Harry%2C%20I%20found%20you%20on%20harryjamescoburn.com" data-umami-event="WhatsApp">WhatsApp me</a><!-- /WA --><a href="speaking.html">Invite me to speak or on a podcast</a></div>
+  <p>Apply in one minute. If it's a fit, you book a call straight away and leave with at least one thing to fix this month, whether we work together or not.</p>
+  <div class="cta"><a class="btn" href="apply.html">Apply for a Diagnostic <span class="arr">→</span></a><a class="ghost" href="scorecard.html">Or score your engine, free</a></div>
+  <div class="alt"><a href="{{BOOK}}">Book an intro call</a><a href="contact.html">Send a message</a><!-- WA --><a href="https://wa.me/{{WA}}?text=Hi%20Harry%2C%20I%20found%20you%20on%20harryjamescoburn.com" data-umami-event="WhatsApp">WhatsApp me</a><!-- /WA --><a href="speaking.html">Invite me to speak or on a podcast</a></div>
 </div></section>"""
 
 NEWSLETTER = """<section class="sec news" id="newsletter" aria-labelledby="h-news">
@@ -390,7 +390,7 @@ LLMS = """# Harry James Coburn
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
 - Arbonics (forest carbon, Plural-backed), Head of Sales & New Markets, 2024-25: quarterly sales up 37x in nine months, from about EUR 0.1M to EUR 5.4M in estimated contract value; about EUR 10M won in 12 months; sales cycle from 75 to 16 days.
-- Wheely (premium chauffeurs, Concentric-backed), Global Head of B2B Sales & Customer Success, 2019-21: B2B recovered 912% from the Covid low.
+- Wheely (premium chauffeurs, Concentric-backed), Global Head of B2B Sales & Customer Success, 2019-21: B2B revenue grew 912% from the Covid low.
 - Pronto (food delivery, Playfair and Seedcamp-backed), Head of B2B Sales & Partnerships, 2015-16: B2B built from zero to 60% of company revenue.
 - Earlier: IBM, Credit Suisse, Lloyds Banking Group (helped create TSB Bank).
 

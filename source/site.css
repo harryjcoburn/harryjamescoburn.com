@@ -1302,3 +1302,9 @@ h3 .si-s{color:var(--emberText)}
 .formula{margin-bottom:0}
 .eng-crest-m{display:none}
 @media (max-width:720px){.eng-hill .g-label{display:none}.eng-crest-m{display:block}}
+
+.hero-offer{margin-top:18px;font-size:15px;color:var(--grey);max-width:34em}
+.hero-offer b{color:var(--ink);font-weight:600}
+.stop-btn{margin:6px 0 4px;justify-self:start;width:max-content}
+.close .ghost{color:#fff;border-bottom-color:rgba(255,255,255,.5)}
+.close .ghost:hover{color:var(--sun)}
