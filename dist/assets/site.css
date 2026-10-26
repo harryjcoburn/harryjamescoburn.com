@@ -1288,3 +1288,17 @@ h3 .si-s{color:var(--emberText)}
 @media (max-width:900px){.apply{grid-template-columns:1fr}.apl-side{position:static}}
 @media (max-width:560px){.apl-row,.apl-opts{grid-template-columns:1fr}}
 .apl-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}.apl-form .rep-ok{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--grey)}.apl-form .rep-ok input{margin-top:4px;accent-color:var(--emberBtn);flex:none}.apl-form .rep-ok a{color:var(--ink)}
+
+/* proof cards: lever tag */
+.case-card{grid-template-rows:40px auto auto auto auto 1fr}
+.case-card .cs-lever{color:var(--emberText);font-size:10.5px;letter-spacing:.1em;margin-bottom:10px}
+.case-foot{padding-bottom:0;margin-top:16px}
+
+/* engine: the rock */
+.g-man circle{fill:var(--paper);stroke:var(--ink);stroke-width:3}
+.g-man path{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.g-rock > path:first-child{fill:var(--ember);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.g-crack{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.55}
+.formula{margin-bottom:0}
+.eng-crest-m{display:none}
+@media (max-width:720px){.eng-hill .g-label{display:none}.eng-crest-m{display:block}}

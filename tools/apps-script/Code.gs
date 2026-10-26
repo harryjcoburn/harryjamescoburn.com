@@ -48,7 +48,7 @@ var STAGES = ['Seed', 'Series A', 'Series B', 'Series C+'];
 var FOCUS = {launch:'Launching a new market or product', stall:'Growth has stalled since the raise',
              founder:'Sales still runs through the founder', ai:'Making AI actually work in sales'};
 var EXTRA = {launch:'For a new market or product, we\'d prove the formula small before scaling it.',
-             stall:'After a raise, the fastest wins are usually in strategy and the Win stations.',
+             stall:'After a raise, the fastest wins are usually in strategy and the Win stages.',
              founder:'Getting sales out of the founder\'s head starts with the pitch and the handovers.',
              ai:'AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
 
