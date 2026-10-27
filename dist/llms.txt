@@ -1,6 +1,6 @@
 # Harry James Coburn
 
-> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it.
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: AI does the work, your people win the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
 
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
