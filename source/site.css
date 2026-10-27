@@ -127,6 +127,15 @@ p{margin:0}
 .track .go:hover{color:var(--emberText)}
 
 .more{margin-top:28px}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(16px,2.4vw,28px)}
+.quote{margin:0;background:var(--soft);border-radius:16px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;justify-content:space-between;gap:22px}
+.quote blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.7vw,23px);line-height:1.4}
+.quote blockquote::before{content:"“";color:var(--ember)}
+.quote blockquote::after{content:"”";color:var(--ember)}
+.quote figcaption{font-size:15px;color:var(--grey);line-height:1.45}
+.quote figcaption b{display:block;color:var(--ink);font-weight:600}
+.quotes-src{margin-top:18px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.quotes-src a{color:var(--grey)}
 
 /* quote */
 .voice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(18px,3vw,32px);align-items:start;padding-block:clamp(48px,7vw,96px);border-top:1px solid var(--line)}
