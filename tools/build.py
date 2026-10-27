@@ -511,7 +511,7 @@ def secure(html):
         hashes.append(f"'sha256-{digest}'")
     policy = "; ".join([
         "default-src 'self'",
-        "script-src 'self' " + " ".join(sorted(set(hashes))) + " https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io",
+        "script-src 'self' blob: " + " ".join(sorted(set(hashes))) + " https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io",
         "style-src 'self' 'unsafe-inline'",
         "img-src 'self' data: blob: https:",
         "font-src 'self' data:",
