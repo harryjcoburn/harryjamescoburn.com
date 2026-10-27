@@ -1315,3 +1315,13 @@ h3 .si-s{color:var(--emberText)}
 .lev-hill .g-rock > path:first-child{stroke:#0d1411}
 .lev-how{font-size:13px;line-height:1.5;color:rgba(255,255,255,.7)}
 @media (prefers-reduced-motion:no-preference){#lev-rock,#lev-rock-s{transition:transform .25s ease-out}}
+
+.li-posts{display:grid;gap:28px}
+.li-post{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:28px;align-items:start;border-top:1px solid var(--line,#E4E8E4);padding-top:28px}
+.li-post img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line,#E4E8E4)}
+.li-text h2{margin:6px 0 12px}
+.li-body p{margin:0 0 12px}
+.li-body ol,.li-body ul{margin:0 0 12px 1.2em}
+@media (max-width:720px){.li-post{grid-template-columns:1fr}.li-post img{max-width:360px}}
+.li-posts.sec{padding-top:8px}
+.li-post:first-child{border-top:0;padding-top:0}
