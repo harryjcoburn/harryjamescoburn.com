@@ -61,6 +61,20 @@ PAGES = {
 
 POSTS = substack_posts()
 import os
+
+
+def linkedin_posts():
+    """LinkedIn posts from data/linkedin.json, shown once their date has arrived (Berlin time)."""
+    f = ROOT / "data" / "linkedin.json"
+    if not f.exists():
+        return []
+    from datetime import datetime, timezone, timedelta
+    today = (datetime.now(timezone.utc) + timedelta(hours=1)).date().isoformat()
+    items = [x for x in json.loads(f.read_text()) if x.get("date", "9999") <= today]
+    return sorted(items, key=lambda x: x["date"], reverse=True)
+
+
+LI = linkedin_posts()
 # Pages kept off the live site until approved (site.json "hold_pages"); PREVIEW=1 builds them anyway.
 HOLD = set() if os.environ.get("PREVIEW") else set(CFG.get("hold_pages", []))
 
@@ -88,7 +102,7 @@ def nav(current):
         return f'<a href="{href}"{cur}>{label}</a>'
     home = "" if current == "index.html" else "./"
     items = (f'{link("services.html", "Services")}{link("work.html", "Work")}{link("engine.html", "The Engine")}'
-             f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if POSTS else ""}{link("about.html", "About")}{link("contact.html", "Contact")}')
+             f'{link("ideas.html", "Ideas")}{link("ai.html", "AI") if "ai.html" not in HOLD else ""}{link("writing.html", "Writing") if (POSTS or LI) else ""}{link("about.html", "About")}{link("contact.html", "Contact")}')
     mobile = (f'<details class="mnav"><summary aria-label="Menu"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></summary>'
               f'<div class="mnav-panel">{items}{link("scorecard.html", "Free scorecard")}</div></details>')
     return (f'<nav class="nav" aria-label="Main"><a class="name" href="./" aria-label="Harry James Coburn, home">{MARK}<span>Harry James Coburn</span></a>'
@@ -293,14 +307,41 @@ def fill(name, html):
     return html
 
 
+def li_body(text):
+    """Turn a post's plain text into paragraphs and lists, with site links clickable."""
+    def inline(t):
+        t = escape(t)
+        return re.sub(r"harryjamescoburn\.com/(\w+)", r'<a href="\1.html">harryjamescoburn.com/\1</a>', t).replace('<a href="ai.html">', '<a href="ai.html">').replace("harryjamescoburn.substack.com", '<a href="https://harryjamescoburn.substack.com" target="_blank" rel="noopener">harryjamescoburn.substack.com</a>')
+    out, lst = [], []
+    for para in text.split("\n\n"):
+        lines = [l for l in para.split("\n") if l.strip()]
+        if lines and all(re.match(r"^(\d+\.|-) ", l) for l in lines):
+            tag = "ol" if lines[0][0].isdigit() else "ul"
+            items = [inline(re.sub(r"^(\d+\.|-) ", "", l)) for l in lines]
+            out.append(f"<{tag}>" + "".join(f"<li>{x}</li>" for x in items) + f"</{tag}>")
+        elif lines:
+            out.append("<p>" + "<br>".join(inline(l) for l in lines) + "</p>")
+    return "".join(out)
+
+
 def writing_html():
-    """The Writing page: newsletter issues from the Substack feed, newest first."""
+    """The Writing page: newsletter issues from the Substack feed, then LinkedIn posts, newest first."""
     cards = []
     for p in POSTS:
         d = f'<span class="mono">{p["date"]:%d %b %Y}</span>' if p["date"] else ""
         img = (f'<img src="{escape(p["img"])}" alt="" loading="lazy" width="640" height="360">' if p["img"] else "")
         cards.append(f'<article class="post"><a href="{escape(p["link"])}" target="_blank" rel="noopener">{img}{d}'
                      f'<h2>{escape(p["title"])}</h2><p>{escape(p["desc"])}</p><span class="ghost">Read on Substack</span></a></article>')
+    news = (f'<div class="label mono">Newsletter</div><section class="sec posts" aria-label="Issues">{"".join(cards)}</section>' if cards else "")
+    li = []
+    for p in LI:
+        dt = date.fromisoformat(p["date"])
+        url = p.get("url") or CFG["linkedin"]
+        li.append(f'<article class="li-post" id="post-{p["date"]}"><img src="{escape(p["image"])}" alt="{escape(p["title"])}" loading="lazy" width="1080" height="1350">'
+                  f'<div class="li-text"><span class="mono">{dt:%d %b %Y} · LinkedIn</span><h2>{escape(p["title"])}</h2>'
+                  f'<div class="li-body">{li_body(p["text"])}</div>'
+                  f'<a class="ghost" href="{escape(url)}" target="_blank" rel="noopener">Join the conversation on LinkedIn</a></div></article>')
+    posts = (f'<div class="label mono" style="margin-top:56px">On LinkedIn</div><section class="sec li-posts" aria-label="LinkedIn posts">{"".join(li)}</section>' if li else "")
     return f"""{{{{HEAD}}}}
 <body>
 <a class="skip" href="#top">Skip to content</a>
@@ -308,10 +349,11 @@ def writing_html():
 <main id="top" class="wrap">
 <div class="page-head">
   <div class="label mono">Writing</div>
-  <h1>The AI Go-to-Market <em>Formula.</em></h1>
-  <p>My newsletter: one lever or one AI workflow per issue, what I'd change this month, and what happened when real companies did it.</p>
+  <h1>Sales, AI and the <em>formula.</em></h1>
+  <p>My weekly newsletter, The AI Go-to-Market Formula, and everything I post on LinkedIn: what usually goes wrong, what I'd change this month, and what happened when real companies did it.</p>
 </div>
-<section class="sec posts" aria-label="Issues">{''.join(cards)}</section>
+{news}
+{posts}
 {{{{NEWSLETTER}}}}
 </main>
 {{{{CLOSE}}}}
@@ -436,6 +478,8 @@ def write_static():
     llms = LLMS.format(base=BASE, email=CFG["email"], linkedin=CFG["linkedin"])
     if "ai.html" in HOLD:
         llms = "\n".join(l for l in llms.split("\n") if "ai.html" not in l)
+    if LI:
+        llms += "\n## Latest LinkedIn posts\n" + "".join(f"- {p['date']}: {p['title']} ({BASE}writing.html#post-{p['date']})\n" for p in LI[:10])
     if POSTS:
         llms += "\n## Latest newsletter issues\n" + "".join(f"- [{p['title']}]({p['link']})\n" for p in POSTS[:10])
     (DIST / "llms.txt").write_text(llms)
@@ -489,10 +533,10 @@ def main():
     DIST.mkdir()
     shutil.copytree(ROOT / "assets", DIST / "assets", ignore=shutil.ignore_patterns(*UNUSED_ASSETS))
     shutil.copy(SRC / "site.css", DIST / "assets" / "site.css")
-    if POSTS:
-        PAGES["writing.html"] = ("Writing: The AI Go-to-Market Formula | Harry James Coburn",
-                                 "Harry James Coburn's newsletter on go-to-market and AI in sales: one lever or one AI "
-                                 "workflow per issue, with what happened when real companies did it.")
+    if POSTS or LI:
+        PAGES["writing.html"] = ("Writing: newsletter and LinkedIn posts on sales and AI | Harry James Coburn",
+                                 "Harry James Coburn's newsletter and LinkedIn posts on go-to-market and AI in sales: "
+                                 "what goes wrong, what to change, and what happened when real companies did it.")
     for h in HOLD:
         PAGES.pop(h, None)
     for name in PAGES:

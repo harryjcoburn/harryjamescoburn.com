@@ -1,8 +1,9 @@
-# Daily: fetch the Substack feed, rebuild the site and publish it to GitHub Pages (gh-pages branch).
+# Daily: fetch the Substack feed, rebuild the site (new newsletter issues and any LinkedIn posts dated today)
+# and publish it to GitHub Pages (gh-pages branch) if anything changed.
 name: Refresh newsletter and publish
 on:
   schedule:
-    - cron: "17 5 * * *"
+    - cron: "17 7 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -24,7 +25,6 @@ jobs:
           git add data/substack.xml
           git diff --cached --quiet && echo "FEED_CHANGED=0" >> "$GITHUB_ENV" || { git commit -m "Refresh Substack feed"; git push; echo "FEED_CHANGED=1" >> "$GITHUB_ENV"; }
       - name: Build and publish
-        if: env.FEED_CHANGED == '1' || github.event_name == 'workflow_dispatch'
         run: |
           python3 tools/build.py
           git worktree add /tmp/pages gh-pages
