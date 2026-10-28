@@ -30,7 +30,7 @@ CFG = json.loads((ROOT / "site.json").read_text())
 BASE = f"https://{CFG['domain']}/"
 THEME = "#10372A"
 
-UNUSED_ASSETS = ("tsb.svg", "british-army.svg", "wheely.svg", "adventure-peak.jpg", "adventure-hike.jpg", "SOURCES.md", "*.txt")
+UNUSED_ASSETS = ("banners", "tsb.svg", "british-army.svg", "wheely.svg", "adventure-peak.jpg", "adventure-hike.jpg", "SOURCES.md", "*.txt")
 
 PAGES = {
     'index.html': ('Harry James Coburn | Sales and GTM adviser for Series A–C CEOs',
