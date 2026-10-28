@@ -55,9 +55,14 @@ PAGES = {
         'Six quick questions. If it looks like a fit, book a 30-minute call straight away. At least 3x the fee in revenue found, or you don\'t pay.'),
     'contact.html': ('Contact Harry James Coburn',
         'Book a 30-minute call, message on WhatsApp or email Harry James Coburn about your sales engine, a role or a talk.'),
+    'portfolio.html': ('Sales support for VC portfolios: workshops, office hours, health checks | Harry James Coburn',
+        'A portfolio workshop, monthly founder office hours and a 2-week sales health check for Series A to C companies. Built for investors and platform teams.'),
     'about.html': ('About Harry James Coburn: sales leader and GTM adviser, Berlin',
         'From IBM, Credit Suisse and Lloyds Banking Group to Head of Sales at four growth companies. Now a GTM adviser based in Berlin.'),
 }
+
+# Pages that build and can be shared by link, but stay out of the nav and the sitemap.
+QUIET = {"portfolio.html"}
 
 POSTS = substack_posts()
 import os
@@ -468,7 +473,7 @@ def write_static():
     (DIST / "CNAME").write_text(CFG["domain"] + "\n")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
     urls = "".join(f"<url><loc>{BASE}{'' if p == 'index.html' else p}</loc><lastmod>{date.today()}</lastmod></url>\n"
-                   for p in PAGES)
+                   for p in PAGES if p not in QUIET)
     (DIST / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
     shutil.copy(ROOT / "assets" / "brand" / "hjc-tile.svg", DIST / "favicon.svg")
