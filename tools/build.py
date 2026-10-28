@@ -338,7 +338,7 @@ def writing_html():
     li = []
     for p in LI:
         dt = date.fromisoformat(p["date"])
-        url = p.get("url") or CFG["linkedin"]
+        url = p.get("url") or CFG["linkedin"].rstrip("/") + "/recent-activity/all/"
         li.append(f'<article class="li-post" id="post-{p["date"]}"><img src="{escape(p["image"])}" alt="{escape(p["title"])}" loading="lazy" width="1080" height="1350">'
                   f'<div class="li-text"><span class="mono">{dt:%d %b %Y} · LinkedIn</span><h2>{escape(p["title"])}</h2>'
                   f'<div class="li-body">{li_body(p["text"])}</div>'
