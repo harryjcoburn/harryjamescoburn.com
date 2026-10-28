@@ -34,7 +34,7 @@ UNUSED_ASSETS = ("tsb.svg", "british-army.svg", "wheely.svg", "adventure-peak.jp
 
 PAGES = {
     'index.html': ('Harry James Coburn | Sales and GTM adviser for Series A–C CEOs',
-        'Sales still runs on trust. I find the formula that wins, build AI into the repetitive work and free your best people for the moments that matter. For Series A to C CEOs.'),
+        'A sales engine you can trust: AI buys the time, your people earn the trust. I find the formula that wins, turn it into a process that scales and put AI on the repetitive work. For Series A to C CEOs.'),
     'work.html': ('Sales turnaround case studies: UXCam, Arbonics, Wheely, Pronto | Harry James Coburn',
         'How Harry James Coburn rebuilt and scaled B2B sales at UXCam, Arbonics, Wheely and Pronto: the problem, what he did and the results.'),
     'services.html': ('GTM consulting and fractional Head of Sales | Harry James Coburn',
@@ -155,7 +155,7 @@ def head(title, desc, path, extra=""):
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{escape(title)}">
 <meta property="og:description" content="{escape(desc)}">
-<meta property="og:image" content="{BASE}assets/og-image.jpg?v=3">
+<meta property="og:image" content="{BASE}assets/og-image.jpg?v=4">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
@@ -185,7 +185,7 @@ def jsonld(html, name="index.html"):
         "@type": "Person", "@id": BASE + "#person", "name": "Harry James Coburn",
         "jobTitle": "Sales and go-to-market (GTM) adviser, fractional Head of Sales",
         "description": ("Berlin-based sales and go-to-market adviser for CEOs of Series A to C tech companies. "
-                        "Builds AI into the repetitive work of selling, so sales teams spend their time where trust is won. "
+                        "Builds sales engines CEOs can trust: AI buys the time, people earn the trust. "
                         "Has led sales at UXCam, Arbonics, Wheely and Pronto, and trained at IBM, Credit Suisse "
                         "and Lloyds Banking Group."),
         "url": BASE, "email": f"mailto:{CFG['email']}", "image": BASE + "assets/photos/hero.jpg",
@@ -429,7 +429,7 @@ def hubspot_privacy():
 
 LLMS = """# Harry James Coburn
 
-> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: AI does the work, your people win the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, your people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
 
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
