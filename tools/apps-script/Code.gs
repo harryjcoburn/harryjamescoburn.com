@@ -429,7 +429,7 @@ function followUpEmail_(step, f) {
   var DESC = {Strategy: 'who you sell to, what you say and how you price', Win: 'how deals move from first call to signature',
     Grow: 'how you keep and grow customers', Team: 'hiring, onboarding and the handovers between people',
     Motivation: 'how targets and pay are set', Rhythm: 'the weekly rhythm of reviewing deals', Systems: 'your CRM, data and tools'};
-  var first = f.f, layer = f.w || '', company = f.c || 'the team';
+  var first = f.f, layer = f.w || '';
   var area = DESC[layer] || 'one part of your sales engine';
   var mails = [
     {s: 'Your scorecard',
@@ -439,12 +439,22 @@ function followUpEmail_(step, f) {
     {s: 'Before you add AI',
      b: 'One thing I see a lot at the moment: teams adding AI to their sales process before they know where it leaks.\n\nMy rule is to automate nothing until it sends what the team would send, at least 95% of the time.\n\nThat\'s how one team I worked with took the first reply to a new lead from about a day to 5 minutes, with a person still approving every message.\n\nIf AI is on your list for next year, I\'m happy to share where I\'d start.'},
     {s: 'Worth 15 minutes?',
-     b: 'Last one from me on this.\n\nIf you\'d like to talk your scorecard through, would you be open to a 15 minute call? You can pick a time here: ' + CFG.BOOK.replace('utm_medium=email', 'utm_medium=followup') + ', or just reply and we\'ll find one.\n\nEither way, good luck with ' + company + '.'}
+     b: 'Last one from me on this.\n\nIf it would help to talk your scorecard through, would you be open to a 15 minute call? You can [[pick a time that suits you]], or just reply and we\'ll find one.\n\nEither way, I hope the scorecard was useful.'}
   ];
   var m = mails[step];
-  return {subject: m.s, body: 'Hi ' + first + ',\n\n' + m.b + '\n\nThanks,\nHarry\n\n' +
-    '--\nHarry James Coburn, Charlottenburger Straße 136B, 13086 Berlin, Germany\n' + CFG.SITE + '\n' +
-    'You took the scorecard on ' + CFG.SITE + '. Reply "unsubscribe" and I won\'t email you again.'};
+  var book = CFG.BOOK.replace('utm_medium=email', 'utm_medium=followup');
+  var foot = 'Harry James Coburn, Charlottenburger Straße 136B, 13086 Berlin, Germany. ' +
+    'You took the scorecard on harryjamescoburn.com. Reply "unsubscribe" and I won\'t email you again.';
+  var text = 'Hi ' + first + ',\n\n' + m.b + '\n\nThanks,\nHarry';
+  var plain = text.replace(/\[\[(.+?)\]\]/g, '$1 (' + book + ')') + '\n\n--\n' + foot;
+  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var html = '<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#16181d;max-width:560px">' +
+    esc(text).split('\n\n').map(function (para) {
+      return '<p style="margin:0 0 14px">' + para.replace(/\n/g, '<br>')
+        .replace(/\[\[(.+?)\]\]/g, '<a href="' + book + '" style="color:#B8461C">$1</a>') + '</p>';
+    }).join('') +
+    '<p style="font-size:12px;line-height:1.5;color:#5b606b;margin:28px 0 0">' + esc(foot) + '</p></div>';
+  return {subject: m.s, body: plain, html: html};
 }
 
 function fuKey_(email) { return 'fu_' + Utilities.base64EncodeWebSafe(email); }
@@ -487,7 +497,7 @@ function followUps() {
       var days = (Date.now() - f.t) / 86400000;
       if (days < FOLLOW_DAYS[f.s]) return;
       var m = followUpEmail_(f.s, f);
-      var opts = {name: CFG.NAME, replyTo: CFG.FROM};
+      var opts = {name: CFG.NAME, replyTo: CFG.FROM, htmlBody: m.html};
       if (GmailApp.getAliases().indexOf(CFG.FROM) >= 0 || Session.getActiveUser().getEmail() === CFG.FROM) opts.from = CFG.FROM;
       GmailApp.sendEmail(f.e, m.subject, m.body, opts);
       done.push(f.e + ' (email ' + (f.s + 1) + ')');
@@ -513,6 +523,6 @@ function testFollowUps() {
   var f = {e: CFG.NOTIFY, f: 'Harry', c: 'Test GmbH', w: 'Win', t: Date.now(), s: 0};
   for (var i = 0; i < FOLLOW_DAYS.length; i++) {
     var m = followUpEmail_(i, f);
-    MailApp.sendEmail(CFG.NOTIFY, '[Test ' + (i + 1) + '/4, day ' + FOLLOW_DAYS[i] + '] ' + m.subject, m.body);
+    MailApp.sendEmail(CFG.NOTIFY, '[Test ' + (i + 1) + '/4, day ' + FOLLOW_DAYS[i] + '] ' + m.subject, m.body, {htmlBody: m.html, name: CFG.NAME});
   }
 }
