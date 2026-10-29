@@ -74,6 +74,8 @@ p{margin:0}
 /* backers */
 .backers{border-top:2px solid var(--ink);padding-block:22px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 40px}
 .backers p{color:var(--grey);font-size:14px;flex:0 1 auto}
+.backers.trained-row{border-top:1px solid var(--line);padding-top:18px}
+@media (min-width:821px){.backers p{min-width:19em}}
 .logos{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px}
 .logos img{height:22px;width:auto;filter:brightness(0);opacity:.82}
 .logos img.tall{height:28px}
@@ -1391,3 +1393,5 @@ h3 .si-s{color:var(--emberText)}
 .pf-quote figcaption a{color:var(--emberText)}
 @media (max-width:900px){.pf-hero{grid-template-columns:1fr}.pf-pic{max-width:460px}.pf-float{left:16px}.pf-pains,.pf-offers,.pf-nums{grid-template-columns:1fr}}
 @media (max-width:520px){.pf-give{grid-template-columns:1fr}}
+
+.idea-voice .lead{margin:0;font-style:normal;font-family:var(--serif);font-size:clamp(24px,2.8vw,38px);line-height:1.25;letter-spacing:-.01em;max-width:30em}

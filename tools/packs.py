@@ -294,7 +294,7 @@ PROMPT_INTRO = [
 
 WORKFLOWS = [
  {"slug": "inbound", "title": "The inbound agent", "sub": "Reply to every lead in minutes, with people approving until it earns the right to send alone.",
-  "proof": "I built this at UXCam with HubSpot and Claude Code, with Apollo, Lusha and LinkedIn Sales Navigator for enrichment: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every lead and drafted reply posted to a Slack channel for feedback and approval. First reply went from about a day to 5 minutes.",
+  "proof": "We built this at UXCam, a team I led, with HubSpot and Claude Code, with Apollo, Lusha and LinkedIn Sales Navigator for enrichment: several agents in one flow, one enriching, one scoring fit from the profile, one writing the message, with every lead and drafted reply posted to a Slack channel for feedback and approval. First reply went from about a day to 5 minutes.",
   "stack": [("CRM and trigger", "HubSpot form submission"), ("Enrichment", "Apollo, Lusha and LinkedIn Sales Navigator"), ("Agents", "Claude, orchestrated with Claude Code"), ("Approval", "A Slack channel: feedback and approve to send"), ("Booking", "Your calendar link")],
   "steps": [
    ("Trigger", "A form is submitted in HubSpot. The workflow passes the contact and form answers to the orchestrator.", "Contact ID, form answers, page and source"),
@@ -313,7 +313,7 @@ WORKFLOWS = [
   "metrics": ["Time to first reply", "Approved without edits, by segment", "Reply and meeting rate", "Inbound to sales-qualified rate", "Cost per lead processed"],
   "pitfalls": ["Starting with automation instead of approval. The approval data is what tells you when it's ready.", "One agent doing everything. Separate steps are easier to test and fix.", "No reason on rejections. Without the reason, you can't teach it."]},
  {"slug": "outbound", "title": "The outbound signal engine", "sub": "Find the companies where you make the biggest difference, then test the message by person, company and timing.",
-  "proof": "I built this at UXCam with Clay and Claude Code, using app store data to find companies where the product could make a big difference. A largely automated engine hitting about 500 accounts and 4,000 contacts a month, with Lemlist warming up the sending addresses.",
+  "proof": "We built this at UXCam, a team I led, with Clay and Claude Code, using app store data to find companies where the product could make a big difference. A largely automated engine hitting about 500 accounts and 4,000 contacts a month, with Lemlist warming up the sending addresses.",
   "stack": [("Data and enrichment", "Clay, plus the public data your ICP shows up in"), ("Research and writing", "Claude, orchestrated with Claude Code"), ("Sending", "Separate warmed-up sending domains"), ("CRM", "Every touch logged")],
   "steps": [
    ("Define the signal", "From your ICP work (prompt 01), pick the public signals that predict fit. For a mobile product that can be app store data: number of apps, ratings, update rate.", "Two or three testable signals"),
@@ -562,7 +562,7 @@ def prompts_html():
 
 def workflows_html():
     body = cover("Sales Agent <em>Workflows</em>", PACKS["workflows"]["kicker"],
-                 "Three builds, each step by step: what triggers it, what every agent does, where a person checks, how to roll it out and what to measure. The first two are based on systems I built at UXCam. The third runs my own website.")
+                 "Three builds, each step by step: what triggers it, what every agent does, where a person checks, how to roll it out and what to measure. The first two are based on systems my team built at UXCam. The third runs my own website.")
     for w in WORKFLOWS:
         flow = '<i>→</i>'.join(f"<span>{escape(s[0])}</span>" for s in w["steps"])
         stack = "".join(f"<tr><td>{escape(a)}</td><td>{escape(b)}</td></tr>" for a, b in w["stack"])

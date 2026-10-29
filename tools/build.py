@@ -116,7 +116,7 @@ def nav(current):
 
 
 CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inner">
-  <div class="mono">Think clearly. Move fast.</div>
+  <div class="mono">AI buys the time. Your people earn the trust.</div>
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
   <p>Apply in one minute. If it's a fit, you book a call straight away and leave with at least one thing to fix this month, whether we work together or not.</p>
   <div class="cta"><a class="btn" href="apply.html">Apply for a Diagnostic <span class="arr">→</span></a><a class="ghost" href="scorecard.html">Or score your engine, free</a></div>
@@ -434,7 +434,7 @@ def hubspot_privacy():
 
 LLMS = """# Harry James Coburn
 
-> Berlin-based commercial strategy and go-to-market (GTM) adviser for growing, VC-backed tech companies across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, your people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for CEOs of VC-backed tech companies, Series A to C, across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, your people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
 
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
@@ -444,8 +444,8 @@ LLMS = """# Harry James Coburn
 - Earlier: IBM, Credit Suisse, Lloyds Banking Group (helped create TSB Bank).
 
 ## Services
-- GTM Teardown: 90-minute session on site, pricing, pitch and funnel; at least three fixes or no fee.
-- GTM Diagnostic: 2-3 week review of the whole sales engine; fee credited against a Build within 30 days.
+- GTM Teardown (from EUR 2,500): 90-minute session on site, pricing, pitch and funnel; at least three fixes or no fee.
+- GTM Diagnostic: 2-3 week review of the whole sales engine; 3x the fee in revenue found or no fee; fee credited against a Build within 30 days.
 - Commercial Systems Build: 8-12 weeks; ICP, messaging, pricing, AI-assisted inbound and outbound, CRM, forecasting, hiring.
 - Fractional Head of Sales and Advisor roles.
 - Speaking, podcasts and portfolio workshops.

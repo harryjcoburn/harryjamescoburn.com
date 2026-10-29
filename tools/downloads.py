@@ -21,8 +21,8 @@ CASES = [
           "Found that value grew with scale: companies with large apps and many users saw returns many times their spend, while small accounts took as much effort for a fraction of the revenue.",
           "Reset the ICP around larger companies with apps, stepped back from markets where deals were small, slow and heavily discounted, and shifted focus quickly when regional demand changed.",
           "Rebuilt pricing for the AI product: from a model with many variables to a simple usage-based model, priced on AI usage the way the AI model providers price theirs, so it was easier to buy and grew with the value customers got.",
-          "Built an AI agent on inbound with HubSpot, Claude Code and our own enrichment. Every form fill is researched, enriched, profiled and qualified within minutes, a reply is drafted and a call set up, and the best leads trigger an alert for an SDR to call straight away.",
-          "Built more AI agents around it: one re-engaging old contacts in the CRM, enriching their data and reaching out on trigger points, and one watching known contacts for buying signals.",
+          "Led the team that built an AI agent on inbound with HubSpot, Claude Code and our own enrichment. Every form fill is researched, enriched, profiled and qualified within minutes, a reply is drafted and a call set up, and the best leads trigger an alert for an SDR to call straight away.",
+          "Then more AI agents around it: one re-engaging old contacts in the CRM, enriching their data and reaching out on trigger points, and one watching known contacts for buying signals.",
           "Built outbound from scratch, using app store data, Clay and AI to find companies where the product could make a big difference: a largely automated engine with targeted messaging, hitting about 500 accounts and 4,000 contacts a month. Then came a lot of testing and iteration on the message by person, company and timing, with results building over the months after.",
           "Owned the forecast, and set the quotas and performance framework for the team across five regions, from SMB to enterprise."],
   "after": "Inbound leads becoming sales-qualified went from ~25% to ~40%. First reply went from about a day to 5 minutes, which freed the SDRs to focus on outbound.", "note": ""},
@@ -125,7 +125,7 @@ def case_page(c):
 
 
 def kit_page():
-    topics = [("AI and sales", "Find the formula. Then scale it.", "AI will scale whatever you give it. What to automate, what not to, and why most AI sales projects scale the wrong thing."),
+    topics = [("AI and sales", "A sales engine you can trust", "What to automate, what to keep human, and why most AI sales projects scale the wrong thing."),
               ("New markets", "Launching where you're unknown", "Taking a product into a new country or segment: finding the first customers, the right partners and a motion that travels."),
               ("Building teams", "From founder-led to a sales engine", "When the founder is in every deal: the hires, the process and the numbers that let a team sell without them.")]
     formats = [("Talks and keynotes", "20 to 45 minutes, for founder, sales and investor audiences, in person in Berlin and London or remote"),
@@ -134,14 +134,14 @@ def kit_page():
                ("Portfolio workshops", "Office hours and workshops for investors' portfolio companies, on getting the commercial formula right before they scale it.")]
     t = "".join(f'<div class="box"><div class="mono">{escape(a)}</div><h3>{escape(b)}</h3><p>{escape(c)}</p></div>' for a, b, c in topics)
     f = "".join(f'<div class="box"><h3>{escape(a)}</h3><p>{escape(b)}</p></div>' for a, b in formats)
-    bio = ("Harry James Coburn is a Berlin-based commercial strategy and go-to-market adviser for growing tech companies. "
+    bio = ("Harry James Coburn is a Berlin-based sales and go-to-market adviser for CEOs of VC-backed tech companies, Series A to C. "
            "He has led sales at UXCam, Arbonics, Wheely and Pronto, companies backed by Headline, Plural, Concentric, Seedcamp "
-           "and Playfair, and trained at IBM, Credit Suisse and Lloyds Banking Group. His work centres on one idea: find the "
-           "commercial formula first, then use AI to scale it.")
+           "and Playfair, and trained at IBM, Credit Suisse and Lloyds Banking Group. His work centres on one idea: "
+           "a sales engine you can trust. AI buys the time, your people earn the trust.")
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Speaking kit · Harry James Coburn</title><style>{CSS}</style></head><body class="dense">
 <section class="page">
  <div class="top">{MARK}<span class="mono">Speaking kit</span></div>
- <div><div class="mono">Talks · panels · podcasts · portfolio workshops</div><h1>Harry James <em>Coburn.</em></h1><p class="ctx">Commercial strategy in the age of AI agents. Practical, honest about what fails, and built on real numbers.</p></div>
+ <div><div class="mono">Talks · panels · podcasts · portfolio workshops</div><h1>Harry James <em>Coburn.</em></h1><p class="ctx">Building a sales engine you can trust: what to automate, what to keep human. Practical, honest about what fails, and built on real numbers.</p></div>
  <div class="bio"><img class="photo" src="../../assets/photos/speaking.jpg" alt="Harry James Coburn"><div class="stack"><div class="mono">Speaker bio</div><p>{escape(bio)}</p><p class="note">Feel free to use this bio and photo. For a high-resolution photo, email harry@harryjamescoburn.com.</p></div></div>
  <div><h2>What I talk about</h2><div class="cols3">{t}</div></div>
  <div><h2>Formats</h2><div class="cols">{f}</div></div>
