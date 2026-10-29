@@ -84,6 +84,7 @@ function doPost(e) {
   var hs = toHubSpot_(lead, r);
   var sent = false, err = '';
   try { sendReport_(lead, r); sent = true; } catch (x) { err = String(x); }
+  if (sent) queueFollowUp_(lead, r);
   if (!sent || !hs.ok) notify_('Scorecard report problem', lead, 'email sent: ' + sent + ' ' + err + '\nHubSpot: ' + hs.code + ' ' + hs.body);
   return json_({ok: sent, hubspot: hs.ok});
 }
@@ -319,6 +320,7 @@ function message_(d) {
   } finally { lock.releaseLock(); }
 
   var src = line(d.source, 120) || 'direct';
+  stopFollowUp_(email);  // they wrote to Harry or applied: no more scorecard follow-ups
   var app = application_(d.app), hs = {ok: false, code: 0, body: ''};
   // Diagnostic applications go to their own HubSpot form, one answer per property; other messages to the main form.
   var fields = app ? [['firstname', first], ['email', email], ['company', company], ['website', app.site]].concat(app.fields)
@@ -414,4 +416,99 @@ function agent_(d, key) {
   if (email && consent) opts.replyTo = email;
   try { GmailApp.sendEmail(CFG.NOTIFY, 'Voice agent: ' + (name || 'website visitor') + (company ? ', ' + company : ''), body, opts); } catch (x) {}
   return json_({ok: true});
+}
+
+/* ---------- Scorecard follow-ups (agreed with Harry 29 Oct 2026) ---------- */
+// Four short, plain emails after the report: days 2, 5, 9 and 14. Sent from Harry's own mailbox, one per run.
+// A lead stops getting them as soon as they reply (including "unsubscribe"), book a call, apply or send a message.
+// Setup: paste this file, then run setupFollowUps() once from the editor. It adds a daily trigger at 09:00 Berlin.
+// Test: run testFollowUps() to send all four to NOTIFY with sample details.
+var FOLLOW_DAYS = [2, 5, 9, 14];
+
+function followUpEmail_(step, f) {
+  var first = f.f, layer = f.w || 'One layer', company = f.c || 'the team';
+  var mails = [
+    {s: 'Your scorecard',
+     b: 'Thanks again for taking the scorecard.\n\nDid any of it resonate? If one of your three first moves stood out, I\'m happy to go into it in a bit more detail.\n\nJust reply to this email.'},
+    {s: 'A few things on ' + layer,
+     b: 'Hope the week\'s going well.\n\n' + layer + ' came out lowest on your scorecard. It\'s one of the most common gaps I see, and often one of the quickest to improve.\n\nIf it\'s helpful, I\'m happy to share a few things that have worked for other teams. Just let me know which part you\'d like more on.'},
+    {s: 'Before you add AI',
+     b: 'One thing I see a lot at the moment: teams adding AI to their sales process before they know where it leaks.\n\nMy rule is to automate nothing until it sends what the team would send, at least 95% of the time.\n\nThat\'s how one team I worked with took the first reply to a new lead from about a day to 5 minutes, with a person still approving every message.\n\nIf AI is on your list for next year, I\'m happy to share where I\'d start.'},
+    {s: 'Worth 15 minutes?',
+     b: 'Last one from me on this.\n\nIf you\'d like to talk your scorecard through, would you be open to a 15 minute call? You can pick a time here: ' + CFG.BOOK.replace('utm_medium=email', 'utm_medium=followup') + ', or just reply and we\'ll find one.\n\nEither way, good luck with ' + company + '.'}
+  ];
+  var m = mails[step];
+  return {subject: m.s, body: 'Hi ' + first + ',\n\n' + m.b + '\n\nThanks,\nHarry\n\n' +
+    '--\nHarry James Coburn, Charlottenburger Straße 136B, 13086 Berlin, Germany\n' + CFG.SITE + '\n' +
+    'You took the scorecard on ' + CFG.SITE + '. Reply "unsubscribe" and I won\'t email you again.'};
+}
+
+function fuKey_(email) { return 'fu_' + Utilities.base64EncodeWebSafe(email); }
+
+function queueFollowUp_(lead, r) {
+  try {
+    if (lead.email === CFG.NOTIFY) return;  // never queue Harry's own tests
+    var props = PropertiesService.getScriptProperties();
+    if (props.getProperty('stop_' + Utilities.base64EncodeWebSafe(lead.email))) return;
+    props.setProperty(fuKey_(lead.email), JSON.stringify({e: lead.email, f: lead.firstname, c: lead.company,
+      w: r.moves[0] ? r.moves[0].a.n : '', t: Date.now(), s: 0}));
+  } catch (x) { notify_('Scorecard follow-up could not be queued', lead, String(x)); }
+}
+
+function stopFollowUp_(email) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    props.deleteProperty(fuKey_(email));
+    props.setProperty('stop_' + Utilities.base64EncodeWebSafe(email), String(Date.now()));
+  } catch (x) {}
+}
+
+// True if the lead has written in, booked or unsubscribed since the report went out.
+function engaged_(f) {
+  var after = Utilities.formatDate(new Date(f.t), 'Europe/Berlin', 'yyyy/MM/dd');
+  var q1 = 'from:' + f.e + ' after:' + after;                                       // any reply, incl. "unsubscribe"
+  var q2 = '"' + f.e + '" (from:cal.com OR subject:booking OR subject:booked) after:' + after;  // Cal.com booking
+  return GmailApp.search(q1, 0, 1).length > 0 || GmailApp.search(q2, 0, 1).length > 0;
+}
+
+function followUps() {
+  var props = PropertiesService.getScriptProperties();
+  var all = props.getProperties(), done = [], errors = [];
+  Object.keys(all).forEach(function (k) {
+    if (k.indexOf('fu_') !== 0) return;
+    var f; try { f = JSON.parse(all[k]); } catch (x) { props.deleteProperty(k); return; }
+    try {
+      if (props.getProperty('stop_' + Utilities.base64EncodeWebSafe(f.e)) || engaged_(f)) { props.deleteProperty(k); return; }
+      if (f.s >= FOLLOW_DAYS.length) { props.deleteProperty(k); return; }
+      var days = (Date.now() - f.t) / 86400000;
+      if (days < FOLLOW_DAYS[f.s]) return;
+      var m = followUpEmail_(f.s, f);
+      var opts = {name: CFG.NAME, replyTo: CFG.FROM};
+      if (GmailApp.getAliases().indexOf(CFG.FROM) >= 0 || Session.getActiveUser().getEmail() === CFG.FROM) opts.from = CFG.FROM;
+      GmailApp.sendEmail(f.e, m.subject, m.body, opts);
+      done.push(f.e + ' (email ' + (f.s + 1) + ')');
+      f.s += 1;
+      if (f.s >= FOLLOW_DAYS.length) props.deleteProperty(k); else props.setProperty(k, JSON.stringify(f));
+    } catch (x) { errors.push(f.e + ': ' + x); }
+  });
+  if (done.length || errors.length) {
+    try { MailApp.sendEmail(CFG.NOTIFY, 'Scorecard follow-ups sent: ' + done.length,
+      (done.length ? 'Sent:\n' + done.join('\n') : 'None sent.') + (errors.length ? '\n\nProblems:\n' + errors.join('\n') : '')); } catch (x) {}
+  }
+}
+
+/** Run once from the editor after pasting: adds the daily 09:00 trigger (and removes any old one). */
+function setupFollowUps() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'followUps') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('followUps').timeBased().everyDays(1).atHour(9).inTimezone('Europe/Berlin').create();
+  Logger.log('Daily follow-up trigger set for 09:00 Berlin.');
+}
+
+/** Sends all four follow-ups to NOTIFY with sample details, so Harry can read them in his inbox. */
+function testFollowUps() {
+  var f = {e: CFG.NOTIFY, f: 'Harry', c: 'Test GmbH', w: 'Win', t: Date.now(), s: 0};
+  for (var i = 0; i < FOLLOW_DAYS.length; i++) {
+    var m = followUpEmail_(i, f);
+    MailApp.sendEmail(CFG.NOTIFY, '[Test ' + (i + 1) + '/4, day ' + FOLLOW_DAYS[i] + '] ' + m.subject, m.body);
+  }
 }
