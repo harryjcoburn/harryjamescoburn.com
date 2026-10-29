@@ -426,16 +426,16 @@ function agent_(d, key) {
 var FOLLOW_DAYS = [2, 5, 9, 14];
 
 function followUpEmail_(step, f) {
-  var DESC = {Strategy: 'who you sell to, the pitch and the price', Win: 'how deals move from first call to signature',
-    Grow: 'keeping and growing customers', Team: 'hiring, onboarding and handovers', Motivation: 'targets and pay',
-    Rhythm: 'the weekly sales rhythm', Systems: 'the CRM, data and AI'};
-  var first = f.f, layer = f.w || 'One layer', company = f.c || 'the team';
-  var layerLine = DESC[layer] ? layer + ' (' + DESC[layer] + ')' : layer;
+  var DESC = {Strategy: 'who you sell to, what you say and how you price', Win: 'how deals move from first call to signature',
+    Grow: 'how you keep and grow customers', Team: 'hiring, onboarding and the handovers between people',
+    Motivation: 'how targets and pay are set', Rhythm: 'the weekly rhythm of reviewing deals', Systems: 'your CRM, data and tools'};
+  var first = f.f, layer = f.w || '', company = f.c || 'the team';
+  var area = DESC[layer] || 'one part of your sales engine';
   var mails = [
     {s: 'Your scorecard',
      b: 'Thanks again for taking the scorecard.\n\nDid any of it resonate? If one of your three first moves stood out, I\'m happy to go into it in a bit more detail.\n\nJust reply to this email.'},
-    {s: 'A few things on your ' + layer + ' score',
-     b: 'Hope the week\'s going well.\n\n' + layerLine + ' came out lowest on your scorecard. It\'s one of the most common gaps I see, and often one of the quickest to improve.\n\nIf it\'s helpful, I\'m happy to share a few things that have worked for other teams. Just let me know which part you\'d like more on.'},
+    {s: 'One thing from your scorecard',
+     b: 'Hope the week\'s going well.\n\nLooking back at your scorecard, your lowest score was on ' + area + '. It\'s one of the most common gaps I see, and often one of the quickest to improve.\n\nIf it\'s helpful, I\'m happy to share a few things that have worked for other teams. Just let me know which part you\'d like more on.'},
     {s: 'Before you add AI',
      b: 'One thing I see a lot at the moment: teams adding AI to their sales process before they know where it leaks.\n\nMy rule is to automate nothing until it sends what the team would send, at least 95% of the time.\n\nThat\'s how one team I worked with took the first reply to a new lead from about a day to 5 minutes, with a person still approving every message.\n\nIf AI is on your list for next year, I\'m happy to share where I\'d start.'},
     {s: 'Worth 15 minutes?',
