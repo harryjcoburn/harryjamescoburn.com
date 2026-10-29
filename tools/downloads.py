@@ -61,7 +61,7 @@ CASES = [
           "Built an office lunch service around a gap nobody filled: staff ordered by a cut-off and everything arrived together at lunchtime, hot and healthy. For some offices it replaced the canteen.",
           "Won clients including Wise, a regular for team lunches, and Telefónica, which came in looking to replace its in-house canteen.",
           "Used my network to get Pronto onto Seamless years before others were allowed on. The clincher: many of Seamless's own clients were already ordering from us off the platform. We became one of its best-rated providers."],
-  "after": "B2B grew from zero to 60% of company revenue, and Seamless alone brought 40% of early revenue. Pronto later closed when its next funding round didn't come through. The B2B playbook is one I've reused ever since.", "note": ""},
+  "after": "B2B grew from zero to 60% of company revenue, and Seamless alone brought 40% of early revenue. The B2B playbook is one I've reused ever since.", "note": ""},
 ]
 
 CSS = """@page{size:A4;margin:0}
