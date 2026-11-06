@@ -34,7 +34,7 @@ UNUSED_ASSETS = ("banners", "tsb.svg", "british-army.svg", "wheely.svg", "advent
 
 PAGES = {
     'index.html': ('Harry James Coburn | Sales and GTM adviser for Series A–C CEOs',
-        'A sales engine you can trust: AI buys the time, people earn the trust. I find the formula that wins, turn it into a process that scales and put AI on the repetitive work. For Series A to C CEOs.'),
+        'A sales engine you can trust. AI buys the time, people earn the trust. Sales and GTM for Series A to C CEOs.'),
     'work.html': ('Sales turnaround case studies: UXCam, Arbonics, Wheely, Pronto | Harry James Coburn',
         'How Harry James Coburn rebuilt and scaled B2B sales at UXCam, Arbonics, Wheely and Pronto: the problem, what he did and the results.'),
     'services.html': ('GTM consulting and fractional Head of Sales | Harry James Coburn',
@@ -55,7 +55,7 @@ PAGES = {
         'Six quick questions. If it looks like a fit, book a 30-minute call straight away. At least 3x the fee in revenue found, or you don\'t pay.'),
     'contact.html': ('Contact Harry James Coburn',
         'Book a 30-minute call, message on WhatsApp or email Harry James Coburn about your sales engine, a role or a talk.'),
-    'portfolio.html': ('Sales support for VC portfolios: workshops, office hours, health checks | Harry James Coburn',
+    'portfolio.html': ('Sales support for VC portfolios | Harry James Coburn',
         'A portfolio workshop, monthly founder office hours and a 2-week sales health check for Series A to C companies. Built for investors and platform teams.'),
     'about.html': ('About Harry James Coburn: sales leader and GTM adviser, Berlin',
         'From IBM, Credit Suisse and Lloyds Banking Group to Head of Sales at four growth companies. Now a GTM adviser based in Berlin.'),
