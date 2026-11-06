@@ -137,7 +137,7 @@ def kit_page():
     bio = ("Harry James Coburn is a Berlin-based sales and go-to-market adviser for CEOs of VC-backed tech companies, Series A to C. "
            "He has led sales at UXCam, Arbonics, Wheely and Pronto, companies backed by Headline, Plural, Concentric, Seedcamp "
            "and Playfair, and trained at IBM, Credit Suisse and Lloyds Banking Group. His work centres on one idea: "
-           "a sales engine you can trust. AI buys the time, your people earn the trust.")
+           "a sales engine you can trust. AI buys the time, people earn the trust.")
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Speaking kit · Harry James Coburn</title><style>{CSS}</style></head><body class="dense">
 <section class="page">
  <div class="top">{MARK}<span class="mono">Speaking kit</span></div>

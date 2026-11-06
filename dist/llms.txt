@@ -1,6 +1,6 @@
 # Harry James Coburn
 
-> Berlin-based commercial strategy and go-to-market (GTM) adviser for CEOs of VC-backed tech companies, Series A to C, across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, your people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for CEOs of VC-backed tech companies, Series A to C, across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
 
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
@@ -34,6 +34,7 @@
 - Newsletter: The AI Go-to-Market Formula, https://harryjamescoburn.substack.com
 
 ## Latest LinkedIn posts
+- 2026-11-05: The newsletter is live (https://harryjamescoburn.com/writing.html#post-2026-11-05)
 - 2026-11-04: Hold the price (https://harryjamescoburn.com/writing.html#post-2026-11-04)
 - 2026-11-03: First reply in five minutes (https://harryjamescoburn.com/writing.html#post-2026-11-03)
 - 2026-10-29: The 95% rule (https://harryjamescoburn.com/writing.html#post-2026-10-29)

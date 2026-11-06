@@ -34,7 +34,7 @@ UNUSED_ASSETS = ("banners", "tsb.svg", "british-army.svg", "wheely.svg", "advent
 
 PAGES = {
     'index.html': ('Harry James Coburn | Sales and GTM adviser for Series A–C CEOs',
-        'A sales engine you can trust: AI buys the time, your people earn the trust. I find the formula that wins, turn it into a process that scales and put AI on the repetitive work. For Series A to C CEOs.'),
+        'A sales engine you can trust: AI buys the time, people earn the trust. I find the formula that wins, turn it into a process that scales and put AI on the repetitive work. For Series A to C CEOs.'),
     'work.html': ('Sales turnaround case studies: UXCam, Arbonics, Wheely, Pronto | Harry James Coburn',
         'How Harry James Coburn rebuilt and scaled B2B sales at UXCam, Arbonics, Wheely and Pronto: the problem, what he did and the results.'),
     'services.html': ('GTM consulting and fractional Head of Sales | Harry James Coburn',
@@ -116,7 +116,7 @@ def nav(current):
 
 
 CLOSE = """<section class="close" aria-labelledby="h-close"><div class="wrap inner">
-  <div class="mono">AI buys the time. Your people earn the trust.</div>
+  <div class="mono">AI buys the time, people earn the trust.</div>
   <h2 id="h-close">Tell me where your sales are <em>stuck.</em></h2>
   <p>Apply in one minute. If it's a fit, you book a call straight away and leave with at least one thing to fix this month, whether we work together or not.</p>
   <div class="cta"><a class="btn" href="apply.html">Apply for a Diagnostic <span class="arr">→</span></a><a class="ghost" href="scorecard.html">Or score your engine, free</a></div>
@@ -434,7 +434,7 @@ def hubspot_privacy():
 
 LLMS = """# Harry James Coburn
 
-> Berlin-based commercial strategy and go-to-market (GTM) adviser for CEOs of VC-backed tech companies, Series A to C, across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, your people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
+> Berlin-based commercial strategy and go-to-market (GTM) adviser for CEOs of VC-backed tech companies, Series A to C, across the UK, Europe and the US. Finds the commercial formula (customer, price, pitch, process), builds the sales engine, then uses AI to scale it. Core idea: a sales engine you can trust. AI buys the time, people earn the trust. AI takes the repetitive work around the sale (research, routing, CRM updates, first drafts) so the team spends its time with buyers, where trust is won.
 
 ## Track record
 - UXCam (AI product analytics, Headline-backed), Head of Sales, 2026: inbound leads becoming sales-qualified from ~25% to ~40%, first reply from about a day to 5 minutes with AI agents.
