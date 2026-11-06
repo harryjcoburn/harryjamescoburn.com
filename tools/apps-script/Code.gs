@@ -46,10 +46,10 @@ var AREAS = [
 ];
 var STAGES = ['Seed', 'Series A', 'Series B', 'Series C+'];
 var FOCUS = {launch:'Launching a new market or product', stall:'Growth has stalled since the raise',
-             founder:'Sales still runs through the founder', ai:'Making AI actually work in sales'};
+             founder:'Growth depends on a few people and a lot of effort', ai:'Making AI actually work in sales'};
 var EXTRA = {launch:'For a new market or product, we\'d prove the formula small before scaling it.',
              stall:'After a raise, the fastest wins are usually in strategy and the Win stages.',
-             founder:'Getting sales out of the founder\'s head starts with the pitch and the handovers.',
+             founder:'Making growth easier starts with writing down the pitch and the handovers, so more of the team can run them.',
              ai:'AI works when it\'s trained on your data and checked against your standard. That\'s where I\'d focus.'};
 
 function doGet() {
@@ -359,7 +359,7 @@ function message_(d) {
 // Only accepts the exact dropdown values set up in HubSpot, so a tampered request can't write junk into the properties.
 var APPLY_OPTS = {
   dx_stage: ['Seed or earlier', 'Series A', 'Series B', 'Series C or later'],
-  dx_stuck: ['Growth has stalled since the raise', 'Sales still runs through the founder', 'Launching a new market or product', 'Making AI actually work in sales'],
+  dx_stuck: ['Growth has stalled since the raise', 'Sales still runs through the founder', 'Growth depends on a few people and a lot of effort', 'Launching a new market or product', 'Making AI actually work in sales'],
   dx_gap: ['Under €500k', '€500k to €2M', 'Over €2M', 'Not sure yet'],
   dx_start: ['This month', 'In the next 1 to 2 months', 'Later this year or next', 'Just exploring']
 };
