@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-LMgMKY41iHgE6gWMq22KLS4Izf87/rqGtxSiL/qW7Fw=' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-319d3EpTzGtqzNOjX1ewO9CmvVeQG5QLYcuOGfRiREY=' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta charset="utf-8">
@@ -165,7 +165,7 @@
     stall:'<path d="M3 14l5-5 4 4 3-3"/><path d="M15 10h6"/>',founder:'<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
     ai:'<path d="M11 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>'};
   var STAGES=[['Seed','Pre-seed or Seed'],['Series A','Series A'],['Series B','Series B'],['Series C+','Series C or later']];
-  var FOCUS=[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Sales still runs through the founder'],['ai','Making AI actually work in sales']];
+  var FOCUS=[['launch','Launching a new market or product'],['stall','Growth has stalled since the raise'],['founder','Growth depends on a few people and a lot of effort'],['ai','Making AI actually work in sales']];
   var A=[
     {k:'strategy',n:'Strategy',lever:'Win rate, deal size',q:'Can everyone say who you\'re for, and why they buy?',
      o:['No. We sell to anyone, and every rep pitches it differently.','It\'s written down, but we don\'t use it to say no.','One ideal customer, one pitch, priced on value. We say no.'],
@@ -275,7 +275,7 @@
     $('lock-h').textContent='Your three first moves start with '+sorted[0].a.n.toLowerCase()+'.';
     var body='Hi Harry,\n\nHere are my scorecard results.\nStage: '+ans.stage+'\nOverall: '+avg.toFixed(1)+' out of 5 ('+band+')\n'+scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s);}).join('\n')+'\n\nCompany:\nWhat I would like help with:\n';
     $('r-mail').href='mailto:'+EMAIL+'?subject='+encodeURIComponent('My sales engine scorecard')+'&body='+encodeURIComponent(body);
-    last={score:avg.toFixed(1),band:band,stage:ans.stage,focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Sales still runs through the founder',ai:'Making AI actually work in sales'}[sit]||'',
+    last={score:avg.toFixed(1),band:band,stage:ans.stage,focus:{launch:'Launching a new market or product',stall:'Growth has stalled since the raise',founder:'Growth depends on a few people and a lot of effort',ai:'Making AI actually work in sales'}[sit]||'',
       areas:scores.map(function(x){return x.a.n+': '+(x.s===2?'not sure':x.s+'/5');}).join('\n'),
       moves:sorted.slice(0,3).map(function(x,n){return (n+1)+'. '+x.a.n+': '+x.a.m;}).join('\n'),
       rec:'Where I\'d start: '+$('r-rec').textContent,sit:sit,answers:A.reduce(function(o,a){o[a.k]=ans[a.k];return o;},{})};
