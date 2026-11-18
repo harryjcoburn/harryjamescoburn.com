@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-0s25gnivryyXa2raDEb8JZO7OahXX/dZlMPnEbWpdJg=' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-06P8umwz5aQ4yz70xTgPnSCuFnEGXUARzjT+QkOfrug=' 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta charset="utf-8">
@@ -69,13 +69,13 @@
 </section>
 
 <section class="sec wrap" id="start" aria-labelledby="h-start">
-  <div class="sec-head"><div class="label mono">Start here</div><h2 id="h-start">What's on your <em>mind most?</em></h2><p>Pick the one that sounds like your week. Add your email and I'll reply myself, usually the same day.</p></div>
+  <div class="sec-head"><div class="label mono">Start here</div><h2 id="h-start">What's on your <em>mind most?</em></h2><p>Pick any that sound like your week. Add your email and I'll reply myself, usually the same day.</p></div>
   <form id="qs" class="apl-form qs" novalidate>
-    <div class="apl-opts qs-opts" data-name="stuck" role="radiogroup" aria-label="What's on your mind most?">
-      <label><input type="radio" name="stuck" value="Growth has stalled since the raise"><span><b>Growth has stalled since the raise</b></span></label>
-      <label><input type="radio" name="stuck" value="Growth depends on a few people and a lot of effort"><span><b>Growth depends on a few people and a lot of effort</b></span></label>
-      <label><input type="radio" name="stuck" value="Launching a new market or product"><span><b>Launching a new market or product</b></span></label>
-      <label><input type="radio" name="stuck" value="Making AI actually work in sales"><span><b>Making AI actually work in sales</b></span></label>
+    <div class="apl-opts qs-opts" data-name="stuck" role="group" aria-label="What's on your mind most? Pick any that apply">
+      <label><input type="checkbox" name="stuck" value="Growth has stalled since the raise"><span><b>Growth has stalled since the raise</b></span></label>
+      <label><input type="checkbox" name="stuck" value="Growth depends on a few people and a lot of effort"><span><b>Growth depends on a few people and a lot of effort</b></span></label>
+      <label><input type="checkbox" name="stuck" value="Launching a new market or product"><span><b>Launching a new market or product</b></span></label>
+      <label><input type="checkbox" name="stuck" value="Making AI actually work in sales"><span><b>Making AI actually work in sales</b></span></label>
     </div>
     <div class="qs-more" id="qsMore" hidden>
       <p class="qs-ask">Thanks. Two more things so I can reply properly.</p>
@@ -252,13 +252,13 @@
   var more=document.getElementById('qsMore'),note=document.getElementById('qsNote');
   function esc(s){return String(s||'').replace(/[<>&"]/g,'');}
   function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
-  f.addEventListener('change',function(ev){if(ev.target.name==='stuck'){more.hidden=false;try{if(window.umami)umami.track('Home problem picked',{stuck:ev.target.value})}catch(e){}}});
+  f.addEventListener('change',function(ev){if(ev.target.name==='stuck'){more.hidden=!f.querySelector('input[name=stuck]:checked');try{if(window.umami&&ev.target.checked)umami.track('Home problem picked',{stuck:ev.target.value})}catch(e){}}});
   f.addEventListener('submit',function(ev){
     ev.preventDefault();var d=new FormData(f),em=(d.get('email')||'').trim(),btn=f.querySelector('button[type=submit]');
-    if(!d.get('stuck')){note.textContent='Pick the one that sounds most like you.';return;}
+    var stuck=d.getAll('stuck').join(' / ');if(!stuck){note.textContent='Pick at least one that sounds like you.';return;}
     if(!d.get('firstname')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||!d.get('company')){note.textContent='Add your first name, work email and company.';return;}
     if(!d.get('consent')){note.textContent='Tick the box so I can reply.';return;}
-    var msg='HOME PAGE QUICK START\nCompany: '+d.get('company')+'\nOn their mind: '+d.get('stuck')+(d.get('notes')?'\nNotes: '+String(d.get('notes')).trim():'');
+    var msg='HOME PAGE QUICK START\nCompany: '+d.get('company')+'\nOn their mind: '+stuck+(d.get('notes')?'\nNotes: '+String(d.get('notes')).trim():'');
     var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
     btn.disabled=true;note.textContent='Sending...';
     function done(){
