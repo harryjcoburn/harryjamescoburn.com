@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-Qfm30e+CG6VPRE8y6jHb/mvn2RmJLvO8Bk2sPgODkYg=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'sha256-PooGa0bc/X7u4jXllikzUJsN1O8BqhKN2MC7xoQ65TY=' 'sha256-Sn2XzzmoEzX9tysjUDW2rL99SSoW8m6wgyQmElO8OyM=' 'sha256-c3kFhgJ92Kz0qCHUTR5D4Wv+rkxWgYOrVHifn2zbjMk=' https://cloud.umami.is https://unpkg.com https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: https:; connect-src 'self' https: wss:; frame-src https://harryjamescoburn.substack.com https://*.elevenlabs.io https://cal.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.hsforms.com https://script.google.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta charset="utf-8">
@@ -72,7 +72,6 @@
   <div class="sec-head"><div class="label mono">Start here</div><h2 id="h-start">What's on your <em>mind most?</em></h2></div>
   <div class="qs-card">
     <aside class="qs-side">
-      <p class="qs-lead">Tell me where it hurts. I'll reply myself.</p>
       <ul class="qs-ticks">
         <li>A reply from me, usually the same day</li>
         <li>No slides and no sales pitch</li>
@@ -97,13 +96,15 @@
       </div>
 
       <div class="qs-pane" data-pane="2" hidden>
-        <h3>Who am I talking to?</h3>
-        <p class="qs-hint">So I can read up on you before I reply.</p>
-        <div class="apl-row">
-          <label><span>First name</span><input name="firstname" autocomplete="given-name" maxlength="40"></label>
-          <label><span>Company</span><input name="company" autocomplete="organization" maxlength="80"></label>
+        <h3>Where are you at?</h3>
+        <p class="qs-hint">Pick one.</p>
+        <div class="apl-opts qs-opts" role="radiogroup" aria-label="Company stage">
+          <label><input type="radio" name="stage" value="Seed or earlier"><span>Seed or earlier</span></label>
+          <label><input type="radio" name="stage" value="Series A"><span>Series A</span></label>
+          <label><input type="radio" name="stage" value="Series B"><span>Series B</span></label>
+          <label><input type="radio" name="stage" value="Series C or later"><span>Series C or later</span></label>
         </div>
-        <div class="qs-actions"><button class="btn" type="button" id="qsNext2">Continue <span class="arr">→</span></button><button class="qs-back" type="button" data-back="1">Back</button></div>
+        <div class="qs-actions"><button class="btn" type="button" id="qsNext2" disabled>Continue <span class="arr">→</span></button><button class="qs-back" type="button" data-back="1">Back</button></div>
       </div>
 
       <div class="qs-pane" data-pane="3" hidden>
@@ -114,7 +115,10 @@
           <label><input type="radio" name="how" value="Reply to me personally"><span>Reply to me personally</span></label>
           <label><input type="radio" name="how" value="Call me for a free 30-minute chat"><span>Call me for a free 30-minute chat</span></label>
         </div>
-        <label class="apl-wide qs-email"><span>Work email</span><input name="email" type="email" autocomplete="email" maxlength="120"></label>
+        <div class="apl-row qs-who-row">
+          <label><span>First name</span><input name="firstname" autocomplete="given-name" maxlength="40"></label>
+          <label><span>Work email</span><input name="email" type="email" autocomplete="email" maxlength="120"></label>
+        </div>
         <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
         <label class="rep-ok"><input type="checkbox" name="consent"><span>I agree to Harry James Coburn storing my details to reply to me. <a href="privacy.html">Privacy</a></span></label>
         <div class="qs-actions"><button class="btn" type="submit">Send it to Harry <span class="arr">→</span></button><button class="qs-back" type="button" data-back="2">Back</button></div>
@@ -289,17 +293,18 @@
     bar.style.width=(n*33.34)+'%';lab.textContent='Step '+n+' of 3';
     var first=f.querySelector('.qs-pane[data-pane="'+n+'"] input:not([type=checkbox]):not([type=radio])');if(first&&n>1)first.focus();track('Home flow step',{step:n});}
   var next1=document.getElementById('qsNext1');
-  f.addEventListener('change',function(ev){if(ev.target.name==='stuck'){next1.disabled=!f.querySelector('input[name=stuck]:checked');}});
+  f.addEventListener('change',function(ev){if(ev.target.name==='stuck'){next1.disabled=!f.querySelector('input[name=stuck]:checked');}if(ev.target.name==='stage'){next2.disabled=false;}});
   next1.addEventListener('click',function(){show(2);});
-  document.getElementById('qsNext2').addEventListener('click',function(){
-    var d=new FormData(f);if(!String(d.get('firstname')||'').trim()||!String(d.get('company')||'').trim()){note.textContent='Add your first name and company.';return;}show(3);});
+  var next2=document.getElementById('qsNext2');
+  next2.addEventListener('click',function(){show(3);});
   [].forEach.call(f.querySelectorAll('[data-back]'),function(b){b.addEventListener('click',function(){show(+b.getAttribute('data-back'));});});
   f.addEventListener('submit',function(ev){
     ev.preventDefault();var d=new FormData(f),em=(d.get('email')||'').trim(),btn=f.querySelector('button[type=submit]');
+    if(!String(d.get('firstname')||'').trim()){note.textContent='Add your first name.';return;}
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){note.textContent='Add a work email so I can reply.';return;}
     if(!d.get('consent')){note.textContent='Tick the box so I can reply.';return;}
     var stuck=d.getAll('stuck').join(' / '),how=d.get('how')||'';
-    var msg='HOME PAGE FLOW\nCompany: '+d.get('company')+'\nOn their mind: '+stuck+'\nWould like: '+how;
+    var msg='HOME PAGE FLOW\nStage: '+d.get('stage')+'\nOn their mind: '+stuck+'\nWould like: '+how;
     var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
     btn.disabled=true;note.textContent='Sending...';
     function done(){
@@ -311,12 +316,12 @@
       f.innerHTML='<div class="apl-done"><span class="mono">Got it</span><h3>Thanks, '+name+'.</h3>'+body+'</div>';track('Home quick start',{how:how});}
     function viaHubSpot(){
       return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['company',d.get('company')],['message',msg]].filter(function(x){return x[1];}).map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['message',msg]].filter(function(x){return x[1];}).map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
           context:{pageUri:location.href,pageName:document.title},
           legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to reply to me.',communications:[]}}})})
       .then(function(r){if(!r.ok)throw new Error(r.status);});}
     fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
+      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:'',message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
     .then(function(r){return r.json();})
     .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;note.textContent='Check your name and email.';return;}throw new Error(j.error);})
     .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;note.innerHTML='That didn\'t send. Please <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a> instead.';});});
