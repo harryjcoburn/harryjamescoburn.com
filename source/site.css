@@ -1438,3 +1438,5 @@ h3 .si-s{color:var(--emberText)}
 .qs-who-row{grid-template-columns:1fr 1fr}@media (max-width:560px){.qs-who-row{grid-template-columns:1fr}}
 .qs-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .qs-form .rep-ok{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--grey)}.qs-form .rep-ok input{margin-top:4px;accent-color:var(--emberBtn);flex:none}.qs-form .rep-ok a{color:var(--ink)}
+
+.qs-card{grid-template-columns:1fr;max-width:820px}
