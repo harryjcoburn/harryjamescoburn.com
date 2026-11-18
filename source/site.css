@@ -1410,3 +1410,11 @@ h3 .si-s{color:var(--emberText)}
 .hero .lede{margin-top:22px}
 .hero .label{line-height:1.7}
 #method .formula{margin-bottom:28px}
+
+/* Home: problem-first start */
+.qs-opts{grid-template-columns:1fr 1fr;gap:14px}
+.qs-opts span{padding:22px 22px;font-size:clamp(18px,1.7vw,22px);line-height:1.25;letter-spacing:-.01em;min-height:96px;display:flex;align-items:center}
+.qs-opts b{font-weight:600}
+.qs-more{display:grid;gap:16px;margin-top:24px;max-width:44em}
+.qs-ask{font-weight:600}
+@media (max-width:560px){.qs-opts{grid-template-columns:1fr}}

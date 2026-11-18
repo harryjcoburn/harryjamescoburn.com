@@ -10,7 +10,7 @@
       <div class="label mono">A sales engine you can trust<br>AI buys the time, people earn the trust.</div>
       <p class="hi">Hi, I'm Harry.</p>
       <h1 id="h1">Sales shouldn't feel like <em>pushing a rock up a hill.</em></h1>
-      <p class="lede">If you run a company, you may know the conversation. It's late, and one of you says sales still isn't working. You're spending hours trying to get it right, the forecasts keep missing, the cycles take longer than they should, and the investors want results. I work with founders and CEOs to cut through the noise, find what moves revenue and build a sales process the whole team can run, so selling gets easier and faster and you stay close to your customers.</p>
+      <p class="lede">If you run a company, you probably know this conversation. It's late, and someone says sales still isn't working. The forecasts keep missing, deals take longer than they should, and the investors want results. I help founders and CEOs find what is slowing their sales down, then fix it with their team, so selling gets easier and you stay close to your customers.</p>
       <p class="hero-proof">At Arbonics I took the average sales cycle from 75 days to 16 and won an estimated &euro;10M of contract value in 12 months. <a href="work.html#arbonics">See how</a></p>
       <div class="cta"><a class="btn" href="{{BOOK}}">Book a 30-minute call <span class="arr">→</span></a><a class="ghost" href="scorecard.html">Score your sales engine in 2 minutes</a></div>
     </div>
@@ -37,6 +37,31 @@
       <img class="tall" src="assets/logos/lloyds-banking-group.svg" alt="Lloyds Banking Group" width="115" height="32">
     </div>
   </div>
+</section>
+
+<section class="sec wrap" id="start" aria-labelledby="h-start">
+  <div class="sec-head"><div class="label mono">Start here</div><h2 id="h-start">What's on your <em>mind most?</em></h2><p>Pick the one that sounds like your week. Add your email and I'll reply myself, usually the same day.</p></div>
+  <form id="qs" class="apl-form qs" novalidate>
+    <div class="apl-opts qs-opts" data-name="stuck" role="radiogroup" aria-label="What's on your mind most?">
+      <label><input type="radio" name="stuck" value="Growth has stalled since the raise"><span><b>Growth has stalled since the raise</b></span></label>
+      <label><input type="radio" name="stuck" value="Growth depends on a few people and a lot of effort"><span><b>Growth depends on a few people and a lot of effort</b></span></label>
+      <label><input type="radio" name="stuck" value="Launching a new market or product"><span><b>Launching a new market or product</b></span></label>
+      <label><input type="radio" name="stuck" value="Making AI actually work in sales"><span><b>Making AI actually work in sales</b></span></label>
+    </div>
+    <div class="qs-more" id="qsMore" hidden>
+      <p class="qs-ask">Thanks. Two more things so I can reply properly.</p>
+      <div class="apl-row">
+        <label><span>First name</span><input name="firstname" autocomplete="given-name" required maxlength="40"></label>
+        <label><span>Work email</span><input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label><span>Company</span><input name="company" autocomplete="organization" required maxlength="80"></label>
+        <label><span>In a line, what's happening? <i class="opt">optional</i></span><input name="notes" maxlength="300" placeholder="e.g. pipeline is thin since the raise"></label>
+      </div>
+      <label class="hp" aria-hidden="true">Leave blank<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="rep-ok"><input type="checkbox" name="consent" required><span>I agree to Harry James Coburn storing my details to reply to me. <a href="privacy.html">Privacy</a></span></label>
+      <div class="sc-actions"><button class="btn" type="submit">Send it to Harry <span class="arr">→</span></button><span id="qsNote" class="small-note" role="status"></span></div>
+      <p class="small-note">Prefer to look around first? <a href="scorecard.html">Score your sales engine in 2 minutes</a>.</p>
+    </div>
+  </form>
 </section>
 
 <section class="sec wrap" id="work" aria-labelledby="h-work">
@@ -175,5 +200,40 @@
 {{CLOSE}}
 </main>
 {{FOOTER}}
+<script>
+(function(){
+  var EMAIL='{{EMAIL}}',REPORT_URL='{{REPORT_URL}}',HS_PORTAL='{{HS_PORTAL}}',HS_FORM='{{HS_FORM}}',HS_HOST='{{HS_HOST}}',BOOK='{{BOOK_URL}}';
+  var f=document.getElementById('qs');if(!f)return;
+  var more=document.getElementById('qsMore'),note=document.getElementById('qsNote');
+  function esc(s){return String(s||'').replace(/[<>&"]/g,'');}
+  function utm(){try{return JSON.parse(sessionStorage.getItem('hjc_utm')||'{}');}catch(e){return {};}}
+  f.addEventListener('change',function(ev){if(ev.target.name==='stuck'){more.hidden=false;try{if(window.umami)umami.track('Home problem picked',{stuck:ev.target.value})}catch(e){}}});
+  f.addEventListener('submit',function(ev){
+    ev.preventDefault();var d=new FormData(f),em=(d.get('email')||'').trim(),btn=f.querySelector('button[type=submit]');
+    if(!d.get('stuck')){note.textContent='Pick the one that sounds most like you.';return;}
+    if(!d.get('firstname')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||!d.get('company')){note.textContent='Add your first name, work email and company.';return;}
+    if(!d.get('consent')){note.textContent='Tick the box so I can reply.';return;}
+    var msg='HOME PAGE QUICK START\nCompany: '+d.get('company')+'\nOn their mind: '+d.get('stuck')+(d.get('notes')?'\nNotes: '+String(d.get('notes')).trim():'');
+    var u=utm(),src=[u.utm_source,u.utm_medium,u.utm_campaign].filter(Boolean).join(' / ')||u.ref||'direct';
+    btn.disabled=true;note.textContent='Sending...';
+    function done(){
+      var name=esc(d.get('firstname'));
+      var cal=BOOK+(BOOK.indexOf('?')<0?'?':'&')+'name='+encodeURIComponent(d.get('firstname'))+'&email='+encodeURIComponent(em);
+      f.innerHTML='<div class="apl-done"><span class="mono">Got it</span><h3>Thanks, '+name+'.</h3><p>I\'ll read this and reply to '+esc(em)+', usually the same day. If you would rather talk now, pick a time and we can look at it together.</p><a class="btn" href="'+cal.replace(/"/g,'%22')+'" target="_blank" rel="noopener">Pick a time <span class="arr">\u2192</span></a></div>';
+      try{if(window.umami)umami.track('Home quick start')}catch(e){}}
+    function viaHubSpot(){
+      return fetch('https://'+HS_HOST+'/submissions/v3/integration/submit/'+HS_PORTAL+'/'+HS_FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:[['firstname',d.get('firstname')],['email',em],['company',d.get('company')],['message',msg]].filter(function(x){return x[1];}).map(function(x){return {objectTypeId:'0-1',name:x[0],value:String(x[1])};}),
+          context:{pageUri:location.href,pageName:document.title},
+          legalConsentOptions:{consent:{consentToProcess:true,text:'I agree to Harry James Coburn storing my details to reply to me.',communications:[]}}})})
+      .then(function(r){if(!r.ok)throw new Error(r.status);});}
+    fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({type:'message',firstname:d.get('firstname'),email:em,company:d.get('company'),message:msg,consent:true,source:src,page:location.href,website:d.get('website')||''})})
+    .then(function(r){return r.json();})
+    .then(function(j){if(j.ok)return done();if(j.error==='email'||j.error==='name'){btn.disabled=false;note.textContent='Check your name and email.';return;}throw new Error(j.error);})
+    .catch(function(){viaHubSpot().then(done).catch(function(){btn.disabled=false;note.innerHTML='That didn\'t send. Please <a href="mailto:'+EMAIL+'" target="_blank" rel="noopener">email me</a> instead.';});});
+  });
+})();
+</script>
 </body>
 </html>
