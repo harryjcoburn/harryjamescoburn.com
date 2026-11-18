@@ -1440,3 +1440,13 @@ h3 .si-s{color:var(--emberText)}
 .qs-form .rep-ok{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--grey)}.qs-form .rep-ok input{margin-top:4px;accent-color:var(--emberBtn);flex:none}.qs-form .rep-ok a{color:var(--ink)}
 
 .qs-card{grid-template-columns:1fr;max-width:820px}
+
+/* Home: frame around the start flow */
+.qs-stage{background:var(--soft);border-radius:28px;padding:clamp(16px,3vw,36px);display:grid;gap:clamp(20px,3vw,32px)}
+.qs-stage .qs-card{max-width:none;border-color:transparent;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.qs-next{list-style:none;counter-reset:n;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,32px)}
+.qs-next li{counter-increment:n;display:block;font-size:15.5px;line-height:1.4;color:var(--grey);padding-left:34px;position:relative}
+.qs-next li::before{content:counter(n);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;font-weight:700;display:grid;place-items:center}
+.qs-next span{display:block;margin-top:2px}
+.qs-next b{display:block;color:var(--ink);font-weight:700;font-size:16.5px}
+@media (max-width:820px){.qs-next{grid-template-columns:1fr}}
